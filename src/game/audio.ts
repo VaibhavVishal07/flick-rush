@@ -115,8 +115,10 @@ class AudioKit {
     src.stop(ctx.currentTime + dur + 0.06)
   }
 
-  play(cue: Cue) {
+  /** `step` transposes a cue up in semitones — used to climb a streak. */
+  play(cue: Cue, step = 0) {
     if (!this.ctx || !this.enabled) return
+    const k = Math.pow(2, Math.min(step, 12) / 12)
     switch (cue) {
       // A tiny click the instant a sticker is picked up.
       case 'grab':
@@ -129,8 +131,8 @@ class AudioKit {
       // Something breaking: a noise crack under a bright major-third pop.
       case 'block':
         this.whoosh(0.11, 5200, 900, 0.075)
-        this.tone(784, { type: 'triangle', peak: 0.15, decay: 0.07 })
-        this.tone(1046.5, { type: 'triangle', peak: 0.11, decay: 0.09, delay: 0.045 })
+        this.tone(784 * k, { type: 'triangle', peak: 0.15, decay: 0.07 })
+        this.tone(1046.5 * k, { type: 'triangle', peak: 0.11, decay: 0.09, delay: 0.045 })
         break
       // A rising major arpeggio that resolves an octave up — the sound of
       // something arriving safely, not merely of nothing going wrong.

@@ -63,6 +63,18 @@
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
 
+  /* ---- retro skin ------------------------------------------------------
+     Thick black keyline, flat fill, a solid offset shadow with no blur, and
+     a halftone dot screen. Soft gradients and blurred shadows are what make
+     a UI read as generated rather than drawn.                            */
+  --outline: #0d0d12;
+  --line-w: 3px;
+  --drop: 5px 6px 0 var(--outline);
+  --drop-sm: 3px 4px 0 var(--outline);
+  --halftone: radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.11) 1.1px, transparent 1.2px);
+  --halftone-size: 5px 5px;
+  --r: 7px;
+
   --frame-w: 430px;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -205,9 +217,10 @@ button {
   display: inline-flex;
   align-items: center;
   padding: 8px 15px;
-  border-radius: 999px;
+  border-radius: var(--r);
+  border: var(--line-w) solid var(--outline);
   background: var(--paper);
-  box-shadow: 0 3px 0 rgba(20, 34, 74, 0.22);
+  box-shadow: var(--drop-sm);
   line-height: 0;
 }
 
@@ -217,9 +230,8 @@ button {
 
 /* -------------------------------------------------------------- buttons -- */
 
-/* Tactile recipe, borrowed from the arcade-campaign language: a white
-   keyline, a dark keyline outside it, a thick solid bottom edge, a gloss
-   band across the top, and real travel on press. */
+/* Flat fill, black keyline, solid offset shadow, and the whole button slides
+   into its own shadow on press. No gradients, no blur. */
 .btn {
   position: relative;
   display: inline-flex;
@@ -228,122 +240,62 @@ button {
   gap: 8px;
   min-height: 50px;
   padding: 0 22px;
-  border: 0;
-  border-radius: 999px;
+  border: var(--line-w) solid var(--outline);
+  border-radius: var(--r);
   font-family: var(--display);
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: 0.02em;
   cursor: pointer;
   background: none;
-  overflow: hidden;
   -webkit-tap-highlight-color: transparent;
   transition:
-    transform 0.09s var(--ease-out),
-    box-shadow 0.09s var(--ease-out);
-}
-
-/* Gloss band. */
-.btn::before {
-  content: '';
-  position: absolute;
-  inset: 3px 8px auto;
-  height: 38%;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0));
-  pointer-events: none;
+    transform 0.07s steps(2, end),
+    box-shadow 0.07s steps(2, end);
 }
 
 .btn:focus-visible {
-  outline: 3px solid var(--ink);
-  outline-offset: 5px;
+  outline: 3px solid #fff;
+  outline-offset: 3px;
 }
 
 .btn--lg {
   width: 100%;
   min-height: 60px;
-  font-size: 23px;
+  font-size: 24px;
 }
 
 .btn--primary {
-  color: #4a2f00;
-  background: linear-gradient(180deg, var(--gold-hi) 0%, var(--gold) 58%, #eda200 100%);
-  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.45);
-  box-shadow:
-    0 0 0 4px #fff,
-    0 0 0 7px rgba(60, 4, 16, 0.22),
-    0 9px 0 var(--gold-lo),
-    0 9px 0 4px rgba(60, 4, 16, 0.22),
-    0 18px 26px rgba(60, 4, 16, 0.4);
+  color: var(--outline);
+  background-color: var(--gold);
+  background-image: var(--halftone);
+  background-size: var(--halftone-size);
+  box-shadow: var(--drop), inset 0 -5px 0 rgba(0, 0, 0, 0.22);
 }
 
 .btn--primary:active {
-  transform: translateY(7px);
-  box-shadow:
-    0 0 0 4px #fff,
-    0 0 0 7px rgba(60, 4, 16, 0.22),
-    0 2px 0 var(--gold-lo),
-    0 2px 0 4px rgba(60, 4, 16, 0.22),
-    0 6px 12px rgba(60, 4, 16, 0.34);
-}
-
-/* A slow shine crossing the primary action, the way campaign buttons do it. */
-.btn--primary::after {
-  content: '';
-  position: absolute;
-  top: -60%;
-  left: -40%;
-  width: 28%;
-  height: 220%;
-  transform: rotate(18deg);
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0));
-  animation: btn-shine 3.6s var(--ease-in-out) infinite;
-  pointer-events: none;
-}
-
-@keyframes btn-shine {
-  0%,
-  62% {
-    left: -40%;
-  }
-  88%,
-  100% {
-    left: 120%;
-  }
+  transform: translate(5px, 6px);
+  box-shadow: 0 0 0 var(--outline), inset 0 -2px 0 rgba(0, 0, 0, 0.22);
 }
 
 .btn--ghost {
   width: 100%;
-  color: var(--ink);
-  background: linear-gradient(180deg, #ffffff 0%, #ffeceb 100%);
-  box-shadow:
-    0 0 0 4px #fff,
-    0 0 0 7px rgba(60, 4, 16, 0.2),
-    0 7px 0 #d9c3c3,
-    0 7px 0 4px rgba(60, 4, 16, 0.2),
-    0 14px 20px rgba(60, 4, 16, 0.3);
+  color: var(--outline);
+  background-color: #fff;
+  box-shadow: var(--drop), inset 0 -5px 0 rgba(13, 13, 18, 0.14);
 }
 
 .btn--ghost:active {
-  transform: translateY(5px);
-  box-shadow:
-    0 0 0 4px #fff,
-    0 0 0 7px rgba(60, 4, 16, 0.2),
-    0 2px 0 #d9c3c3,
-    0 2px 0 4px rgba(60, 4, 16, 0.2),
-    0 5px 10px rgba(60, 4, 16, 0.28);
+  transform: translate(5px, 6px);
+  box-shadow: 0 0 0 var(--outline), inset 0 -2px 0 rgba(13, 13, 18, 0.14);
 }
 
 .btn--text {
   width: 100%;
   min-height: 44px;
   font-size: 17px;
-  color: var(--ink-2);
-  overflow: visible;
-}
-
-.btn--text::before {
-  display: none;
+  border: 0;
+  color: var(--outline);
 }
 
 .btn--text:active {
@@ -351,11 +303,11 @@ button {
 }
 
 .btn:disabled {
-  opacity: 0.4;
+  opacity: 0.45;
   cursor: default;
 }
 
-/* Sub-label under a CTA — the "5 dice a day" line from the references. */
+/* Sub-label under a CTA. */
 .btn-sub {
   margin: 0;
   text-align: center;
@@ -363,7 +315,54 @@ button {
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.04em;
-  color: rgba(20, 34, 74, 0.62);
+  color: rgba(13, 13, 18, 0.72);
+}
+
+/* -------------------------------------------------------- window chrome -- */
+
+/* Title bar lifted straight from the reference: a black strip with the old
+   minimise / maximise / close marks. It is the single cheapest way to make a
+   panel read as drawn rather than generated. */
+.win {
+  position: relative;
+  border: var(--line-w) solid var(--outline);
+  border-radius: var(--r);
+  background: #fff;
+  box-shadow: var(--drop);
+}
+
+.win__bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 9px;
+  border-bottom: var(--line-w) solid var(--outline);
+  background: var(--outline);
+}
+
+.win__dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  letter-spacing: 0.18em;
+}
+
+.win__title {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.win__body {
+  padding: 12px 13px 12px;
 }
 
 /* ---------------------------------------------------------------- tiles -- */
@@ -378,26 +377,21 @@ button {
   min-height: 54px;
   padding: 5px 2px 4px;
   border: 0;
-  border-radius: 16px;
+  border-radius: var(--r);
   cursor: pointer;
   color: #fff;
-  background: linear-gradient(180deg, var(--tile-hi, #3a4c7a), var(--tile-lo, #14224a));
-  box-shadow:
-    0 0 0 3px #fff,
-    0 0 0 5px rgba(60, 4, 16, 0.2),
-    0 5px 0 var(--tile-edge, #0a1230),
-    0 11px 14px rgba(60, 4, 16, 0.32);
+  border: var(--line-w) solid var(--outline);
+  background-color: var(--tile-lo, #14224a);
+  background-image: var(--halftone);
+  background-size: var(--halftone-size);
+  box-shadow: var(--drop-sm), inset 0 -4px 0 rgba(0, 0, 0, 0.26);
   -webkit-tap-highlight-color: transparent;
   transition: transform 0.09s var(--ease-out), box-shadow 0.09s var(--ease-out);
 }
 
 .tile:active {
-  transform: translateY(4px);
-  box-shadow:
-    0 0 0 3px #fff,
-    0 0 0 5px rgba(60, 4, 16, 0.2),
-    0 1px 0 var(--tile-edge, #0a1230),
-    0 4px 8px rgba(60, 4, 16, 0.28);
+  transform: translate(3px, 4px);
+  box-shadow: 0 0 0 var(--outline), inset 0 -1px 0 rgba(0, 0, 0, 0.26);
 }
 
 .tile:focus-visible {
@@ -423,7 +417,7 @@ button {
   height: 13px;
   border-radius: 50%;
   background: var(--airtel);
-  box-shadow: 0 0 0 2.5px #fff;
+  box-shadow: 0 0 0 2.5px var(--outline);
 }
 
 .rail {
@@ -449,7 +443,7 @@ button {
   inset: 0;
   border: 0;
   padding: 0;
-  background: rgba(40, 2, 10, 0.62);
+  background: rgba(13, 13, 18, 0.62);
   animation: fade-in 0.2s var(--ease-out) both;
 }
 
@@ -464,10 +458,12 @@ button {
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 18px 18px calc(18px + env(safe-area-inset-bottom));
-  border-top-left-radius: 32px;
-  border-top-right-radius: 32px;
+  border: var(--line-w) solid var(--outline);
+  border-bottom: 0;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
   background: var(--paper-2);
-  box-shadow: 0 -6px 0 rgba(60, 4, 16, 0.2);
+  box-shadow: none;
   animation: sheet-up 0.4s var(--ease-back) both;
 }
 
@@ -569,10 +565,12 @@ button {
   flex: none;
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  border-radius: var(--r);
+  border: var(--line-w) solid var(--outline);
   color: #fff;
-  box-shadow: 0 3px 0 var(--rule-edge);
-  background: linear-gradient(180deg, var(--rule-hi), var(--rule-lo));
+  background-color: var(--rule-lo);
+  background-image: var(--halftone);
+  background-size: var(--halftone-size);
 }
 
 .rules__row[data-tone='threat'] {

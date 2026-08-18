@@ -43,6 +43,14 @@ everything stays inspectable and tunable in the browser.
 
 ### Look
 
+Drawn, not generated. Soft gradients, blurred drop shadows and translucent
+white keylines are exactly what makes a UI read as machine-made, so none of
+them survive: every surface is a **flat fill with a 3px black keyline, a
+solid offset shadow with no blur, and a halftone dot screen**. Panels carry a
+window title bar with the old ─ ▢ ✕ marks. Buttons slide into their own
+shadow on press, in stepped rather than eased timing.
+
+
 An Airtel-red arena: deep crimson overhead through to warm sand underfoot.
 Because the ground is red, nothing that matters can be red — threats are the
 cool-dark family (violet, indigo, amber), genuine items the bright family
@@ -116,6 +124,13 @@ before the halves have separated, and the whole gesture reads as weightless.
 Grab, release and impact each get their own tick: a short haptic and a click
 on pick-up, a whoosh on release, a noise crack plus a major-third pop on the
 break, and a 1.2% screen kick — much smaller than the shake a miss earns.
+
+### Dopamine
+
+The block sound climbs a semitone per consecutive block and resets when the
+streak breaks — the oldest trick in arcade audio and still the strongest.
+The score punches when it moves, streak milestones flash the whole screen,
+and every block still breaks the sticker apart under hitstop.
 
 ### Letting one through
 

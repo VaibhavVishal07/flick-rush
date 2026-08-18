@@ -19,6 +19,7 @@ export const SafetyReportSheet = ({ onClose }: { onClose: () => void }) => {
     <div className="sheet" role="dialog" aria-modal="true" aria-label="Your safety report">
       <button type="button" className="sheet__scrim" onClick={onClose} aria-label="Close" />
       <div className="sheet__panel">
+        <h2 className="sheet__title">This week</h2>
         <div className="report">
           <AirtelSafeMark />
           <p className="report__lede">

@@ -63,6 +63,7 @@ export const GameArena = ({
         secondsLeft={g.secondsLeft}
         score={g.tally.score}
         paused={g.paused}
+        pop={g.pop}
         canPause={g.phase === 'play'}
         soundOn={soundOn}
         onTogglePause={g.togglePause}
@@ -118,6 +119,8 @@ export const GameArena = ({
             </span>
           </div>
         ) : null}
+
+        {g.flash ? <span key={g.flash} className="milestone-flash" aria-hidden="true" /> : null}
 
         {g.paused ? (
           <div className="paused">

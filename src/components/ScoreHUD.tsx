@@ -3,6 +3,8 @@ import { PauseIcon, PlayIcon, SoundOffIcon, SoundOnIcon } from '../assets/icons'
 interface Props {
   secondsLeft: number
   score: number
+  /** Bumps every time the score moves, so the number can punch. */
+  pop: number
   paused: boolean
   canPause: boolean
   soundOn: boolean
@@ -15,6 +17,7 @@ const clock = (s: number) => `00:${String(Math.max(0, s)).padStart(2, '0')}`
 export const ScoreHUD = ({
   secondsLeft,
   score,
+  pop,
   paused,
   canPause,
   soundOn,
@@ -49,7 +52,9 @@ export const ScoreHUD = ({
 
     <div className="hud__score">
       <span className="hud__score-label">Score</span>
-      <span className="hud__score-value">{score}</span>
+      <span key={pop} className={`hud__score-value${pop ? ' is-pop' : ''}`}>
+        {score}
+      </span>
     </div>
   </header>
 )

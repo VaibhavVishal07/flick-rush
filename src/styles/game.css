@@ -42,7 +42,7 @@
   inset: 0;
   z-index: 14;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(8, 10, 32, 0.94), rgba(58, 4, 18, 0.92));
+  background: rgba(11, 12, 26, 0.93);
   animation: fade-in 0.34s ease both;
 }
 
@@ -80,30 +80,22 @@
 .hud__btn {
   display: grid;
   place-items: center;
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: linear-gradient(180deg, #ffffff, #ffeceb);
-  color: var(--ink);
+  border: var(--line-w) solid var(--outline);
+  border-radius: var(--r);
+  background: #fff;
+  color: var(--outline);
   cursor: pointer;
-  box-shadow:
-    0 0 0 3px #fff,
-    0 0 0 5px rgba(60, 4, 16, 0.2),
-    0 5px 0 #d9c3c3,
-    0 10px 14px rgba(60, 4, 16, 0.3);
-  transition: transform 0.09s var(--ease-out), box-shadow 0.09s var(--ease-out);
+  box-shadow: var(--drop-sm), inset 0 -4px 0 rgba(13, 13, 18, 0.14);
+  transition: transform 0.07s steps(2, end), box-shadow 0.07s steps(2, end);
   -webkit-tap-highlight-color: transparent;
 }
 
 .hud__btn:active:not(:disabled) {
-  transform: translateY(4px);
-  box-shadow:
-    0 0 0 3px #fff,
-    0 0 0 5px rgba(60, 4, 16, 0.2),
-    0 1px 0 #d9c3c3,
-    0 4px 8px rgba(60, 4, 16, 0.26);
+  transform: translate(3px, 4px);
+  box-shadow: 0 0 0 var(--outline), inset 0 -1px 0 rgba(13, 13, 18, 0.14);
 }
 
 .hud__btn:disabled {
@@ -118,15 +110,16 @@
 
 .hud__clock {
   padding: 6px 18px 4px;
-  border-radius: 999px;
-  background: var(--ink);
+  border: var(--line-w) solid var(--outline);
+  border-radius: var(--r);
+  background: var(--outline);
   color: #fff;
   font-family: var(--display);
   font-size: 25px;
   font-weight: 700;
   line-height: 1.15;
   font-variant-numeric: tabular-nums;
-  box-shadow: 0 4px 0 rgba(10, 18, 42, 0.45), inset 0 -2px 0 rgba(255, 255, 255, 0.12);
+  box-shadow: var(--drop-sm);
 }
 
 .hud__score {
@@ -144,7 +137,7 @@
   text-transform: uppercase;
   color: #fff;
   opacity: 0.85;
-  text-shadow: 0 2px 0 rgba(60, 4, 16, 0.5);
+  text-shadow: 2px 2px 0 var(--outline);
 }
 
 .hud__score-value {
@@ -153,7 +146,7 @@
   font-weight: 700;
   color: #fff;
   font-variant-numeric: tabular-nums;
-  text-shadow: 0 3px 0 rgba(60, 4, 16, 0.55);
+  text-shadow: 3px 3px 0 var(--outline);
 }
 
 /* ---------------------------------------------------------------- arena -- */
@@ -191,8 +184,7 @@
 .phone-target__device {
   position: relative;
   z-index: 3;
-  filter: drop-shadow(0 14px 0 rgba(60, 4, 16, 0.26))
-    drop-shadow(0 24px 30px rgba(60, 4, 16, 0.4));
+  filter: drop-shadow(5px 6px 0 rgba(13, 13, 18, 0.55));
   animation: device-bob 3.4s var(--ease-in-out) infinite;
   transition: transform 0.4s var(--ease-back);
 }
@@ -220,14 +212,14 @@
 .phone-target__zone--near {
   width: 204px;
   height: 204px;
-  border: 3px dashed rgba(255, 255, 255, 0.5);
+  border: 4px dashed rgba(13, 13, 18, 0.34);
   animation: zone-spin 26s linear infinite;
 }
 
 .phone-target__zone--far {
   width: 290px;
   height: 290px;
-  border: 2px dashed rgba(255, 255, 255, 0.26);
+  border: 3px dashed rgba(13, 13, 18, 0.2);
   animation: zone-spin 40s linear infinite reverse;
 }
 
@@ -245,7 +237,6 @@
   height: 120px;
   border-radius: 50%;
   border: 5px solid var(--good);
-  box-shadow: 0 0 26px rgba(34, 197, 94, 0.55);
   animation: welcome-ring 0.62s var(--ease-out) forwards;
 }
 
@@ -284,7 +275,7 @@
   width: 130px;
   height: 130px;
   border-radius: 50%;
-  border: 5px solid var(--ink);
+  border: 5px solid var(--outline);
   animation: impact-ring 0.44s var(--ease-out) forwards;
 }
 
@@ -328,24 +319,21 @@
   width: 236px;
   height: 236px;
   border: 7px solid #fff;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.18), transparent 70%);
-  box-shadow:
-    0 0 0 4px var(--gold),
-    inset 0 0 0 4px var(--gold),
-    0 0 44px rgba(255, 255, 255, 0.6);
+  background: none;
+  box-shadow: 0 0 0 4px var(--outline), inset 0 0 0 4px var(--gold);
 }
 
 .safe-field__ring--mid {
   width: 274px;
   height: 274px;
-  border: 4px dashed rgba(255, 224, 138, 0.9);
+  border: 5px dashed var(--gold);
   animation-delay: 0.07s;
 }
 
 .safe-field__ring--outer {
   width: 316px;
   height: 316px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
+  border: 4px solid rgba(255, 255, 255, 0.45);
   animation-delay: 0.13s;
 }
 
@@ -393,7 +381,8 @@
   height: 46px;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 0 0 4px rgba(20, 34, 74, 0.14), 0 5px 0 rgba(20, 34, 74, 0.2);
+  border: var(--line-w) solid var(--outline);
+  box-shadow: var(--drop-sm);
   transform: scale(0);
 }
 
@@ -432,22 +421,22 @@
   filter: brightness(1.08);
 }
 
-/* Threats and genuine items differ on FIVE channels, the first of which is
-   value: threats are near-black, genuine items are white. Lightness is the
-   one difference the eye resolves in peripheral vision, before hue and long
-   before you read a label. */
+/* Threats and genuine items differ on value first — near-black against white
+   — then silhouette, hazard colour, glyph and motion. Flat fills, a black
+   keyline and a solid offset shadow; the halftone screen does the work a
+   gradient used to. */
 .obj__body {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 9px;
-  padding: 7px 8px 7px 7px;
+  gap: 8px;
+  padding: 6px 7px 6px 6px;
+  border: var(--line-w) solid var(--outline);
   border-radius: 999px;
-  background: linear-gradient(180deg, var(--chip-hi), var(--chip-lo));
-  box-shadow:
-    0 0 0 3px var(--chip-ring, #fff),
-    0 5px 0 var(--chip-edge),
-    0 11px 16px rgba(60, 4, 16, 0.34);
+  background-color: var(--chip-bg);
+  background-image: var(--halftone);
+  background-size: var(--halftone-size);
+  box-shadow: var(--drop), inset 0 -4px 0 var(--chip-shade);
   transform: scale(var(--heft, 1));
   transform-origin: center;
 }
@@ -456,11 +445,12 @@
   display: grid;
   place-items: center;
   flex: none;
-  width: 28px;
-  height: 28px;
+  width: 27px;
+  height: 27px;
+  border: 2.5px solid var(--outline);
   border-radius: 50%;
   color: var(--chip-accent);
-  background: var(--chip-icon-bg, #fff);
+  background: var(--chip-icon-bg);
 }
 
 .obj__text {
@@ -485,13 +475,13 @@
   color: var(--chip-ink-2);
 }
 
-/* Trailing glyph: ✕ on anything you should remove, ✓ on anything to leave. */
 .obj__flag {
   display: grid;
   place-items: center;
   flex: none;
   width: 21px;
   height: 21px;
+  border: 2.5px solid var(--outline);
   border-radius: 50%;
   color: #fff;
   background: var(--chip-flag);
@@ -500,36 +490,38 @@
 /* ------------------------------------------------------------- threats -- */
 
 .obj[data-trust='threat'] {
-  --chip-hi: #1d2540;
-  --chip-lo: #0b1022;
-  --chip-edge: #04060f;
-  --chip-ring: rgba(255, 255, 255, 0.5);
+  --chip-bg: #17182a;
+  --chip-shade: rgba(0, 0, 0, 0.45);
   --chip-ink: #ffffff;
-  --chip-ink-2: rgba(255, 255, 255, 0.6);
-  --chip-icon-bg: rgba(255, 255, 255, 0.12);
+  --chip-ink-2: rgba(255, 255, 255, 0.62);
+  --chip-icon-bg: #2a2c46;
   --chip-accent: #ff6b7d;
   --chip-flag: #e8112d;
 }
 
 .obj[data-trust='threat'] .obj__body {
-  border-radius: 9px;
-  padding-left: 13px;
+  border-radius: 4px;
+  padding-left: 12px;
 }
 
-/* Hazard bar down the leading edge, coloured by what kind of nuisance it is. */
+/* Hazard bar down the leading edge, coloured by kind of nuisance. */
 .obj[data-trust='threat'] .obj__body::before {
   content: '';
   position: absolute;
-  left: 4px;
-  top: 6px;
-  bottom: 6px;
+  left: 3px;
+  top: 3px;
+  bottom: 3px;
   width: 5px;
-  border-radius: 3px;
   background: var(--chip-accent);
+  box-shadow: 2px 0 0 var(--outline);
 }
 
 .obj[data-trust='threat'] .obj__icon {
-  border-radius: 7px;
+  border-radius: 3px;
+}
+
+.obj[data-trust='threat'] .obj__flag {
+  border-radius: 3px;
 }
 
 .obj[data-trust='threat'][data-family='sms'] {
@@ -544,49 +536,39 @@
   --chip-accent: #fbbf24;
 }
 
-/* Threats never sit still. */
 .obj[data-trust='threat']:not(.is-broken):not(.is-absorbing) .obj__body {
-  animation: threat-jitter 0.62s steps(2, end) infinite;
+  animation: threat-jitter 0.5s steps(2, end) infinite;
 }
 
 @keyframes threat-jitter {
   0%,
   100% {
-    transform: scale(var(--heft, 1)) rotate(-1.7deg);
+    transform: scale(var(--heft, 1)) translate(-1px, 0) rotate(-1.6deg);
   }
   50% {
-    transform: scale(var(--heft, 1)) rotate(1.7deg);
+    transform: scale(var(--heft, 1)) translate(1px, 0) rotate(1.6deg);
   }
 }
 
 /* ------------------------------------------------------------- genuine -- */
 
 .obj[data-trust='genuine'] {
-  --chip-hi: #ffffff;
-  --chip-lo: #eefaf1;
-  --chip-edge: #b7d8c2;
-  --chip-ring: #14803c;
-  --chip-ink: #10321f;
-  --chip-ink-2: rgba(16, 50, 31, 0.6);
-  --chip-icon-bg: #d9f5e2;
-  --chip-accent: #14803c;
+  --chip-bg: #ffffff;
+  --chip-shade: rgba(13, 13, 18, 0.16);
+  --chip-ink: #12261a;
+  --chip-ink-2: rgba(18, 38, 26, 0.6);
+  --chip-icon-bg: #b9f0cd;
+  --chip-accent: #0f6b34;
   --chip-flag: #16a34a;
-}
-
-.obj[data-trust='genuine'] .obj__body {
-  border-radius: 999px;
 }
 
 .obj[data-trust='genuine'][data-family='sms'],
 .obj[data-trust='genuine'][data-family='otp'] {
-  --chip-ring: #0b5f7a;
+  --chip-icon-bg: #b7e9f8;
+  --chip-accent: #075a72;
+  --chip-flag: #0891b2;
   --chip-ink: #06303d;
   --chip-ink-2: rgba(6, 48, 61, 0.6);
-  --chip-icon-bg: #d3f1fb;
-  --chip-accent: #0b6a80;
-  --chip-flag: #0891b2;
-  --chip-lo: #edf9fd;
-  --chip-edge: #a9d5e2;
 }
 
 /* Genuine things arrive with a friendly halo so they read as welcome. */
@@ -625,15 +607,16 @@
 }
 
 .verdict__label {
-  padding: 4px 12px;
-  border-radius: 999px;
+  padding: 4px 11px;
+  border: var(--line-w) solid var(--outline);
+  border-radius: 5px;
   font-family: var(--display);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.02em;
   color: #fff;
   transform: rotate(-6deg);
-  box-shadow: 0 0 0 3px #fff, 0 4px 0 rgba(20, 34, 74, 0.28);
+  box-shadow: var(--drop-sm);
 }
 
 .verdict__points {
@@ -652,27 +635,26 @@
   background: #fff;
   color: var(--airtel);
   text-shadow: none;
-  box-shadow: 0 0 0 3px var(--ink), 0 4px 0 rgba(60, 4, 16, 0.34);
 }
 
 .verdict--safe .verdict__label,
 .verdict--auto-allowed .verdict__label {
-  background: linear-gradient(180deg, #4ade80, var(--good-lo));
+  background: #22c55e;
   transform: rotate(5deg);
   animation: stamp 0.26s var(--ease-back);
 }
 
 .verdict--missed .verdict__label,
 .verdict--oops .verdict__label {
-  background: linear-gradient(180deg, #4b5c8a, var(--ink));
+  background: #4b5c8a;
   transform: rotate(4deg);
 }
 
 /* Airtel Safe's own stamp: gold, so automation reads as the win. */
 .verdict--auto-blocked .verdict__label {
-  background: linear-gradient(180deg, var(--gold-hi), var(--gold));
-  color: #4a2f00;
-  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.4);
+  background: var(--gold);
+  color: var(--outline);
+  text-shadow: none;
   animation: stamp 0.26s var(--ease-back);
 }
 
@@ -734,8 +716,8 @@
   height: 96px;
   margin: -48px 0 0 -48px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0) 68%);
-  animation: burst-shock 0.34s var(--ease-out) forwards;
+  background: radial-gradient(circle, #fff 42%, rgba(255, 255, 255, 0) 62%);
+  animation: burst-shock 0.3s steps(4, end) forwards;
 }
 
 @keyframes burst-shock {
@@ -754,7 +736,7 @@
   left: 50%;
   top: 50%;
   background: var(--shard);
-  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 1.5px var(--outline);
   animation: burst-shard 0.6s var(--ease-out) var(--delay) forwards;
 }
 
@@ -802,15 +784,16 @@
   bottom: 26px;
   transform: translateX(-50%);
   margin: 0;
-  padding: 9px 20px;
-  border-radius: 999px;
+  padding: 8px 18px;
+  border: var(--line-w) solid var(--outline);
+  border-radius: var(--r);
   background: var(--paper);
   font-family: var(--display);
   font-size: 20px;
   font-weight: 700;
   color: var(--ink);
   white-space: nowrap;
-  box-shadow: 0 0 0 3px rgba(60, 4, 16, 0.18), 0 5px 0 rgba(60, 4, 16, 0.24);
+  box-shadow: var(--drop);
   animation: coach-in 0.42s var(--ease-back) both;
   pointer-events: none;
   z-index: 19;
@@ -896,21 +879,22 @@
   left: 50%;
   bottom: 32px;
   transform: translateX(-50%);
-  padding: 4px 11px;
-  border-radius: 999px;
+  padding: 4px 10px;
+  border: var(--line-w) solid var(--outline);
+  border-radius: 5px;
   font-family: var(--display);
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.04em;
   white-space: nowrap;
   color: #fff;
-  background: var(--ink);
-  box-shadow: 0 0 0 3px #fff, 0 4px 0 rgba(60, 4, 16, 0.34);
+  background: var(--outline);
+  box-shadow: var(--drop-sm);
   animation: cue-bob 1.25s var(--ease-in-out) infinite;
 }
 
 .cue--leave .cue__word {
-  color: #0a3a22;
+  color: var(--outline);
   background: var(--good);
 }
 
@@ -953,7 +937,7 @@
   inset: 0;
   display: grid;
   place-items: center;
-  background: rgba(40, 2, 10, 0.36);
+  background: rgba(13, 13, 18, 0.4);
   z-index: 12;
 }
 
@@ -964,9 +948,8 @@
   line-height: 1;
   color: #fff;
   text-shadow:
-    0 6px 0 var(--gold),
-    0 12px 0 var(--gold-lo),
-    0 20px 30px rgba(60, 4, 16, 0.55);
+    5px 5px 0 var(--outline),
+    10px 10px 0 rgba(13, 13, 18, 0.4);
   animation: count-pop 0.6s var(--ease-back);
 }
 
@@ -996,7 +979,7 @@
   justify-items: center;
   gap: 18px;
   padding: 0 40px;
-  background: rgba(40, 2, 10, 0.74);
+  background: rgba(13, 13, 18, 0.76);
 }
 
 .paused__title {
@@ -1005,7 +988,7 @@
   font-size: 34px;
   font-weight: 700;
   color: #fff;
-  text-shadow: 0 4px 0 rgba(20, 34, 74, 0.5);
+  text-shadow: 3px 3px 0 var(--outline);
 }
 
 .paused .btn {
@@ -1018,28 +1001,31 @@
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  padding: 9px 18px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #ffd75e, #f59e0b);
-  box-shadow: 0 0 0 3.5px #fff, 0 6px 0 #a16207, 0 12px 18px rgba(60, 4, 16, 0.34);
+  padding: 8px 18px;
+  border: var(--line-w) solid var(--outline);
+  border-radius: var(--r);
+  background-color: var(--gold);
+  background-image: var(--halftone);
+  background-size: var(--halftone-size);
+  box-shadow: var(--drop), inset 0 -5px 0 rgba(0, 0, 0, 0.2);
   animation: streak-in 0.5s var(--ease-back) both;
 }
 
 .streak__label {
   font-family: var(--display);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
   letter-spacing: 0.03em;
-  color: #4a2f00;
+  color: var(--outline);
 }
 
 .streak__count {
   font-family: var(--display);
-  font-size: 19px;
+  font-size: 21px;
   font-weight: 700;
-  color: #fff;
+  color: var(--airtel);
   font-variant-numeric: tabular-nums;
-  text-shadow: 0 2px 0 rgba(120, 74, 0, 0.6);
+  text-shadow: 2px 2px 0 var(--outline);
 }
 
 @keyframes streak-in {
@@ -1083,14 +1069,14 @@
 
 .takeover__line--a {
   color: #ffc6d0;
-  text-shadow: 0 3px 0 rgba(11, 18, 40, 0.55);
+  text-shadow: 3px 3px 0 var(--outline);
 }
 
 /* White on the storm, with a navy cast. Red-on-violet turned to mud. */
 .takeover__line--b {
   color: #fff;
   font-size: 31px;
-  text-shadow: 0 4px 0 rgba(11, 18, 40, 0.6);
+  text-shadow: 3px 3px 0 var(--outline);
 }
 
 .takeover__mark {
@@ -1119,13 +1105,11 @@
   display: grid;
   justify-items: center;
   gap: 4px;
-  padding: 11px 13px 10px;
-  border-radius: 22px;
+  padding: 10px 12px 9px;
+  border: var(--line-w) solid var(--outline);
+  border-radius: var(--r);
   background: var(--paper);
-  box-shadow:
-    0 0 0 4px rgba(60, 4, 16, 0.2),
-    0 7px 0 rgba(60, 4, 16, 0.24),
-    0 16px 26px rgba(60, 4, 16, 0.34);
+  box-shadow: var(--drop);
   animation: banner-drop 0.45s var(--ease-back) both;
 }
 
@@ -1187,8 +1171,9 @@
   justify-items: center;
   gap: 1px;
   padding: 5px 4px 4px;
-  border-radius: 13px;
-  background: rgba(20, 34, 74, 0.06);
+  border: 2.5px solid var(--outline);
+  border-radius: 5px;
+  background: #f1f3f8;
 }
 
 .auto-banner__tally dt {
@@ -1207,4 +1192,45 @@
   line-height: 1;
   color: var(--airtel);
   font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ juice -- */
+
+/* The score punches whenever it moves. */
+.hud__score-value.is-pop {
+  animation: score-pop 0.22s steps(3, end);
+}
+
+@keyframes score-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.35);
+    color: var(--gold);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Streak milestone: the whole screen takes a hit of light. */
+.milestone-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 21;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 62%, rgba(255, 224, 138, 0.85), transparent 62%);
+  animation: milestone 0.4s steps(4, end) forwards;
+}
+
+@keyframes milestone {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.7);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
 }

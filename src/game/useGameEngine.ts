@@ -104,6 +104,8 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
   const [impact, setImpact] = useState(0)
   const [kick, setKick] = useState(0)
   const [welcome, setWelcome] = useState(0)
+  const [pop, setPop] = useState(0)
+  const [flash, setFlash] = useState(0)
   const emptyAuto: AutoTally = { calls: 0, messages: 0, links: 0, allowed: 0 }
   const [autoTally, setAutoTally] = useState<AutoTally>(emptyAuto)
   const autoRef = useRef<AutoTally>(emptyAuto)
@@ -168,8 +170,12 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
 
       if (verdict === 'blocked') {
         pushBurst(o.x, o.y, 'threat')
-        audio.play('block')
+        // Pitch climbs with the streak and resets when it breaks — the
+        // cheapest, oldest dopamine trick in arcade games.
+        audio.play('block', Math.min(next.streak - 1, 10))
         haptics.block()
+        setPop((n) => n + 1)
+        window.setTimeout(() => setPop(0), 220)
         if (!reducedMotion) {
           setKick((n) => n + 1)
           window.setTimeout(() => setKick(0), 200)
@@ -179,8 +185,14 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
           setStreakBadge({ key: uid.current++, label: tier.label, count: next.streak })
           audio.play('streak')
           haptics.streak()
+          if (!reducedMotion) {
+            setFlash((n) => n + 1)
+            window.setTimeout(() => setFlash(0), 400)
+          }
         }
       } else if (verdict === 'safe') {
+        setPop((n) => n + 1)
+        window.setTimeout(() => setPop(0), 220)
         pushBurst(o.x, o.y, 'genuine')
         audio.play('genuine')
         haptics.safe()
@@ -696,6 +708,8 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
     impact,
     kick,
     welcome,
+    pop,
+    flash,
     autoTally,
     cue:
       phase === 'tutorial-threat' && !cueUsed
