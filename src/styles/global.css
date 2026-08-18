@@ -1,0 +1,338 @@
+/* ==========================================================================
+   Shield Rush — foundations
+   Airtel-adjacent: dark, calm, premium. Red is for action, not decoration.
+   ========================================================================== */
+
+:root {
+  --bg: #08080b;
+  --bg-elev: #0e0e13;
+  --surface: rgba(255, 255, 255, 0.045);
+  --surface-2: rgba(255, 255, 255, 0.07);
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  --ink: #ffffff;
+  --ink-2: rgba(255, 255, 255, 0.74);
+  --ink-3: rgba(255, 255, 255, 0.48);
+  --ink-4: rgba(255, 255, 255, 0.3);
+
+  --airtel: #e8112d;
+  --airtel-lite: #ff3348;
+  --airtel-deep: #9c0a1e;
+
+  --threat: #ff5062;
+  --threat-deep: #7a0f1e;
+  --link: #a970ff;
+  --link-deep: #4a2189;
+  --alert: #ffb020;
+  --alert-deep: #7a4d05;
+  --genuine: #35d399;
+  --genuine-deep: #0d5741;
+  --info: #5ac8fa;
+
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+
+  --frame-w: 430px;
+  --radius-lg: 28px;
+  --radius-md: 18px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--bg);
+}
+
+body {
+  font-family: var(--font);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior: none;
+}
+
+#root {
+  height: 100%;
+}
+
+button {
+  font-family: inherit;
+  color: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------------------------------------------------------------- shell -- */
+
+.app {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+.app__backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 60% at 50% -10%, rgba(232, 17, 45, 0.14), transparent 60%),
+    radial-gradient(90% 50% at 50% 110%, rgba(255, 255, 255, 0.035), transparent 70%),
+    var(--bg);
+}
+
+.frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--frame-w);
+  height: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(100% 42% at 50% 0%, rgba(232, 17, 45, 0.16), transparent 62%),
+    linear-gradient(180deg, #101014 0%, #0a0a0d 46%, #08080b 100%);
+  isolation: isolate;
+}
+
+@media (min-width: 520px) and (min-height: 720px) {
+  .app {
+    padding: 24px;
+  }
+
+  .frame {
+    height: min(100%, 900px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 38px;
+    box-shadow:
+      0 40px 120px rgba(0, 0, 0, 0.65),
+      0 0 0 10px rgba(255, 255, 255, 0.018);
+  }
+}
+
+/* --------------------------------------------------------------- brand --- */
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  color: var(--ink-2);
+}
+
+.brand-mark__dot {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(150deg, var(--airtel-lite), var(--airtel) 55%, var(--airtel-deep));
+  box-shadow: 0 4px 14px rgba(232, 17, 45, 0.4);
+}
+
+.brand-mark__text {
+  font-weight: 500;
+}
+
+.brand-mark__text b {
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.brand-mark--compact {
+  font-size: 12.5px;
+}
+
+.brand-mark--compact .brand-mark__dot {
+  width: 20px;
+  height: 20px;
+}
+
+/* -------------------------------------------------------------- buttons -- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 20px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  background: none;
+  transition:
+    transform 0.16s var(--ease-out),
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    opacity 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active {
+  transform: scale(0.975);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--airtel-lite);
+  outline-offset: 3px;
+}
+
+.btn--lg {
+  min-height: 54px;
+  font-size: 16.5px;
+  width: 100%;
+}
+
+.btn--primary {
+  color: #fff;
+  background: linear-gradient(180deg, var(--airtel-lite), var(--airtel) 62%, #c50c24);
+  box-shadow:
+    0 10px 28px rgba(232, 17, 45, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+.btn--ghost {
+  width: 100%;
+  color: var(--ink);
+  background: var(--surface);
+  border-color: var(--line);
+}
+
+.btn--ghost:hover {
+  background: var(--surface-2);
+}
+
+.btn--text {
+  width: 100%;
+  color: var(--ink-3);
+  font-weight: 550;
+  min-height: 44px;
+}
+
+.btn--text:hover {
+  color: var(--ink-2);
+}
+
+.btn:disabled {
+  opacity: 0.32;
+  cursor: default;
+}
+
+/* --------------------------------------------------------------- sheets -- */
+
+.sheet {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.sheet__scrim {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  background: rgba(4, 4, 6, 0.72);
+  backdrop-filter: blur(6px);
+  animation: fade-in 0.24s var(--ease-out) both;
+}
+
+.sheet__panel {
+  position: relative;
+  width: 100%;
+  padding: 18px 18px calc(18px + env(safe-area-inset-bottom));
+  border-top-left-radius: var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
+  border-top: 1px solid var(--line-strong);
+  background: linear-gradient(180deg, #16161c, #0c0c10);
+  box-shadow: 0 -24px 60px rgba(0, 0, 0, 0.6);
+  animation: sheet-up 0.34s var(--ease-out) both;
+}
+
+.sheet__actions {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.sheet__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+/* Keep both secondary labels on one line at 390px. */
+.sheet__row .btn {
+  padding: 0 10px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.sheet__note {
+  margin: 12px 0 0;
+  font-size: 12px;
+  text-align: center;
+  color: var(--ink-4);
+  min-height: 16px;
+}
+
+.sheet__brand {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  opacity: 0.7;
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(26px);
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------- reduced motion -- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.08s !important;
+  }
+}
