@@ -41,10 +41,15 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, returning }: Props) 
     <div className="intro__stage" aria-hidden="true">
       <span className="intro__glow" />
       <div className="intro__device">
-        <PhoneDevice width={72} />
+        <PhoneDevice width={78} />
       </div>
       {PREVIEW.map((p) => (
-        <div key={p.lane} className={`intro__chip intro__chip--${p.lane}`} data-trust={p.trust}>
+        <div
+          key={p.lane}
+          className={`intro__chip intro__chip--${p.lane}`}
+          data-trust={p.trust}
+          data-family={p.family}
+        >
           <span className="intro__chip-icon">{familyIcon(p.family, p.trust, 16)}</span>
           <span>{p.label}</span>
         </div>

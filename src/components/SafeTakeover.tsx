@@ -22,8 +22,6 @@ export const SafeTakeover = ({ phase, revealStep }: Props) => {
       data-step={revealStep}
       aria-live="polite"
     >
-      <div className="takeover__scrim" />
-
       {!auto ? (
         <div className="takeover__copy">
           {revealStep >= 1 ? (

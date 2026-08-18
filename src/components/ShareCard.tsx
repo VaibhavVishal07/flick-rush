@@ -28,7 +28,14 @@ const roundRect = (
   ctx.closePath()
 }
 
-const FONT = `-apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif`
+const DISPLAY = `"Baloo 2", "Trebuchet MS", system-ui, sans-serif`
+const UI = `Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif`
+
+const SKY_1 = '#1B3FD8'
+const SKY_2 = '#3B82F6'
+const SKY_3 = '#7DD3FC'
+const INK = '#14224A'
+const AIRTEL = '#E8112D'
 
 /** `letterSpacing` is well supported but still missing from some lib.dom builds. */
 const setTracking = (ctx: CanvasRenderingContext2D, value: string) => {
@@ -57,90 +64,92 @@ export const ShareCard = ({ correct, total, bestStreak, onClose }: Props) => {
     const ctx = canvas.getContext('2d')
     if (!ctx) return null
 
-    // Ground
-    const bg = ctx.createLinearGradient(0, 0, CARD_W, CARD_H)
-    bg.addColorStop(0, '#141016')
-    bg.addColorStop(0.55, '#0B0B0E')
-    bg.addColorStop(1, '#0A0A0C')
+    // Sky, same daylight gradient the game is played on.
+    const bg = ctx.createLinearGradient(0, 0, 220, CARD_H)
+    bg.addColorStop(0, SKY_1)
+    bg.addColorStop(0.58, SKY_2)
+    bg.addColorStop(1, SKY_3)
     ctx.fillStyle = bg
     ctx.fillRect(0, 0, CARD_W, CARD_H)
 
-    // Airtel red bloom
-    const bloom = ctx.createRadialGradient(CARD_W / 2, 300, 40, CARD_W / 2, 300, 720)
-    bloom.addColorStop(0, 'rgba(232, 17, 45, 0.34)')
-    bloom.addColorStop(1, 'rgba(232, 17, 45, 0)')
-    ctx.fillStyle = bloom
+    const sun = ctx.createRadialGradient(CARD_W / 2, 180, 20, CARD_W / 2, 180, 620)
+    sun.addColorStop(0, 'rgba(255,255,255,0.42)')
+    sun.addColorStop(1, 'rgba(255,255,255,0)')
+    ctx.fillStyle = sun
     ctx.fillRect(0, 0, CARD_W, CARD_H)
-
-    // Card plate
-    ctx.fillStyle = 'rgba(255,255,255,0.045)'
-    roundRect(ctx, 88, 300, CARD_W - 176, 700, 56)
-    ctx.fill()
-    ctx.strokeStyle = 'rgba(255,255,255,0.09)'
-    ctx.lineWidth = 2
-    ctx.stroke()
 
     ctx.textAlign = 'center'
 
     // Wordmark
-    ctx.fillStyle = 'rgba(255,255,255,0.55)'
-    ctx.font = `600 34px ${FONT}`
-    setTracking(ctx, '10px')
-    ctx.fillText('SHIELD RUSH', CARD_W / 2, 196)
+    ctx.fillStyle = INK
+    ctx.font = `800 46px ${DISPLAY}`
+    setTracking(ctx, '14px')
+    ctx.globalAlpha = 0.4
+    ctx.fillText('SHIELD RUSH', CARD_W / 2, 176)
+    ctx.globalAlpha = 1
+    ctx.fillStyle = '#FFFFFF'
+    ctx.fillText('SHIELD RUSH', CARD_W / 2, 170)
     setTracking(ctx, '0px')
+
+    // White plate with the game's hard bottom edge
+    ctx.fillStyle = 'rgba(20,34,74,0.22)'
+    roundRect(ctx, 84, 268, CARD_W - 168, 720, 60)
+    ctx.fill()
+    ctx.fillStyle = '#FFFFFF'
+    roundRect(ctx, 84, 252, CARD_W - 168, 720, 60)
+    ctx.fill()
 
     // Score
-    ctx.fillStyle = 'rgba(255,255,255,0.5)'
-    ctx.font = `600 30px ${FONT}`
-    setTracking(ctx, '6px')
-    ctx.fillText('MY SCORE', CARD_W / 2, 420)
+    ctx.fillStyle = '#6B7BA6'
+    ctx.font = `900 32px ${UI}`
+    setTracking(ctx, '7px')
+    ctx.fillText('MY SCORE', CARD_W / 2, 380)
     setTracking(ctx, '0px')
 
-    ctx.fillStyle = '#FFFFFF'
-    ctx.font = `700 190px ${FONT}`
-    ctx.fillText(`${correct} / ${total}`, CARD_W / 2, 590)
+    ctx.fillStyle = INK
+    ctx.font = `800 200px ${DISPLAY}`
+    ctx.fillText(`${correct} / ${total}`, CARD_W / 2, 570)
 
     // Divider
-    ctx.strokeStyle = 'rgba(255,255,255,0.1)'
-    ctx.lineWidth = 2
-    ctx.beginPath()
-    ctx.moveTo(220, 668)
-    ctx.lineTo(CARD_W - 220, 668)
-    ctx.stroke()
+    ctx.fillStyle = 'rgba(20,34,74,0.1)'
+    roundRect(ctx, 210, 636, CARD_W - 420, 6, 3)
+    ctx.fill()
 
     // Streak
-    ctx.fillStyle = 'rgba(255,255,255,0.5)'
-    ctx.font = `600 30px ${FONT}`
-    setTracking(ctx, '6px')
-    ctx.fillText('BEST STREAK', CARD_W / 2, 754)
+    ctx.fillStyle = '#6B7BA6'
+    ctx.font = `900 32px ${UI}`
+    setTracking(ctx, '7px')
+    ctx.fillText('BEST STREAK', CARD_W / 2, 722)
     setTracking(ctx, '0px')
 
-    ctx.fillStyle = '#FF3348'
-    ctx.font = `700 118px ${FONT}`
-    ctx.fillText(`×${bestStreak}`, CARD_W / 2, 890)
+    ctx.fillStyle = AIRTEL
+    ctx.font = `800 132px ${DISPLAY}`
+    ctx.fillText(`×${bestStreak}`, CARD_W / 2, 862)
 
     // Challenge
+    ctx.font = `800 62px ${DISPLAY}`
+    ctx.fillStyle = 'rgba(20,34,74,0.35)'
+    ctx.fillText('Think you can beat me?', CARD_W / 2, 1122)
     ctx.fillStyle = '#FFFFFF'
-    ctx.font = `600 52px ${FONT}`
-    ctx.fillText('Think you can beat me?', CARD_W / 2, 1130)
+    ctx.fillText('Think you can beat me?', CARD_W / 2, 1116)
 
     // Footer
-    ctx.fillStyle = 'rgba(255,255,255,0.4)'
-    ctx.font = `500 30px ${FONT}`
-    ctx.fillText('Play Shield Rush on Airtel', CARD_W / 2, 1218)
+    ctx.fillStyle = 'rgba(255,255,255,0.85)'
+    ctx.font = `700 32px ${UI}`
+    ctx.fillText('Play Shield Rush on Airtel', CARD_W / 2, 1206)
 
     return canvas
   }, [bestStreak, correct, total])
 
-  const toBlob = useCallback(
-    () =>
-      new Promise<Blob | null>((resolve) => {
-        const canvas = draw()
-        if (!canvas) return resolve(null)
-        canvas.toBlob((b) => resolve(b), 'image/png')
-      }),
-    [draw],
-  )
+  const toBlob = useCallback(async () => {
+    // Canvas silently falls back if the display face has not loaded yet.
+    await document.fonts?.ready?.catch?.(() => undefined)
+    return new Promise<Blob | null>((resolve) => {
+      const canvas = draw()
+      if (!canvas) return resolve(null)
+      canvas.toBlob((b) => resolve(b), 'image/png')
+    })
+  }, [draw])
 
   const flash = (msg: string) => {
     setNote(msg)

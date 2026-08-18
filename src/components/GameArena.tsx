@@ -46,12 +46,17 @@ export const GameArena = ({
   }, [g])
 
   const tutorial = g.phase.startsWith('tutorial')
+  // The sky turns stormy for the beat where the player is losing.
+  const storm = g.phase === 'freeze' || g.phase === 'reveal'
   // The field blooms as "You shouldn't have to." lands, then does the work.
   const guarded = g.phase === 'auto' || g.revealStep >= 2
   const lastVerdict = g.feedback[g.feedback.length - 1]
 
   return (
-    <section className={`arena-shell${g.impact ? ' is-hit' : ''}`} aria-label="Shield Rush game">
+    <section
+      className={`arena-shell${g.impact ? ' is-hit' : ''}${storm ? ' is-storm' : ''}`}
+      aria-label="Shield Rush game"
+    >
       <ScoreHUD
         secondsLeft={g.secondsLeft}
         score={g.tally.score}

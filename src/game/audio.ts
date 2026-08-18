@@ -117,38 +117,56 @@ class AudioKit {
   play(cue: Cue) {
     if (!this.ctx || !this.enabled) return
     switch (cue) {
+      // Air moving past a thrown sticker.
       case 'flick':
-        this.whoosh(0.075, 1100, 300, 0.18)
+        this.whoosh(0.08, 1400, 380, 0.16)
         break
+      // A bright pop, up a major third — the sound of something bursting.
       case 'block':
-        this.tone(660, { type: 'triangle', peak: 0.13, decay: 0.075 })
-        this.tone(990, { type: 'sine', peak: 0.07, decay: 0.05, delay: 0.03 })
+        this.tone(784, { type: 'triangle', peak: 0.15, decay: 0.07 })
+        this.tone(1046.5, { type: 'triangle', peak: 0.11, decay: 0.09, delay: 0.045 })
         break
+      // Warm and welcoming: a major chord, no edge to it.
       case 'genuine':
-        this.tone(523.25, { type: 'sine', peak: 0.1, decay: 0.1 })
-        this.tone(783.99, { type: 'sine', peak: 0.07, decay: 0.14, delay: 0.07 })
+        this.tone(523.25, { type: 'sine', peak: 0.11, decay: 0.14 })
+        this.tone(659.25, { type: 'sine', peak: 0.09, decay: 0.16, delay: 0.05 })
+        this.tone(1046.5, { type: 'sine', peak: 0.05, decay: 0.18, delay: 0.1 })
         break
+      // A cartoon bonk, not an alarm.
       case 'miss':
-        this.tone(120, { type: 'sine', peak: 0.2, decay: 0.2, slideTo: 62 })
-        this.whoosh(0.05, 300, 90, 0.16)
+        this.tone(196, { type: 'triangle', peak: 0.2, decay: 0.22, slideTo: 82 })
+        this.whoosh(0.05, 420, 110, 0.18)
         break
+      // Comic slide down — playful, never punitive.
       case 'wrong':
-        this.tone(320, { type: 'square', peak: 0.07, decay: 0.09, slideTo: 190 })
+        this.tone(440, { type: 'square', peak: 0.06, decay: 0.16, slideTo: 220 })
         break
+      // Coin-style rising arpeggio.
       case 'streak':
-        this.tone(880, { type: 'sine', peak: 0.08, decay: 0.07 })
-        this.tone(1174.66, { type: 'sine', peak: 0.06, decay: 0.09, delay: 0.06 })
+        ;[659.25, 880, 1174.66].forEach((f, i) =>
+          this.tone(f, { type: 'triangle', peak: 0.1, decay: 0.1, delay: i * 0.055 }),
+        )
         break
+      // The cavalry: a sweep under a bright fifth.
       case 'takeover':
-        this.tone(196, { type: 'sine', peak: 0.14, attack: 0.05, decay: 0.7, slideTo: 587.33 })
-        this.whoosh(0.06, 200, 2400, 0.5)
+        this.tone(146.83, {
+          type: 'sawtooth',
+          peak: 0.1,
+          attack: 0.06,
+          decay: 0.75,
+          slideTo: 587.33,
+        })
+        this.tone(880, { type: 'triangle', peak: 0.1, decay: 0.4, delay: 0.42 })
+        this.tone(1318.51, { type: 'triangle', peak: 0.08, decay: 0.45, delay: 0.5 })
+        this.whoosh(0.07, 240, 3200, 0.55)
         break
       case 'autoBlock':
-        this.tone(740, { type: 'triangle', peak: 0.075, decay: 0.05 })
+        this.tone(1046.5, { type: 'triangle', peak: 0.07, decay: 0.045 })
         break
+      // Four-note fanfare on the way to the result.
       case 'result':
-        ;[523.25, 659.25, 783.99].forEach((f, i) =>
-          this.tone(f, { type: 'sine', peak: 0.09, decay: 0.34, delay: i * 0.075 }),
+        ;[523.25, 659.25, 783.99, 1046.5].forEach((f, i) =>
+          this.tone(f, { type: 'triangle', peak: 0.1, decay: 0.3, delay: i * 0.085 }),
         )
         break
     }
