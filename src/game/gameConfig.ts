@@ -34,6 +34,15 @@ export const GAME_CONFIG = {
   /** Sideways drift for zig-zagging objects, px/ms at full amplitude. */
   WOBBLE_SPEED: 0.0042,
 
+  /* ---- Interaction ------------------------------------------------------
+     Tap is the primary action: one touch anywhere on a sticker deals with
+     it. Flicking still works for anyone who swipes out of habit, and throws
+     the object along the gesture instead of straight outward.            */
+  /** Outward speed given to a tapped object, px/ms. */
+  TAP_SPEED: 1.7,
+  /** Extra upward kick on a tap, so it arcs rather than sliding out. */
+  TAP_LIFT: 0.45,
+
   /* ---- Flick physics ---------------------------------------------------- */
   /** Minimum drag distance (px) that can count as a flick. */
   FLICK_THRESHOLD: 24,

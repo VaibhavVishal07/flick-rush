@@ -3,10 +3,12 @@ import { CrossIcon, TickIcon, familyIcon } from '../assets/icons'
 import { IncomingTrail } from '../assets/IncomingTrail'
 import type { LiveObject } from '../game/types'
 
+type Cue = 'tap' | 'leave' | null
+
 interface Props {
   object: LiveObject
-  /** Show the tutorial flick hint riding on this object. */
-  cue?: boolean
+  /** Tutorial hint riding on this object: what to do with it. */
+  cue?: Cue
   register: (id: number, el: HTMLDivElement | null) => void
   onDown: (id: number, e: ReactPointerEvent<HTMLDivElement>) => void
   onMove: (id: number, e: ReactPointerEvent<HTMLDivElement>) => void
@@ -39,7 +41,7 @@ const IncomingObjectBase = ({ object: o, cue, register, onDown, onMove, onUp }: 
       data-family={o.def.family}
       role="button"
       tabIndex={-1}
-      aria-label={`${o.def.label} — ${threat ? 'suspicious, flick it away' : 'genuine, let it through'}`}
+      aria-label={`${o.def.label} — ${threat ? 'suspicious, tap to remove' : 'genuine, leave it alone'}`}
       style={{
         transform: `translate3d(${o.x}px, ${o.y}px, 0) translate(-50%, -50%) scale(${o.scale})`,
         // Heavier objects sit a touch larger and cast a deeper shadow.
@@ -66,8 +68,15 @@ const IncomingObjectBase = ({ object: o, cue, register, onDown, onMove, onUp }: 
         <>
           <IncomingTrail tone={threat ? 'threat' : 'genuine'} />
           {cue ? (
-            <span className="cue" aria-hidden="true">
-              <span className="cue__dot" />
+            <span className={`cue cue--${cue}`} aria-hidden="true">
+              {cue === 'tap' ? (
+                <>
+                  <span className="cue__ring" />
+                  <span className="cue__ring cue__ring--late" />
+                  <span className="cue__finger" />
+                </>
+              ) : null}
+              <span className="cue__word">{cue === 'tap' ? 'TAP!' : 'LEAVE IT'}</span>
             </span>
           ) : null}
           {body}

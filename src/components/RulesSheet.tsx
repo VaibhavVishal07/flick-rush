@@ -5,14 +5,14 @@ const RULES = [
   {
     icon: <ThreatCallIcon size={19} />,
     tone: 'threat' as const,
-    title: 'Flick the ✕ ones away',
-    body: `Spam calls, dodgy links, fake rewards. Hard-edged, jittery, marked with a cross. Swipe them off before they reach your phone. +${GAME_CONFIG.BLOCK_POINTS} each.`,
+    title: 'Tap the ✕ ones away',
+    body: `Spam calls, dodgy links, fake rewards. Hard-edged, jittery, marked with a cross. One tap deals with each before it reaches your phone. +${GAME_CONFIG.BLOCK_POINTS} each.`,
   },
   {
     icon: <ContactIcon size={19} />,
     tone: 'good' as const,
-    title: 'Let the ✓ ones through',
-    body: `Mom calling, a delivery update, a genuine OTP. Rounded, calm, marked with a tick. Leave them alone and they land safely. +${GAME_CONFIG.SAFE_POINTS} each.`,
+    title: 'Leave the ✓ ones alone',
+    body: `Mom calling, a delivery update, a genuine OTP. Rounded, calm, marked with a tick. Hands off and they land safely. +${GAME_CONFIG.SAFE_POINTS} each.`,
   },
   {
     icon: <ShieldMark size={19} />,

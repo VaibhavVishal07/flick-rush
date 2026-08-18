@@ -823,6 +823,8 @@
   }
 }
 
+/* The hint rides on the object it is talking about, and says what to do
+   rather than leaving the player to infer it. */
 .cue {
   position: absolute;
   left: 50%;
@@ -830,40 +832,119 @@
   width: 0;
   height: 0;
   pointer-events: none;
-  z-index: 3;
+  z-index: 4;
 }
 
-.cue__dot {
+/* Expanding rings under a finger — the universal "press here". */
+.cue__ring {
   position: absolute;
-  left: -19px;
-  top: -19px;
-  width: 38px;
-  height: 38px;
+  left: 6px;
+  top: -26px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   border: 4px solid #fff;
-  background: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 0 0 4px rgba(20, 34, 74, 0.18);
-  animation: cue-swipe 1.5s var(--ease-in-out) infinite;
+  animation: cue-tap 1.25s var(--ease-out) infinite;
 }
 
-@keyframes cue-swipe {
+.cue__ring--late {
+  animation-delay: 0.42s;
+}
+
+@keyframes cue-tap {
   0% {
-    transform: translate(0, 0) scale(0.85);
+    transform: scale(0.35);
     opacity: 0;
   }
-  16% {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-  }
-  62% {
-    transform: translate(54px, -36px) scale(0.92);
-    opacity: 0.9;
+  22% {
+    opacity: 0.95;
   }
   100% {
-    transform: translate(76px, -52px) scale(0.75);
+    transform: scale(1.5);
     opacity: 0;
   }
 }
+
+.cue__finger {
+  position: absolute;
+  left: 19px;
+  top: -13px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.35);
+  animation: cue-press 1.25s var(--ease-out) infinite;
+}
+
+@keyframes cue-press {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  16% {
+    transform: scale(0.72);
+  }
+  34% {
+    transform: scale(1);
+  }
+}
+
+/* The instruction itself, pinned above the sticker it refers to. */
+.cue__word {
+  position: absolute;
+  left: 50%;
+  bottom: 32px;
+  transform: translateX(-50%);
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  color: #fff;
+  background: var(--ink);
+  box-shadow: 0 0 0 3px #fff, 0 4px 0 rgba(60, 4, 16, 0.34);
+  animation: cue-bob 1.25s var(--ease-in-out) infinite;
+}
+
+.cue--leave .cue__word {
+  color: #0a3a22;
+  background: var(--good);
+}
+
+@keyframes cue-bob {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-5px);
+  }
+}
+
+/* A genuine item under instruction glows gently instead of being poked. */
+.obj:has(.cue--leave) .obj__body {
+  animation: leave-glow 1.25s var(--ease-in-out) infinite;
+}
+
+@keyframes leave-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 3px #fff,
+      0 5px 0 var(--chip-edge),
+      0 11px 16px rgba(60, 4, 16, 0.34);
+  }
+  50% {
+    box-shadow:
+      0 0 0 5px rgba(255, 255, 255, 0.95),
+      0 5px 0 var(--chip-edge),
+      0 0 26px 6px rgba(34, 197, 94, 0.6);
+  }
+}
+
 
 /* ------------------------------------------------------------ countdown -- */
 
@@ -1023,30 +1104,90 @@
   }
 }
 
-.takeover__status {
+/* --------------------------------------------------------- auto banner -- */
+
+/* "Automatically" only lands if you can watch it happen — so the takeover
+   names the product plainly and counts the work out loud. */
+.auto-banner {
   position: absolute;
-  bottom: 24px;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  padding: 8px 16px;
-  border-radius: 999px;
+  top: 14px;
+  left: 12px;
+  right: 12px;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 12px 14px 11px;
+  border-radius: 22px;
   background: var(--paper);
-  box-shadow: 0 0 0 3px rgba(20, 34, 74, 0.14), 0 5px 0 rgba(20, 34, 74, 0.2);
-  animation: streak-in 0.42s var(--ease-back) both;
+  box-shadow:
+    0 0 0 4px rgba(60, 4, 16, 0.2),
+    0 7px 0 rgba(60, 4, 16, 0.24),
+    0 16px 26px rgba(60, 4, 16, 0.34);
+  animation: banner-drop 0.45s var(--ease-back) both;
 }
 
-.takeover__status-text {
-  font-family: var(--display);
-  font-size: 14px;
-  font-weight: 700;
+@keyframes banner-drop {
+  from {
+    transform: translateY(-22px);
+    opacity: 0;
+  }
+}
+
+.auto-banner__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  text-align: center;
+  font-size: 15.5px;
+  font-weight: 800;
+  line-height: 1.2;
   color: var(--ink);
 }
 
-/* The lockup already sits on a white pill — don't stack two. */
-.takeover__status .brand-mark {
-  padding: 0;
-  background: none;
-  box-shadow: none;
-  font-size: 14px;
+.auto-banner__head b {
+  color: var(--airtel);
+  font-weight: 900;
+}
+
+.auto-banner__sub {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ink-3);
+}
+
+.auto-banner__tally {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+  margin: 6px 0 0;
+}
+
+.auto-banner__tally > div {
+  display: grid;
+  justify-items: center;
+  gap: 1px;
+  padding: 5px 4px 4px;
+  border-radius: 13px;
+  background: rgba(20, 34, 74, 0.06);
+}
+
+.auto-banner__tally dt {
+  font-size: 9.5px;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.auto-banner__tally dd {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--airtel);
+  font-variant-numeric: tabular-nums;
 }

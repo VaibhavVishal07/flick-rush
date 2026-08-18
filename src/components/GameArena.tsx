@@ -17,8 +17,8 @@ interface Props {
 }
 
 const TUTORIAL_COPY: Record<string, string> = {
-  'tutorial-threat': 'Flick threats away',
-  'tutorial-genuine': 'Let genuine ones through',
+  'tutorial-threat': 'Tap the ✕ ones',
+  'tutorial-genuine': 'Leave the ✓ ones',
   'tutorial-done': 'Got it.',
 }
 
@@ -76,7 +76,7 @@ export const GameArena = ({
           <IncomingObject
             key={o.id}
             object={o}
-            cue={g.showCue && i === 0}
+            cue={i === 0 ? g.cue : null}
             register={g.registerEl}
             onDown={g.onObjectPointerDown}
             onMove={g.onObjectPointerMove}
@@ -103,7 +103,7 @@ export const GameArena = ({
           </div>
         ))}
 
-        <SafeTakeover phase={g.phase} revealStep={g.revealStep} />
+        <SafeTakeover phase={g.phase} revealStep={g.revealStep} autoTally={g.autoTally} />
 
         {tutorial ? (
           <p key={g.phase} className="coach">

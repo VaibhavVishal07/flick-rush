@@ -78,7 +78,7 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
       <p className="intro__lede">
         Incoming nonsense.
         <br />
-        Flick it away.
+        Tap it away.
       </p>
       {safetyReport ? (
         <p className="intro__note">

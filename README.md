@@ -14,12 +14,12 @@ The takeaway is never "be more careful online". It is "you shouldn't have to be.
 
 | Stage | Duration | What happens |
 | --- | --- | --- |
-| Ingress | — | Four stickers orbit a phone — three to throw, one to leave. One button: **Play Now**. |
-| Tutorial | ~3.5s | One threat to flick, one genuine call to let through. No "Next" button. |
+| Ingress | — | Four stickers orbit a phone — three to tap, one to leave. One button: **Play Now**. |
+| Tutorial | ~3.5s | A **TAP!** badge and a pressing finger ride the first threat; a **LEAVE IT** badge rides the genuine call. No "Next" button. |
 | Countdown | ~1.9s | 3 · 2 · 1 |
 | Gameplay | 17s | Learn → Rush → Chaos → Impossible |
-| Takeover | ~3.6s | Everything freezes. "Tough keeping up?" · "You shouldn't have to." Then Airtel Safe handles it. |
-| Result | — | You _n_/_N_ vs Airtel Safe _N_/_N_, plus share and Safety Report. |
+| Takeover | ~3.6s | Everything freezes. "Tough keeping up?" · "You shouldn't have to." Then a banner names it plainly — **Airtel Safe is handling it automatically** — and counts the blocks and allows as they happen. |
+| Result | — | One card, two bars: you against Airtel Safe on the same job. |
 
 First play lands around 29 seconds. Replays skip the tutorial and are live in
 about two.
@@ -121,14 +121,16 @@ the device bounces and throws a soft green ring — the warm counterpart to
 the red ripple a missed threat earns. It comes with its own soft haptic and
 a rising major arpeggio that resolves an octave up.
 
-### Flick physics
+### Interaction
 
-Pointer samples are collected on the way down, and release velocity is measured
-over the last 90ms rather than the final two events — a jittery last frame
-should not decide the throw. Past the threshold the object launches along the
-measured vector, boosted and capped, with inertia, spin, scale and fade. A slow
-but deliberate drag still throws, just gently. A tap does nothing and hands the
-object back to gravity.
+**Tap** is the whole game: one touch anywhere on a sticker deals with it, and
+the object is thrown straight out from the phone with a lift so it arcs.
+
+Swiping still works and is measured properly — pointer samples are collected
+on the way down and release velocity is taken over the last 90ms rather than
+the final two events, so a jittery last frame cannot decide the throw. Past
+the threshold the object launches along the gesture instead of radially.
+Nobody is penalised for the instinct to flick, but nobody has to.
 
 ### Tuning
 

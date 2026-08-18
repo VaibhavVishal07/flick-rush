@@ -103,7 +103,8 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
   const [impact, setImpact] = useState(0)
   const [kick, setKick] = useState(0)
   const [welcome, setWelcome] = useState(0)
-  const [cueVisible, setCueVisible] = useState(true)
+  const [autoTally, setAutoTally] = useState({ blocked: 0, allowed: 0 })
+  const [cueUsed, setCueUsed] = useState(false)
 
   const goPhase = useCallback((p: Phase) => {
     phaseRef.current = p
@@ -405,6 +406,7 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
               pushFeedback({ kind: 'auto-blocked', x: o.x, y: o.y, label: 'BLOCKED' })
               pushBurst(o.x, o.y, 'safe')
               audio.play('autoBlock')
+              setAutoTally((t) => ({ ...t, blocked: t.blocked + 1 }))
             }
           } else if (d < GAME_CONFIG.PHONE_RADIUS) {
             o.state = 'gone'
@@ -512,7 +514,7 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
       if (!o || o.state !== 'incoming') return
       e.preventDefault()
       touchedOnce.current = true
-      setCueVisible(false)
+      setCueUsed(true)
       const pt = localPoint(e)
       o.state = 'held'
       o.scale = GAME_CONFIG.GRAB_SCALE
@@ -566,22 +568,22 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
       const fastEnough = speed >= GAME_CONFIG.FLICK_VELOCITY
       const farEnough = d.moved >= GAME_CONFIG.FLICK_THRESHOLD * 2
 
-      if (!fastEnough && !farEnough) {
-        // A tap or a nudge isn't a flick — hand it back to gravity.
-        o.state = 'incoming'
-        return
-      }
-
       if (fastEnough) {
+        // Swiped: throw it along the gesture.
         launch(o, v)
       } else {
-        // Deliberate slow shove: send it out along the line it was dragged.
+        // Tapped (or nudged): throw it straight out from the phone, with a
+        // lift so it arcs. One touch is all the game asks for.
         const { w, h } = size.current
         const dx = o.x - w / 2
         const dy = o.y - h / 2
         const m = Math.hypot(dx, dy) || 1
-        launch(o, { x: (dx / m) * 0.85, y: (dy / m) * 0.85 })
+        launch(o, {
+          x: (dx / m) * GAME_CONFIG.TAP_SPEED,
+          y: (dy / m) * GAME_CONFIG.TAP_SPEED - GAME_CONFIG.TAP_LIFT,
+        })
       }
+      void farEnough
       audio.play('flick')
       rerender()
       e.stopPropagation()
@@ -680,7 +682,13 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
     impact,
     kick,
     welcome,
-    showCue: cueVisible && phase === 'tutorial-threat',
+    autoTally,
+    cue:
+      phase === 'tutorial-threat' && !cueUsed
+        ? ('tap' as const)
+        : phase === 'tutorial-genuine'
+          ? ('leave' as const)
+          : null,
     onObjectPointerDown,
     onObjectPointerMove,
     endDrag,

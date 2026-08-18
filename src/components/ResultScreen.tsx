@@ -12,6 +12,7 @@ interface Props {
 
 export const ResultScreen = ({ result, onReplay, onReport }: Props) => {
   const [sharing, setSharing] = useState(false)
+  const youPct = Math.round((result.correct / result.total) * 100)
 
   return (
     <section className="result" aria-label="Your result">
@@ -19,28 +20,37 @@ export const ResultScreen = ({ result, onReplay, onReport }: Props) => {
         <AirtelSafeMark />
       </header>
 
-      <div className="result__compare">
-        <div className="score-block">
-          <p className="score-block__who">You</p>
-          <p className="score-block__value">
-            {result.correct} <span>/ {result.total}</span>
+      {/* One card, one idea: the same job, done two ways. */}
+      <div className="tally">
+        <p className="tally__cap">Handled correctly</p>
+
+        <div className="tally__row">
+          <p className="tally__who">You</p>
+          <div className="tally__bar">
+            <span className="tally__fill" style={{ width: `${youPct}%` }} />
+          </div>
+          <p className="tally__num">
+            {result.correct}
+            <i>/{result.total}</i>
           </p>
-          <p className="score-block__note">Handled correctly</p>
         </div>
 
-        <div className="score-block__vs" aria-hidden="true">
-          <span>vs</span>
+        <div className="tally__row tally__row--safe">
+          <p className="tally__who">
+            <ShieldMark size={14} /> Airtel Safe
+          </p>
+          <div className="tally__bar">
+            <span className="tally__fill" style={{ width: '100%' }} />
+          </div>
+          <p className="tally__num">
+            {result.autoHandled}
+            <i>/{result.total}</i>
+          </p>
         </div>
 
-        <div className="score-block score-block--safe">
-          <p className="score-block__who">
-            <ShieldMark size={15} /> Airtel Safe
-          </p>
-          <p className="score-block__value">
-            {result.autoHandled} <span>/ {result.total}</span>
-          </p>
-          <p className="score-block__note">Handled automatically</p>
-        </div>
+        <p className="tally__foot">
+          Score {result.score} · Best streak ×{result.bestStreak}
+        </p>
       </div>
 
       <div className="result__verdict">
@@ -50,21 +60,10 @@ export const ResultScreen = ({ result, onReplay, onReport }: Props) => {
           <em>Better automation.</em>
         </h2>
         <p className="result__body">
-          Airtel Safe automatically handles spam calls, suspicious links and messages, so you
-          don&rsquo;t have to.
+          Airtel Safe handles spam calls, suspicious links and messages automatically — every
+          time, without you tapping anything.
         </p>
       </div>
-
-      <dl className="result__stats">
-        <div>
-          <dt>Score</dt>
-          <dd>{result.score}</dd>
-        </div>
-        <div>
-          <dt>Best streak</dt>
-          <dd>×{result.bestStreak}</dd>
-        </div>
-      </dl>
 
       <div className="result__cta">
         <button type="button" className="btn btn--primary btn--lg" onClick={onReport}>
