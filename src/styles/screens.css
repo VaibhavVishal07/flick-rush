@@ -11,11 +11,11 @@
   display: flex;
   align-items: stretch;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 12px;
   padding: 7px 12px 7px 10px;
   border-radius: 18px;
-  background: rgba(60, 4, 16, 0.32);
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.28);
+  background: rgba(20, 34, 74, 0.06);
+  box-shadow: inset 0 0 0 2px rgba(20, 34, 74, 0.08);
 }
 
 .stations__label {
@@ -26,8 +26,7 @@
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: 0.02em;
-  color: var(--gold-hi);
-  text-shadow: 0 2px 0 rgba(60, 4, 16, 0.6);
+  color: var(--airtel);
 }
 
 .stations__list {
@@ -46,8 +45,8 @@
   gap: 1px;
   padding: 4px 2px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 3px 0 rgba(60, 4, 16, 0.26);
+  background: #fff;
+  box-shadow: 0 3px 0 rgba(20, 34, 74, 0.14);
 }
 
 .stations__count {
@@ -67,67 +66,6 @@
   white-space: nowrap;
 }
 
-/* --------------------------------------------------------------- ticker -- */
-
-.ticker {
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 7px;
-  min-height: 22px;
-  pointer-events: none;
-}
-
-.ticker__row {
-  margin: 0;
-  padding: 3px 11px;
-  border-radius: 999px;
-  background: rgba(60, 4, 16, 0.42);
-  font-size: 11px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.9);
-  white-space: nowrap;
-  animation: ticker-in 0.45s var(--ease-out) both;
-}
-
-.ticker__row b {
-  font-weight: 900;
-  color: var(--gold-hi);
-}
-
-@keyframes ticker-in {
-  from {
-    transform: translateX(-14px);
-    opacity: 0;
-  }
-}
-
-/* ----------------------------------------------------------------- rail -- */
-
-.intro__rail {
-  right: 14px;
-  bottom: 4px;
-}
-
-.tile[data-tone='rules'] {
-  --tile-hi: #3a4c7a;
-  --tile-lo: #14224a;
-  --tile-edge: #070d24;
-}
-
-.tile[data-tone='report'] {
-  --tile-hi: var(--gold-hi);
-  --tile-lo: var(--gold);
-  --tile-edge: var(--gold-lo);
-  color: #4a2f00;
-}
-
-.tile[data-tone='report'] .tile__label {
-  color: #4a2f00;
-  text-shadow: none;
-}
-
-
-
 .intro {
   position: relative;
   z-index: 1;
@@ -143,19 +81,24 @@
   justify-content: space-between;
 }
 
+.intro__tools {
+  display: flex;
+  gap: 8px;
+}
+
 .intro__stage {
   position: relative;
   flex: 1;
-  min-height: 186px;
+  min-height: 236px;
   display: grid;
   place-items: center;
-  margin: 4px -22px 0;
+  margin: 10px -22px 0;
 }
 
 .intro__glow {
   position: absolute;
-  width: 250px;
-  height: 250px;
+  width: 268px;
+  height: 268px;
   border-radius: 50%;
   border: 4px dashed rgba(255, 255, 255, 0.4);
   animation: zone-spin 30s linear infinite;
@@ -176,10 +119,10 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 12px 4px 4px;
+  padding: 4px 6px 4px 4px;
   border-radius: 999px;
   font-family: var(--font);
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 900;
   white-space: nowrap;
   color: #fff;
@@ -201,6 +144,39 @@
 .intro__chip[data-trust='genuine'] {
   background: linear-gradient(180deg, #4ade80, var(--good-lo));
   box-shadow: 0 0 0 3px #fff, 0 5px 0 var(--good-edge), 0 11px 16px rgba(60, 4, 16, 0.32);
+}
+
+/* Same trailing glyph the in-game stickers use, so the ingress teaches it. */
+.intro__chip-flag {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  margin-left: 1px;
+  border-radius: 50%;
+  color: var(--threat-lo);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.intro__chip[data-family='link'] .intro__chip-flag {
+  color: var(--link-lo);
+}
+
+.intro__chip[data-family='sms'][data-trust='threat'] .intro__chip-flag {
+  color: var(--sms-lo);
+}
+
+.intro__chip[data-trust='genuine'] .intro__chip-flag {
+  color: var(--good-lo);
+}
+
+/* Threats are hard-edged tags; genuine items stay soft pills. */
+.intro__chip[data-trust='threat'] {
+  border-radius: 8px;
+}
+
+.intro__chip[data-trust='threat'] .intro__chip-icon {
+  border-radius: 7px;
 }
 
 .intro__chip-icon {
@@ -226,26 +202,26 @@
 }
 
 .intro__chip--a {
-  left: 4%;
-  top: 2%;
+  left: 5%;
+  top: 4%;
   animation: drift-a 4.6s var(--ease-in-out) infinite;
 }
 
 .intro__chip--b {
-  right: 70px;
-  top: 23%;
+  right: 4%;
+  top: 29%;
   animation: drift-b 5.2s var(--ease-in-out) 0.4s infinite;
 }
 
 .intro__chip--c {
-  left: 2%;
-  bottom: 26%;
+  left: 3%;
+  bottom: 24%;
   animation: drift-c 5.8s var(--ease-in-out) 0.9s infinite;
 }
 
 .intro__chip--d {
-  right: 78px;
-  bottom: 2%;
+  right: 9%;
+  bottom: 3%;
   animation: drift-d 4.9s var(--ease-in-out) 0.2s infinite;
 }
 
@@ -291,8 +267,22 @@
 
 .intro__copy {
   display: grid;
-  gap: 8px;
-  padding-top: 4px;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+/* The personalisation hook — a quiet caption, not another pill. */
+.intro__note {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.82);
+  text-shadow: 0 1px 0 rgba(60, 4, 16, 0.4);
+}
+
+.intro__note b {
+  color: var(--gold-hi);
+  font-weight: 900;
 }
 
 .intro__eyebrow {
@@ -315,7 +305,7 @@
 .intro__title {
   margin: 0;
   font-family: var(--display);
-  font-size: clamp(38px, 11.5vw, 48px);
+  font-size: clamp(42px, 12.5vw, 52px);
   font-weight: 700;
   line-height: 0.96;
   letter-spacing: 0.01em;
@@ -335,26 +325,19 @@
 }
 
 .intro__lede {
-  margin: 10px 0 0;
-  font-size: 17px;
-  line-height: 1.34;
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.3;
   font-weight: 900;
   color: #fff;
   text-shadow: 0 2px 0 rgba(60, 4, 16, 0.45);
 }
 
-.intro__sub {
-  margin: 0;
-  font-size: 13.5px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.86);
-  text-shadow: 0 1px 0 rgba(60, 4, 16, 0.4);
-}
 
 .intro__cta {
   display: grid;
   gap: 10px;
-  padding-top: 18px;
+  padding-top: 22px;
 }
 
 .intro__hint {
@@ -374,16 +357,15 @@
   }
 
   .intro__stage {
-    min-height: 132px;
+    min-height: 180px;
   }
 
   .intro__title {
-    font-size: clamp(33px, 10vw, 42px);
+    font-size: clamp(36px, 11vw, 44px);
   }
 
   .intro__lede {
-    font-size: 15px;
-    margin-top: 6px;
+    font-size: 17px;
   }
 
   .intro__sub {

@@ -390,12 +390,15 @@
   filter: brightness(1.08);
 }
 
+/* Threats and genuine items differ on four independent channels: silhouette,
+   colour, glyph and motion. Colour alone is too slow to read at speed, and
+   fails entirely for colour-blind players. */
 .obj__body {
   position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 13px 6px 6px;
+  padding: 6px 8px 6px 6px;
   border-radius: 999px;
   background: linear-gradient(180deg, var(--chip-hi), var(--chip-lo));
   box-shadow:
@@ -416,6 +419,56 @@
   color: var(--chip-lo);
   background: #fff;
   box-shadow: inset 0 -2px 0 rgba(20, 34, 74, 0.14);
+}
+
+/* Trailing glyph: ✕ on anything you should throw, ✓ on anything you should
+   leave alone. */
+.obj__flag {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 19px;
+  height: 19px;
+  margin-left: 1px;
+  border-radius: 6px;
+  color: var(--chip-lo);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+/* --- silhouette: threats are hard-edged tags, genuine items soft pills -- */
+.obj[data-trust='threat'] .obj__body {
+  border-radius: 8px;
+}
+
+.obj[data-trust='threat'] .obj__icon {
+  border-radius: 7px;
+}
+
+.obj[data-trust='threat'] .obj__flag {
+  border-radius: 50%;
+}
+
+.obj[data-trust='genuine'] .obj__body {
+  border-radius: 999px;
+}
+
+.obj[data-trust='genuine'] .obj__flag {
+  border-radius: 50%;
+}
+
+/* --- motion: threats never sit still, genuine items glide -------------- */
+.obj[data-trust='threat']:not(.is-broken) .obj__body {
+  animation: threat-jitter 0.62s steps(2, end) infinite;
+}
+
+@keyframes threat-jitter {
+  0%,
+  100% {
+    transform: scale(var(--heft, 1)) rotate(-1.6deg);
+  }
+  50% {
+    transform: scale(var(--heft, 1)) rotate(1.6deg);
+  }
 }
 
 .obj__text {
@@ -467,10 +520,6 @@
   --chip-edge: var(--alert-edge);
 }
 
-.obj[data-trust='threat'][data-family='alert'] .obj__body {
-  animation: alert-wiggle 0.9s var(--ease-in-out) infinite;
-}
-
 .obj[data-trust='threat'][data-family='alert'] .obj__label {
   color: #3d2a00;
   text-shadow: none;
@@ -480,14 +529,9 @@
   color: rgba(61, 42, 0, 0.72);
 }
 
-@keyframes alert-wiggle {
-  0%,
-  100% {
-    transform: scale(var(--heft, 1)) rotate(-2.5deg);
-  }
-  50% {
-    transform: scale(var(--heft, 1)) rotate(2.5deg);
-  }
+.obj[data-trust='threat'][data-family='alert'] .obj__flag {
+  background: rgba(61, 42, 0, 0.85);
+  color: #fde047;
 }
 
 .obj[data-trust='genuine'] {

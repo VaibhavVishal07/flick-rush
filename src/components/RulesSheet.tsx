@@ -5,14 +5,14 @@ const RULES = [
   {
     icon: <ThreatCallIcon size={19} />,
     tone: 'threat' as const,
-    title: 'Flick the bad stuff away',
-    body: `Spam calls, dodgy links, fake rewards. Swipe them off the screen before they reach your phone. +${GAME_CONFIG.BLOCK_POINTS} each.`,
+    title: 'Flick the ✕ ones away',
+    body: `Spam calls, dodgy links, fake rewards. Hard-edged, jittery, marked with a cross. Swipe them off before they reach your phone. +${GAME_CONFIG.BLOCK_POINTS} each.`,
   },
   {
     icon: <ContactIcon size={19} />,
     tone: 'good' as const,
-    title: 'Let the real stuff through',
-    body: `Mom calling, a delivery update, a genuine OTP — leave them alone and they land safely. +${GAME_CONFIG.SAFE_POINTS} each.`,
+    title: 'Let the ✓ ones through',
+    body: `Mom calling, a delivery update, a genuine OTP. Rounded, calm, marked with a tick. Leave them alone and they land safely. +${GAME_CONFIG.SAFE_POINTS} each.`,
   },
   {
     icon: <ShieldMark size={19} />,
@@ -39,6 +39,24 @@ export const RulesSheet = ({ onClose }: { onClose: () => void }) => (
           </li>
         ))}
       </ul>
+
+      {/* The streak ladder lives here rather than on the ingress — it is a
+          reward for a mechanic the player has not met yet. */}
+      <div className="stations">
+        <p className="stations__label">
+          Streak
+          <br />
+          bonus
+        </p>
+        <ol className="stations__list">
+          {GAME_CONFIG.STREAK_TIERS.map((t) => (
+            <li key={t.at}>
+              <span className="stations__count">×{t.at}</span>
+              <span className="stations__name">{t.label}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
 
       <div className="sheet__actions">
         <button type="button" className="btn btn--ghost" onClick={onClose}>

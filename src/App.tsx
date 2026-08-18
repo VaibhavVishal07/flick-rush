@@ -76,7 +76,6 @@ export default function App() {
             soundOn={soundOn}
             onToggleSound={() => setSoundOn((s) => !s)}
             onRules={() => setShowRules(true)}
-            onReport={() => setShowReport(true)}
             returning={round > 0}
           />
         </>

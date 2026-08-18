@@ -14,7 +14,7 @@ The takeaway is never "be more careful online". It is "you shouldn't have to be.
 
 | Stage | Duration | What happens |
 | --- | --- | --- |
-| Ingress | — | Objects drift toward a phone. One button: **Play Now**. |
+| Ingress | — | Four stickers orbit a phone — three to throw, one to leave. One button: **Play Now**. |
 | Tutorial | ~3.5s | One threat to flick, one genuine call to let through. No "Next" button. |
 | Countdown | ~1.9s | 3 · 2 · 1 |
 | Gameplay | 17s | Learn → Rush → Chaos → Impossible |
@@ -80,6 +80,21 @@ src/
 React owns which objects exist; the loop writes `transform` and `opacity`
 straight to the DOM nodes each frame. Spawning and despawning re-render, motion
 does not.
+
+### Telling good from bad
+
+Colour alone is too slow to read at speed, and useless for colour-blind
+players. Threats and genuine items differ on four independent channels:
+
+| | Threats | Genuine |
+| --- | --- | --- |
+| Silhouette | hard-edged tag, square icon badge | soft pill, round icon badge |
+| Colour | cool-dark: violet, indigo, amber | bright: green, cyan |
+| Glyph | ✕ | ✓ |
+| Motion | constant jitter | glides, level |
+
+The ingress preview chips carry the same treatment, so the language is
+taught before the first round rather than during it.
 
 ### The break
 

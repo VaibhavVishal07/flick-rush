@@ -134,6 +134,19 @@ export const LinkChainIcon = ({ size = 20, className }: IconProps) => (
   <LinkIcon size={size} className={className} />
 )
 
+/** Verdict glyphs — the fourth channel telling threats from genuine items. */
+export const TickIcon = ({ size = 12, className }: IconProps) => (
+  <svg {...base(size)} className={className} strokeWidth={3.4}>
+    <path d="M5 12.6 9.8 17.4 19 7.6" />
+  </svg>
+)
+
+export const CrossIcon = ({ size = 12, className }: IconProps) => (
+  <svg {...base(size)} className={className} strokeWidth={3.4}>
+    <path d="M6.4 6.4 17.6 17.6M17.6 6.4 6.4 17.6" />
+  </svg>
+)
+
 /**
  * Airtel Safe lockup on its white plate. The plate matters: the master
  * artwork sets "safe" in black, which would vanish on the game's blue sky.
