@@ -119,36 +119,34 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 6px;
-  border: var(--line-w) solid var(--outline);
+  padding: 5px 6px 5px 6px;
   border-radius: 999px;
   font-family: var(--font);
   font-size: 12px;
   font-weight: 900;
   letter-spacing: -0.01em;
   white-space: nowrap;
-  background-image: var(--halftone);
-  background-size: var(--halftone-size);
-  box-shadow: var(--drop);
 }
 
 /* Threats: near-black tags with a hazard edge. */
 .intro__chip[data-trust='threat'] {
   padding-left: 12px;
-  border-radius: 4px;
+  border-radius: 9px;
   color: #fff;
-  background-color: #17182a;
+  background: linear-gradient(180deg, #1d2540, #0b1022);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5), 0 5px 0 #04060f,
+    0 11px 16px rgba(60, 4, 16, 0.34);
 }
 
 .intro__chip[data-trust='threat']::before {
   content: '';
   position: absolute;
-  left: 3px;
-  top: 3px;
-  bottom: 3px;
+  left: 4px;
+  top: 6px;
+  bottom: 6px;
   width: 5px;
+  border-radius: 3px;
   background: var(--chip-accent, #ff6b7d);
-  box-shadow: 2px 0 0 var(--outline);
 }
 
 .intro__chip[data-family='link'] {
@@ -161,8 +159,9 @@
 
 /* Genuine: white pills. */
 .intro__chip[data-trust='genuine'] {
-  color: #12261a;
-  background-color: #fff;
+  color: #10321f;
+  background: linear-gradient(180deg, #ffffff, #eefaf1);
+  box-shadow: 0 0 0 3px #14803c, 0 5px 0 #b7d8c2, 0 11px 16px rgba(60, 4, 16, 0.3);
 }
 
 .intro__chip-icon {
@@ -170,16 +169,15 @@
   place-items: center;
   width: 25px;
   height: 25px;
-  border: 2.5px solid var(--outline);
-  border-radius: 3px;
+  border-radius: 7px;
   color: var(--chip-accent, #ff6b7d);
-  background: #2a2c46;
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .intro__chip[data-trust='genuine'] .intro__chip-icon {
   border-radius: 50%;
-  color: #0f6b34;
-  background: #b9f0cd;
+  color: #14803c;
+  background: #d9f5e2;
 }
 
 .intro__chip-flag {
@@ -187,14 +185,12 @@
   place-items: center;
   width: 20px;
   height: 20px;
-  border: 2.5px solid var(--outline);
-  border-radius: 3px;
+  border-radius: 50%;
   color: #fff;
   background: #e8112d;
 }
 
 .intro__chip[data-trust='genuine'] .intro__chip-flag {
-  border-radius: 50%;
   background: #16a34a;
 }
 
@@ -397,19 +393,17 @@
 
 /* -------------------------------------------------------------- result --- */
 
-/* Explicit rows: brand, card, breathing room, buttons. Auto margins split
-   the leftover space unevenly here, so the middle row owns it instead. */
-/* Brand, a scrolling middle, buttons pinned. Only the middle scrolls, so the
-   call to action never walks off the bottom. */
+/* Brand, a centred middle, buttons pinned. `minmax(0, 1fr)` matters: a plain
+   `1fr` track takes min-content as its minimum, so the middle refuses to
+   shrink and pushes the buttons off a small screen. */
 .result {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   height: 100%;
   overflow: hidden;
-  overscroll-behavior: contain;
-  padding: calc(14px + env(safe-area-inset-top)) 20px calc(16px + env(safe-area-inset-bottom));
+  padding: calc(14px + env(safe-area-inset-top)) 20px calc(14px + env(safe-area-inset-bottom));
   animation: result-in 0.5s var(--ease-out) both;
 }
 
@@ -425,165 +419,147 @@
   justify-content: center;
 }
 
-/* One card, two bars. The comparison is the point of this screen, so it gets
-   to be the only object on it. */
-.tally__row {
-  display: grid;
-  grid-template-columns: 88px 1fr auto;
-  align-items: center;
-  gap: 10px;
-  padding: 5px 0;
-}
-
-.tally__who {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin: 0;
-  font-size: 13px;
-  font-weight: 900;
-  color: var(--ink-2);
-}
-
-.tally__row--safe .tally__who {
-  color: var(--airtel);
-}
-
-.tally__bar {
-  height: 17px;
-  border: 2.5px solid var(--outline);
-  border-radius: 4px;
-  background: #eceef5;
-  overflow: hidden;
-}
-
-.tally__fill {
-  display: block;
-  height: 100%;
-  background-color: #4b5c8a;
-  background-image: var(--halftone);
-  background-size: var(--halftone-size);
-  transform-origin: left center;
-  animation: tally-grow 0.7s steps(10, end) 0.15s both;
-}
-
-.tally__row--safe .tally__fill {
-  background-color: var(--airtel);
-  animation-delay: 0.5s;
-}
-
-@keyframes tally-grow {
-  from {
-    transform: scaleX(0);
-  }
-}
-
-.tally__num {
-  margin: 0;
-  min-width: 52px;
-  text-align: right;
-  font-family: var(--display);
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 1;
-  color: var(--ink);
-  font-variant-numeric: tabular-nums;
-}
-
-.tally__row--safe .tally__num {
-  color: var(--airtel);
-}
-
-.tally__num i {
-  font-style: normal;
-  font-size: 15px;
-  color: var(--ink-4);
-}
-
-.tally__punch {
-  margin: 9px 0 0;
-  font-family: var(--display);
-  font-size: 15px;
-  font-weight: 400;
-  color: var(--outline);
-}
-
-.tally__punch b {
-  font-weight: 700;
-  color: var(--airtel);
-}
-
-/* The middle scrolls. A hard clip against the button block reads as a broken
-   card, so the last few pixels fade out instead. */
+/* Flex, not grid: `align-content: center` on a scroll container is
+   inconsistent between engines and this has to centre reliably. It scrolls as
+   a safety net so a small screen never swallows the bottom of the card. */
 .result__mid {
   min-height: 0;
-  display: grid;
-  align-content: center;
-  gap: 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 22px;
   padding: 8px 0;
 }
 
+/* --------------------------------------------------------------- versus -- */
 
-
-/* --- the stark bit ------------------------------------------------------ */
-
-.slipped {
+/* Two numbers, one of them a zero. That is the whole argument — bars and
+   rates turned it into homework. */
+.versus__grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 9px;
-  margin-top: 11px;
-  padding-top: 10px;
-  border-top: 3px solid var(--outline);
+  grid-template-columns: 1fr auto 1fr;
+  align-items: stretch;
+  padding: 12px 4px 10px;
 }
 
-.slipped__col {
+.versus__vs {
+  align-self: center;
+  padding: 0 4px;
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--ink-4);
+}
+
+.versus__col {
   display: grid;
+  align-content: center;
   justify-items: center;
-  gap: 2px;
+  gap: 1px;
   text-align: center;
+  padding: 0 6px;
 }
 
-.slipped__cap {
+.versus__cap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
   margin: 0;
+  min-height: 24px;
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.1em;
+  line-height: 1.25;
   text-transform: uppercase;
   color: var(--ink-3);
 }
 
-.slipped__num {
+.versus__col--safe .versus__cap {
+  color: var(--airtel);
+}
+
+.versus__num {
   margin: 0;
   font-family: var(--display);
-  font-size: 38px;
+  font-size: 62px;
   font-weight: 700;
-  line-height: 1;
+  line-height: 0.92;
   font-variant-numeric: tabular-nums;
 }
 
-.slipped__num--bad {
-  color: var(--outline);
+.versus__num--you {
+  color: var(--ink);
+  animation: num-in 0.4s var(--ease-back) 0.2s both;
 }
 
-.slipped__num--good {
+/* The zero lands late and lands hard. */
+.versus__num--safe {
   color: var(--good);
+  animation: zero-slam 0.5s var(--ease-back) 1s both;
 }
 
-/* --- the claim, itemised ------------------------------------------------ */
+@keyframes num-in {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+}
 
+@keyframes zero-slam {
+  0% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+  55% {
+    transform: scale(0.88);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 
+.versus__note {
+  margin: 2px 0 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-4);
+}
 
+.versus__col--safe .versus__note {
+  color: var(--good-lo);
+}
 
+.versus__foot {
+  margin: 0;
+  padding: 9px 12px 10px;
+  border-top: 3px solid var(--outline);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.42;
+  color: var(--ink-2);
+}
 
+.versus__foot b {
+  font-weight: 900;
+  color: var(--airtel);
+}
 
+/* ----------------------------------------------------------- the close -- */
 
-
-
+.result__say {
+  display: grid;
+  gap: 7px;
+}
 
 .result__headline {
   margin: 0;
   font-family: var(--display);
-  font-size: 27px;
+  font-size: 25px;
   font-weight: 700;
   line-height: 1.08;
   text-wrap: balance;
@@ -596,21 +572,24 @@
   color: var(--gold);
 }
 
+.result__body {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 1px 2px 0 rgba(13, 13, 18, 0.75);
+}
 
 .result__cta {
   display: grid;
-  gap: 7px;
+  gap: 6px;
   padding-top: 2px;
 }
 
 .result__cta .btn-sub {
   margin: 10px 0 1px;
   font-size: 13px;
-}
-
-/* The tertiary action sits low on the gradient, where the sky is pale. */
-.result__cta .btn--text {
-  color: rgba(40, 2, 10, 0.75);
 }
 
 /* ---------------------------------------------------------- share card --- */
@@ -796,68 +775,87 @@
 
 /* Short viewports — the result must land in one screen. A game result that
    needs scrolling to reach "Play Again" loses the replay. */
+/* Short viewports — the result must land in one screen, and the two numbers
+   are the last thing that should shrink. */
 @media (max-height: 700px) {
   .result {
     padding-top: calc(10px + env(safe-area-inset-top));
     padding-bottom: calc(10px + env(safe-area-inset-bottom));
   }
 
-  .result__verdict {
-    margin-top: 10px;
+  .result__mid {
+    gap: 16px;
+  }
+
+  .versus__num {
+    font-size: 52px;
+  }
+
+  .versus__grid {
+    padding: 8px 4px 7px;
+  }
+
+  .versus__foot {
+    padding: 7px 11px 8px;
+    font-size: 11.5px;
   }
 
   .result__headline {
-    font-size: 22px;
+    font-size: 21px;
   }
 
   .result__body {
-    font-size: 12.5px;
-    line-height: 1.4;
-  }
-
-  .result__stats {
-    margin-top: 8px;
-  }
-
-  .result__stats > div {
-    padding: 7px 12px;
-  }
-
-  .result__stats dd {
-    font-size: 18px;
-  }
-
-  .result__cta {
-    gap: 6px;
-    padding-top: 8px;
-  }
-
-  .result__cta .btn-sub {
     font-size: 12px;
   }
 
-  .tally {
-    padding: 11px 14px 10px;
+  .result__cta {
+    gap: 5px;
   }
 
-  .slipped__num {
-    font-size: 36px;
-  }
-
-  .protect {
-    padding: 10px 12px 9px;
-  }
-
-  .tally__num {
-    font-size: 22px;
-  }
-
-  .result__verdict {
-    padding: 10px 0;
+  .result__cta .btn-sub {
+    margin: 7px 0 0;
+    font-size: 12px;
   }
 
   .result__cta .btn--lg {
     min-height: 52px;
     font-size: 19px;
+  }
+
+  .result__cta .btn--ghost {
+    min-height: 46px;
+    font-size: 17px;
+  }
+
+  .result__cta .btn--text {
+    min-height: 38px;
+    font-size: 15px;
+  }
+}
+
+@media (max-height: 640px) {
+  .result__mid {
+    gap: 12px;
+  }
+
+  .versus__num {
+    font-size: 44px;
+  }
+
+  .versus__note {
+    display: none;
+  }
+
+  .result__headline {
+    font-size: 19px;
+  }
+
+  .result__body {
+    font-size: 11.5px;
+  }
+
+  .result__cta .btn--lg {
+    min-height: 48px;
+    font-size: 18px;
   }
 }

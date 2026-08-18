@@ -421,22 +421,22 @@
   filter: brightness(1.08);
 }
 
-/* Threats and genuine items differ on value first — near-black against white
-   — then silhouette, hazard colour, glyph and motion. Flat fills, a black
-   keyline and a solid offset shadow; the halftone screen does the work a
-   gradient used to. */
+/* Threats and genuine items differ on FIVE channels, the first of which is
+   value: threats are near-black, genuine items are white. Lightness is the
+   one difference the eye resolves in peripheral vision, before hue and long
+   before you read a label. */
 .obj__body {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 7px 6px 6px;
-  border: var(--line-w) solid var(--outline);
+  gap: 9px;
+  padding: 7px 8px 7px 7px;
   border-radius: 999px;
-  background-color: var(--chip-bg);
-  background-image: var(--halftone);
-  background-size: var(--halftone-size);
-  box-shadow: var(--drop), inset 0 -4px 0 var(--chip-shade);
+  background: linear-gradient(180deg, var(--chip-hi), var(--chip-lo));
+  box-shadow:
+    0 0 0 3px var(--chip-ring, #fff),
+    0 5px 0 var(--chip-edge),
+    0 11px 16px rgba(60, 4, 16, 0.34);
   transform: scale(var(--heft, 1));
   transform-origin: center;
 }
@@ -445,12 +445,11 @@
   display: grid;
   place-items: center;
   flex: none;
-  width: 27px;
-  height: 27px;
-  border: 2.5px solid var(--outline);
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   color: var(--chip-accent);
-  background: var(--chip-icon-bg);
+  background: var(--chip-icon-bg, #fff);
 }
 
 .obj__text {
@@ -475,13 +474,13 @@
   color: var(--chip-ink-2);
 }
 
+/* Trailing glyph: ✕ on anything you should remove, ✓ on anything to leave. */
 .obj__flag {
   display: grid;
   place-items: center;
   flex: none;
   width: 21px;
   height: 21px;
-  border: 2.5px solid var(--outline);
   border-radius: 50%;
   color: #fff;
   background: var(--chip-flag);
@@ -490,38 +489,36 @@
 /* ------------------------------------------------------------- threats -- */
 
 .obj[data-trust='threat'] {
-  --chip-bg: #17182a;
-  --chip-shade: rgba(0, 0, 0, 0.45);
+  --chip-hi: #1d2540;
+  --chip-lo: #0b1022;
+  --chip-edge: #04060f;
+  --chip-ring: rgba(255, 255, 255, 0.5);
   --chip-ink: #ffffff;
-  --chip-ink-2: rgba(255, 255, 255, 0.62);
-  --chip-icon-bg: #2a2c46;
+  --chip-ink-2: rgba(255, 255, 255, 0.6);
+  --chip-icon-bg: rgba(255, 255, 255, 0.12);
   --chip-accent: #ff6b7d;
   --chip-flag: #e8112d;
 }
 
 .obj[data-trust='threat'] .obj__body {
-  border-radius: 4px;
-  padding-left: 12px;
+  border-radius: 9px;
+  padding-left: 13px;
 }
 
-/* Hazard bar down the leading edge, coloured by kind of nuisance. */
+/* Hazard bar down the leading edge, coloured by what kind of nuisance it is. */
 .obj[data-trust='threat'] .obj__body::before {
   content: '';
   position: absolute;
-  left: 3px;
-  top: 3px;
-  bottom: 3px;
+  left: 4px;
+  top: 6px;
+  bottom: 6px;
   width: 5px;
+  border-radius: 3px;
   background: var(--chip-accent);
-  box-shadow: 2px 0 0 var(--outline);
 }
 
 .obj[data-trust='threat'] .obj__icon {
-  border-radius: 3px;
-}
-
-.obj[data-trust='threat'] .obj__flag {
-  border-radius: 3px;
+  border-radius: 7px;
 }
 
 .obj[data-trust='threat'][data-family='sms'] {
@@ -536,39 +533,49 @@
   --chip-accent: #fbbf24;
 }
 
+/* Threats never sit still. */
 .obj[data-trust='threat']:not(.is-broken):not(.is-absorbing) .obj__body {
-  animation: threat-jitter 0.5s steps(2, end) infinite;
+  animation: threat-jitter 0.62s steps(2, end) infinite;
 }
 
 @keyframes threat-jitter {
   0%,
   100% {
-    transform: scale(var(--heft, 1)) translate(-1px, 0) rotate(-1.6deg);
+    transform: scale(var(--heft, 1)) rotate(-1.7deg);
   }
   50% {
-    transform: scale(var(--heft, 1)) translate(1px, 0) rotate(1.6deg);
+    transform: scale(var(--heft, 1)) rotate(1.7deg);
   }
 }
 
 /* ------------------------------------------------------------- genuine -- */
 
 .obj[data-trust='genuine'] {
-  --chip-bg: #ffffff;
-  --chip-shade: rgba(13, 13, 18, 0.16);
-  --chip-ink: #12261a;
-  --chip-ink-2: rgba(18, 38, 26, 0.6);
-  --chip-icon-bg: #b9f0cd;
-  --chip-accent: #0f6b34;
+  --chip-hi: #ffffff;
+  --chip-lo: #eefaf1;
+  --chip-edge: #b7d8c2;
+  --chip-ring: #14803c;
+  --chip-ink: #10321f;
+  --chip-ink-2: rgba(16, 50, 31, 0.6);
+  --chip-icon-bg: #d9f5e2;
+  --chip-accent: #14803c;
   --chip-flag: #16a34a;
+}
+
+.obj[data-trust='genuine'] .obj__body {
+  border-radius: 999px;
 }
 
 .obj[data-trust='genuine'][data-family='sms'],
 .obj[data-trust='genuine'][data-family='otp'] {
-  --chip-icon-bg: #b7e9f8;
-  --chip-accent: #075a72;
-  --chip-flag: #0891b2;
+  --chip-ring: #0b5f7a;
   --chip-ink: #06303d;
   --chip-ink-2: rgba(6, 48, 61, 0.6);
+  --chip-icon-bg: #d3f1fb;
+  --chip-accent: #0b6a80;
+  --chip-flag: #0891b2;
+  --chip-lo: #edf9fd;
+  --chip-edge: #a9d5e2;
 }
 
 /* Genuine things arrive with a friendly halo so they read as welcome. */
@@ -607,16 +614,15 @@
 }
 
 .verdict__label {
-  padding: 4px 11px;
-  border: var(--line-w) solid var(--outline);
-  border-radius: 5px;
+  padding: 4px 12px;
+  border-radius: 999px;
   font-family: var(--display);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.02em;
   color: #fff;
   transform: rotate(-6deg);
-  box-shadow: var(--drop-sm);
+  box-shadow: 0 0 0 3px #fff, 0 4px 0 rgba(20, 34, 74, 0.28);
 }
 
 .verdict__points {
@@ -635,26 +641,27 @@
   background: #fff;
   color: var(--airtel);
   text-shadow: none;
+  box-shadow: 0 0 0 3px var(--ink), 0 4px 0 rgba(60, 4, 16, 0.34);
 }
 
 .verdict--safe .verdict__label,
 .verdict--auto-allowed .verdict__label {
-  background: #22c55e;
+  background: linear-gradient(180deg, #4ade80, var(--good-lo));
   transform: rotate(5deg);
   animation: stamp 0.26s var(--ease-back);
 }
 
 .verdict--missed .verdict__label,
 .verdict--oops .verdict__label {
-  background: #4b5c8a;
+  background: linear-gradient(180deg, #4b5c8a, var(--ink));
   transform: rotate(4deg);
 }
 
 /* Airtel Safe's own stamp: gold, so automation reads as the win. */
 .verdict--auto-blocked .verdict__label {
-  background: var(--gold);
-  color: var(--outline);
-  text-shadow: none;
+  background: linear-gradient(180deg, var(--gold-hi), var(--gold));
+  color: #4a2f00;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.4);
   animation: stamp 0.26s var(--ease-back);
 }
 
@@ -784,16 +791,15 @@
   bottom: 26px;
   transform: translateX(-50%);
   margin: 0;
-  padding: 8px 18px;
-  border: var(--line-w) solid var(--outline);
-  border-radius: var(--r);
+  padding: 9px 20px;
+  border-radius: 999px;
   background: var(--paper);
   font-family: var(--display);
   font-size: 20px;
   font-weight: 700;
   color: var(--ink);
   white-space: nowrap;
-  box-shadow: var(--drop);
+  box-shadow: 0 0 0 3px rgba(60, 4, 16, 0.18), 0 5px 0 rgba(60, 4, 16, 0.24);
   animation: coach-in 0.42s var(--ease-back) both;
   pointer-events: none;
   z-index: 19;
@@ -879,22 +885,21 @@
   left: 50%;
   bottom: 32px;
   transform: translateX(-50%);
-  padding: 4px 10px;
-  border: var(--line-w) solid var(--outline);
-  border-radius: 5px;
+  padding: 4px 11px;
+  border-radius: 999px;
   font-family: var(--display);
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.04em;
   white-space: nowrap;
   color: #fff;
-  background: var(--outline);
-  box-shadow: var(--drop-sm);
+  background: var(--ink);
+  box-shadow: 0 0 0 3px #fff, 0 4px 0 rgba(60, 4, 16, 0.34);
   animation: cue-bob 1.25s var(--ease-in-out) infinite;
 }
 
 .cue--leave .cue__word {
-  color: var(--outline);
+  color: #0a3a22;
   background: var(--good);
 }
 
@@ -1001,13 +1006,10 @@
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  padding: 8px 18px;
-  border: var(--line-w) solid var(--outline);
-  border-radius: var(--r);
-  background-color: var(--gold);
-  background-image: var(--halftone);
-  background-size: var(--halftone-size);
-  box-shadow: var(--drop), inset 0 -5px 0 rgba(0, 0, 0, 0.2);
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffd75e, #f59e0b);
+  box-shadow: 0 0 0 3.5px #fff, 0 6px 0 #a16207, 0 12px 18px rgba(60, 4, 16, 0.34);
   animation: streak-in 0.5s var(--ease-back) both;
 }
 
@@ -1016,16 +1018,16 @@
   font-size: 17px;
   font-weight: 700;
   letter-spacing: 0.03em;
-  color: var(--outline);
+  color: #4a2f00;
 }
 
 .streak__count {
   font-family: var(--display);
   font-size: 21px;
   font-weight: 700;
-  color: var(--airtel);
+  color: #fff;
   font-variant-numeric: tabular-nums;
-  text-shadow: 2px 2px 0 var(--outline);
+  text-shadow: 0 2px 0 rgba(120, 74, 0, 0.6);
 }
 
 @keyframes streak-in {

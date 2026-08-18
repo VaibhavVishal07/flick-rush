@@ -43,6 +43,10 @@ everything stays inspectable and tunable in the browser.
 
 ### Look
 
+The chips keep the softer treatment — rounded pills, gentle gradients, a
+white or green keyline. The chrome around them (buttons, HUD keys, panels)
+follows the retro references.
+
 Drawn, not generated. Soft gradients, blurred drop shadows and translucent
 white keylines are exactly what makes a UI read as machine-made, so none of
 them survive: every surface is a **flat fill with a 3px black keyline, a
