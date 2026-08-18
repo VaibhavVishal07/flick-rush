@@ -226,6 +226,35 @@
   color: var(--ink-4);
 }
 
+/* Short viewports — small handsets, landscape, embedded frames. The ingress
+   has to fit without scrolling; the stage gives up its height first. */
+@media (max-height: 720px) {
+  .intro {
+    padding-top: calc(12px + env(safe-area-inset-top));
+    padding-bottom: calc(14px + env(safe-area-inset-bottom));
+  }
+
+  .intro__stage {
+    min-height: 148px;
+  }
+
+  .intro__title {
+    font-size: clamp(32px, 10vw, 42px);
+  }
+
+  .intro__lede {
+    font-size: 15px;
+  }
+
+  .intro__sub {
+    font-size: 12.5px;
+  }
+
+  .intro__cta {
+    padding-top: 14px;
+  }
+}
+
 .challenge-chip {
   position: absolute;
   top: calc(70px + env(safe-area-inset-top));
