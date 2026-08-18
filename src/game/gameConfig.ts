@@ -45,6 +45,22 @@ export const GAME_CONFIG = {
   FLICK_MAX_SPEED: 4.4,
   /** Velocity decay per ms once airborne (1 = no drag). */
   FLICK_DRAG: 0.9993,
+  /** Downward pull on anything airborne, px/ms². Makes throws arc. */
+  FLICK_GRAVITY: 0.0016,
+  /** How fast a broken object fades out, opacity per ms. */
+  BREAK_FADE: 0.0027,
+  /** How fast a broken object shrinks. */
+  BREAK_SHRINK: 0.0011,
+  /** Scale a sticker jumps to while held. */
+  GRAB_SCALE: 1.14,
+  /**
+   * Hitstop: milliseconds a struck object crawls before it rockets away.
+   * Without it the throw is so fast the break never becomes visible — the
+   * sticker is off-screen before the halves have separated.
+   */
+  HITSTOP: 95,
+  /** Fraction of the launch velocity applied during hitstop. */
+  HITSTOP_DRAG: 0.12,
   /** Spin imparted per px/ms of release speed, in deg/ms. Kept low —
    *  a tumbling chip is unreadable, and unreadable reads as sloppy. */
   FLICK_SPIN: 0.16,

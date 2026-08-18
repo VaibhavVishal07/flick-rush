@@ -100,6 +100,7 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
   const [paused, setPaused] = useState(false)
   const [revealStep, setRevealStep] = useState(0)
   const [impact, setImpact] = useState(0)
+  const [kick, setKick] = useState(0)
   const [cueVisible, setCueVisible] = useState(true)
 
   const goPhase = useCallback((p: Phase) => {
@@ -163,6 +164,10 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
         pushBurst(o.x, o.y, 'threat')
         audio.play('block')
         haptics.block()
+        if (!reducedMotion) {
+          setKick((n) => n + 1)
+          window.setTimeout(() => setKick(0), 200)
+        }
         const tier = streakTier(next.streak)
         if (tier && tier.at === next.streak) {
           setStreakBadge({ key: uid.current++, label: tier.label, count: next.streak })
@@ -385,6 +390,7 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
           if (o.def.trust === 'threat') {
             if (d < GAME_CONFIG.SAFE_FIELD_RADIUS) {
               knockBack(o, cx, cy)
+              dirty = true
               pushFeedback({ kind: 'auto-blocked', x: o.x, y: o.y, label: 'BLOCKED' })
               pushBurst(o.x, o.y, 'safe')
               audio.play('autoBlock')
@@ -493,7 +499,9 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
       setCueVisible(false)
       const pt = localPoint(e)
       o.state = 'held'
-      o.scale = 1.06
+      o.scale = GAME_CONFIG.GRAB_SCALE
+      audio.play('grab')
+      haptics.grab()
       drag.current = {
         id,
         pointerId: e.pointerId,
@@ -559,6 +567,7 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
         launch(o, { x: (dx / m) * 0.85, y: (dy / m) * 0.85 })
       }
       audio.play('flick')
+      rerender()
       e.stopPropagation()
 
       const p = phaseRef.current
@@ -653,6 +662,7 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
     paused,
     revealStep,
     impact,
+    kick,
     showCue: cueVisible && phase === 'tutorial-threat',
     onObjectPointerDown,
     onObjectPointerMove,

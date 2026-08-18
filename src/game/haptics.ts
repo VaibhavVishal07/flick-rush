@@ -19,8 +19,10 @@ const buzz = (pattern: number | number[]) => {
 }
 
 export const haptics = {
-  /** Threat flicked away — short and light. */
-  block: () => buzz(12),
+  /** The instant a sticker is picked up. Barely there, but you feel it. */
+  grab: () => buzz(6),
+  /** Threat flicked away — a short double tick, so it reads as a break. */
+  block: () => buzz([9, 22, 14]),
   /** Genuine item flicked by mistake — a different, doubled shape. */
   wrong: () => buzz([16, 40, 16]),
   /** Threat got through — one blunt impact. */

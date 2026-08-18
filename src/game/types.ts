@@ -23,6 +23,10 @@ export interface LiveObject {
   spawnedAt: number
   /** True once Airtel Safe (not the player) dealt with it. */
   auto: boolean
+  /** Flicked hard enough to come apart — renders as two tumbling halves. */
+  broken: boolean
+  /** Milliseconds of hitstop left before the throw takes over. */
+  hitstop: number
 }
 
 export type Verdict = 'blocked' | 'missed' | 'safe' | 'oops'

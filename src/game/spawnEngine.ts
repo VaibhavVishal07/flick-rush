@@ -99,6 +99,8 @@ export const makeObject = (
     phase: Math.random() * Math.PI * 2,
     spawnedAt: now,
     auto: false,
+    broken: false,
+    hitstop: 0,
   }
 }
 

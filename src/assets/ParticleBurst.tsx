@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import type { Burst } from '../game/types'
 
-const COUNT = 12
+const COUNT = 16
 
 /** Confetti palettes — a block should feel like a party popper, not an alert. */
 const PALETTE: Record<Burst['tone'], string[]> = {
@@ -20,15 +20,20 @@ export const ParticleBurst = ({ burst }: { burst: Burst }) => {
     () =>
       Array.from({ length: COUNT }, (_, i) => {
         const angle = (i / COUNT) * Math.PI * 2 + Math.random() * 0.45
-        const reach = 38 + Math.random() * 38
+        const reach = 44 + Math.random() * 46
         const bar = i % 3 === 0
+        const dx = Math.cos(angle) * reach
+        const dy = Math.sin(angle) * reach
         return {
-          dx: Math.cos(angle) * reach,
-          dy: Math.sin(angle) * reach,
+          dx,
+          dy,
+          // Mid-flight point, so pieces arc instead of sliding out radially.
+          mx: dx * 0.62,
+          my: dy * 0.62 - 12,
           delay: Math.random() * 50,
-          spin: `${Math.round((Math.random() - 0.5) * 540)}deg`,
-          w: bar ? 4 : 5 + Math.random() * 4,
-          h: bar ? 11 : 5 + Math.random() * 4,
+          spin: `${Math.round((Math.random() - 0.5) * 640)}deg`,
+          w: bar ? 4 : 5 + Math.random() * 5,
+          h: bar ? 13 : 5 + Math.random() * 5,
           shape: bar ? 'bar' : 'dot',
           colour: colours[i % colours.length],
         }
@@ -42,6 +47,7 @@ export const ParticleBurst = ({ burst }: { burst: Burst }) => {
       style={{ left: burst.x, top: burst.y }}
       aria-hidden="true"
     >
+      <span className="burst__shock" />
       <span className="burst__ring" />
       {shards.map((s, i) => (
         <span
@@ -51,7 +57,9 @@ export const ParticleBurst = ({ burst }: { burst: Burst }) => {
           style={
             {
               '--dx': `${s.dx}px`,
-              '--dy': `${s.dy}px`,
+              '--dy': `${s.dy + 26}px`,
+              '--mx': `${s.mx}px`,
+              '--my': `${s.my}px`,
               '--delay': `${s.delay}ms`,
               '--spin': s.spin,
               '--shard': s.colour,

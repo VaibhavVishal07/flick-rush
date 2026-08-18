@@ -18,6 +18,22 @@
   animation: arena-shake 0.36s var(--ease-in-out);
 }
 
+/* A much smaller nudge than a miss — you should feel the hit land, not be
+   punished for it. */
+.arena-shell.is-kick {
+  animation: arena-kick 0.19s var(--ease-out);
+}
+
+@keyframes arena-kick {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.012);
+  }
+}
+
 /* The storm covers HUD and footer too — a half-darkened screen reads as a
    rendering bug, not a cut-scene. */
 .arena-shell.is-storm::after {
@@ -365,6 +381,15 @@
   cursor: grabbing;
 }
 
+/* Under the finger a sticker peels up off the board. */
+.obj:active .obj__body {
+  box-shadow:
+    0 0 0 3px #fff,
+    0 10px 0 var(--chip-edge),
+    0 20px 26px rgba(60, 4, 16, 0.44);
+  filter: brightness(1.08);
+}
+
 .obj__body {
   position: relative;
   display: flex;
@@ -612,6 +637,31 @@
   animation: burst-ring 0.42s var(--ease-out) forwards;
 }
 
+/* A wider, softer wave under the ring — the punch you see rather than the
+   pieces you count. */
+.burst__shock {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 96px;
+  height: 96px;
+  margin: -48px 0 0 -48px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0) 68%);
+  animation: burst-shock 0.34s var(--ease-out) forwards;
+}
+
+@keyframes burst-shock {
+  from {
+    transform: scale(0.2);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
 .burst__shard {
   position: absolute;
   left: 50%;
@@ -641,13 +691,18 @@
 }
 
 @keyframes burst-shard {
-  from {
+  0% {
     transform: translate(-50%, -50%) rotate(0deg);
     opacity: 1;
   }
-  to {
+  55% {
+    transform: translate(calc(-50% + var(--mx)), calc(-50% + var(--my)))
+      rotate(calc(var(--spin) * 0.6)) scale(0.9);
+    opacity: 1;
+  }
+  100% {
     transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
-      rotate(var(--spin)) scale(0.35);
+      rotate(var(--spin)) scale(0.3);
     opacity: 0;
   }
 }

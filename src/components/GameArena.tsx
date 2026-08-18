@@ -54,7 +54,9 @@ export const GameArena = ({
 
   return (
     <section
-      className={`arena-shell${g.impact ? ' is-hit' : ''}${storm ? ' is-storm' : ''}`}
+      className={`arena-shell${g.impact ? ' is-hit' : ''}${g.kick ? ' is-kick' : ''}${
+        storm ? ' is-storm' : ''
+      }`}
       aria-label="Shield Rush game"
     >
       <ScoreHUD

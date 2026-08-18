@@ -69,16 +69,37 @@ export const stepIncoming = (
   o.rot += (o.def.wobble ? Math.sin(now * 0.004 + o.phase) * 0.012 : 0) * dt
 }
 
-/** Ballistic step for anything that has been flicked or knocked back. */
+/**
+ * Ballistic step for anything flicked or knocked back. Gravity is what makes
+ * a throw read as a throw — without it everything slides off in a straight
+ * line and the whole gesture feels weightless.
+ */
 export const stepFlicked = (o: LiveObject, dt: number) => {
+  // Hitstop — the object barely moves while the break plays, then goes.
+  if (o.hitstop > 0) {
+    const k = GAME_CONFIG.HITSTOP_DRAG
+    o.hitstop = Math.max(0, o.hitstop - dt)
+    o.x += o.vx * dt * k
+    o.y += o.vy * dt * k
+    o.rot += o.vrot * dt * k
+    return
+  }
+
   const decay = Math.pow(GAME_CONFIG.FLICK_DRAG, dt)
   o.vx *= decay
   o.vy *= decay
+  o.vy += GAME_CONFIG.FLICK_GRAVITY * dt
   o.x += o.vx * dt
   o.y += o.vy * dt
   o.rot += o.vrot * dt
-  o.scale = Math.max(0.5, o.scale - dt * 0.0006)
-  o.opacity = Math.max(0, o.opacity - dt * 0.0022)
+
+  if (o.broken) {
+    o.scale = Math.max(0.42, o.scale - dt * GAME_CONFIG.BREAK_SHRINK)
+    o.opacity = Math.max(0, o.opacity - dt * GAME_CONFIG.BREAK_FADE)
+  } else {
+    o.scale = Math.max(0.5, o.scale - dt * 0.0006)
+    o.opacity = Math.max(0, o.opacity - dt * 0.0022)
+  }
 }
 
 /** Turn a measured release into a launch, boosted and capped. */
@@ -92,6 +113,10 @@ export const launch = (o: LiveObject, v: Vec) => {
   const speed = Math.hypot(boosted.x, boosted.y)
   o.vrot = (o.vx >= 0 ? 1 : -1) * speed * GAME_CONFIG.FLICK_SPIN
   o.state = 'flicked'
+  o.broken = true
+  o.hitstop = GAME_CONFIG.HITSTOP
+  // A struck object jumps before it shrinks — the punch you feel on release.
+  o.scale = 1.2
 }
 
 /** Airtel Safe's knock-back: straight out from the phone, fast and certain. */
@@ -104,6 +129,9 @@ export const knockBack = (o: LiveObject, cx: number, cy: number) => {
   o.vrot = (dx >= 0 ? 1 : -1) * GAME_CONFIG.AUTO_SPIN
   o.state = 'flicked'
   o.auto = true
+  o.broken = true
+  o.hitstop = GAME_CONFIG.HITSTOP * 0.6
+  o.scale = 1.2
 }
 
 export const isOffstage = (o: LiveObject, w: number, h: number) =>

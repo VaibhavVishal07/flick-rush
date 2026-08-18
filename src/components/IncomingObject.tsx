@@ -1,4 +1,4 @@
-import { memo, type PointerEvent as ReactPointerEvent } from 'react'
+import { memo, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import { familyIcon } from '../assets/icons'
 import { IncomingTrail } from '../assets/IncomingTrail'
 import type { LiveObject } from '../game/types'
@@ -15,10 +15,21 @@ interface Props {
 
 const IncomingObjectBase = ({ object: o, cue, register, onDown, onMove, onUp }: Props) => {
   const threat = o.def.trust === 'threat'
+
+  const body: ReactNode = (
+    <div className="obj__body">
+      <span className="obj__icon">{familyIcon(o.def.family, o.def.trust, 19)}</span>
+      <span className="obj__text">
+        <span className="obj__label">{o.def.label}</span>
+        {o.def.caption ? <span className="obj__caption">{o.def.caption}</span> : null}
+      </span>
+    </div>
+  )
+
   return (
     <div
       ref={(el) => register(o.id, el)}
-      className="obj"
+      className={`obj${o.broken ? ' is-broken' : ''}`}
       data-trust={o.def.trust}
       data-family={o.def.family}
       role="button"
@@ -35,19 +46,28 @@ const IncomingObjectBase = ({ object: o, cue, register, onDown, onMove, onUp }: 
       onPointerCancel={(e) => onUp(o.id, e)}
       onContextMenu={(e) => e.preventDefault()}
     >
-      <IncomingTrail tone={threat ? 'threat' : 'genuine'} />
-      {cue ? (
-        <span className="cue" aria-hidden="true">
-          <span className="cue__dot" />
-        </span>
-      ) : null}
-      <div className="obj__body">
-        <span className="obj__icon">{familyIcon(o.def.family, o.def.trust, 19)}</span>
-        <span className="obj__text">
-          <span className="obj__label">{o.def.label}</span>
-          {o.def.caption ? <span className="obj__caption">{o.def.caption}</span> : null}
-        </span>
-      </div>
+      {o.broken ? (
+        /* Split along a diagonal and let the two pieces tumble apart. The
+           halves are the same markup clipped differently, so the break always
+           matches whatever the sticker actually said. */
+        <>
+          <div className="obj__half obj__half--a">{body}</div>
+          <div className="obj__half obj__half--b" aria-hidden="true">
+            {body}
+          </div>
+          <span className="obj__crack" aria-hidden="true" />
+        </>
+      ) : (
+        <>
+          <IncomingTrail tone={threat ? 'threat' : 'genuine'} />
+          {cue ? (
+            <span className="cue" aria-hidden="true">
+              <span className="cue__dot" />
+            </span>
+          ) : null}
+          {body}
+        </>
+      )}
     </div>
   )
 }

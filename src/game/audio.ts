@@ -4,6 +4,7 @@
  */
 
 type Cue =
+  | 'grab'
   | 'flick'
   | 'block'
   | 'genuine'
@@ -117,12 +118,17 @@ class AudioKit {
   play(cue: Cue) {
     if (!this.ctx || !this.enabled) return
     switch (cue) {
+      // A tiny click the instant a sticker is picked up.
+      case 'grab':
+        this.tone(1568, { type: 'square', peak: 0.035, attack: 0.002, decay: 0.028 })
+        break
       // Air moving past a thrown sticker.
       case 'flick':
-        this.whoosh(0.08, 1400, 380, 0.16)
+        this.whoosh(0.085, 1500, 360, 0.15)
         break
-      // A bright pop, up a major third — the sound of something bursting.
+      // Something breaking: a noise crack under a bright major-third pop.
       case 'block':
+        this.whoosh(0.11, 5200, 900, 0.075)
         this.tone(784, { type: 'triangle', peak: 0.15, decay: 0.07 })
         this.tone(1046.5, { type: 'triangle', peak: 0.11, decay: 0.09, delay: 0.045 })
         break

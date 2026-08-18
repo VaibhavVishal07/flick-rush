@@ -81,6 +81,22 @@ React owns which objects exist; the loop writes `transform` and `opacity`
 straight to the DOM nodes each frame. Spawning and despawning re-render, motion
 does not.
 
+### The break
+
+A flicked sticker does not sail off — it comes apart. On release it splits
+along a diagonal into two halves (the same markup under two clip paths, so
+the break always matches whatever the sticker said), flashes white, throws a
+crack streak and a shockwave, and sprays confetti on an arc.
+
+The piece that makes it land is **hitstop**: for ~95ms the struck object
+crawls at 12% of its launch velocity while the split plays, then rockets away
+under gravity. Without it the throw is so fast the sticker is off-screen
+before the halves have separated, and the whole gesture reads as weightless.
+
+Grab, release and impact each get their own tick: a short haptic and a click
+on pick-up, a whoosh on release, a noise crack plus a major-third pop on the
+break, and a 1.2% screen kick — much smaller than the shake a miss earns.
+
 ### Flick physics
 
 Pointer samples are collected on the way down, and release velocity is measured
