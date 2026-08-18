@@ -1,4 +1,5 @@
 import type { Family, Trust } from '../game/objectTypes'
+import { AirtelSafeLogo } from './AirtelSafeLogo'
 
 /**
  * Every icon in Shield Rush is an inline SVG built here.
@@ -133,15 +134,13 @@ export const LinkChainIcon = ({ size = 20, className }: IconProps) => (
   <LinkIcon size={size} className={className} />
 )
 
-/** Airtel Safe lockup used in headers. */
+/**
+ * Airtel Safe lockup on its white plate. The plate matters: the master
+ * artwork sets "safe" in black, which would vanish on the game's blue sky.
+ */
 export const AirtelSafeMark = ({ compact = false }: { compact?: boolean }) => (
   <span className={`brand-mark${compact ? ' brand-mark--compact' : ''}`}>
-    <span className="brand-mark__dot" aria-hidden="true">
-      <ShieldMark size={13} />
-    </span>
-    <span className="brand-mark__text">
-      airtel <b>Safe</b>
-    </span>
+    <AirtelSafeLogo width={compact ? 82 : 104} />
   </span>
 )
 

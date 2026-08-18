@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from 'react'
-import { AirtelSafeMark, ShareIcon, ShieldMark } from '../assets/icons'
+import { AirtelSafeMark, ShareIcon } from '../assets/icons'
+import { AirtelShield } from '../assets/AirtelSafeLogo'
 
 interface Props {
   correct: number
@@ -28,14 +29,14 @@ const roundRect = (
   ctx.closePath()
 }
 
-const DISPLAY = `"Baloo 2", "Trebuchet MS", system-ui, sans-serif`
+const DISPLAY = `"Pixelify Sans", "Courier New", ui-monospace, monospace`
 const UI = `Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif`
 
-const SKY_1 = '#1B3FD8'
-const SKY_2 = '#3B82F6'
-const SKY_3 = '#7DD3FC'
+const SKY_1 = '#8F0A1E'
+const SKY_2 = '#E8112D'
+const SKY_3 = '#FF6A52'
 const INK = '#14224A'
-const AIRTEL = '#E8112D'
+const GOLD = '#C98A00'
 
 /** `letterSpacing` is well supported but still missing from some lib.dom builds. */
 const setTracking = (ctx: CanvasRenderingContext2D, value: string) => {
@@ -73,7 +74,7 @@ export const ShareCard = ({ correct, total, bestStreak, onClose }: Props) => {
     ctx.fillRect(0, 0, CARD_W, CARD_H)
 
     const sun = ctx.createRadialGradient(CARD_W / 2, 180, 20, CARD_W / 2, 180, 620)
-    sun.addColorStop(0, 'rgba(255,255,255,0.42)')
+    sun.addColorStop(0, 'rgba(255,255,255,0.34)')
     sun.addColorStop(1, 'rgba(255,255,255,0)')
     ctx.fillStyle = sun
     ctx.fillRect(0, 0, CARD_W, CARD_H)
@@ -82,7 +83,7 @@ export const ShareCard = ({ correct, total, bestStreak, onClose }: Props) => {
 
     // Wordmark
     ctx.fillStyle = INK
-    ctx.font = `800 46px ${DISPLAY}`
+    ctx.font = `700 42px ${DISPLAY}`
     setTracking(ctx, '14px')
     ctx.globalAlpha = 0.4
     ctx.fillText('SHIELD RUSH', CARD_W / 2, 176)
@@ -101,13 +102,13 @@ export const ShareCard = ({ correct, total, bestStreak, onClose }: Props) => {
 
     // Score
     ctx.fillStyle = '#6B7BA6'
-    ctx.font = `900 32px ${UI}`
+    ctx.font = `900 30px ${UI}`
     setTracking(ctx, '7px')
     ctx.fillText('MY SCORE', CARD_W / 2, 380)
     setTracking(ctx, '0px')
 
     ctx.fillStyle = INK
-    ctx.font = `800 200px ${DISPLAY}`
+    ctx.font = `700 168px ${DISPLAY}`
     ctx.fillText(`${correct} / ${total}`, CARD_W / 2, 570)
 
     // Divider
@@ -117,17 +118,17 @@ export const ShareCard = ({ correct, total, bestStreak, onClose }: Props) => {
 
     // Streak
     ctx.fillStyle = '#6B7BA6'
-    ctx.font = `900 32px ${UI}`
+    ctx.font = `900 30px ${UI}`
     setTracking(ctx, '7px')
     ctx.fillText('BEST STREAK', CARD_W / 2, 722)
     setTracking(ctx, '0px')
 
-    ctx.fillStyle = AIRTEL
-    ctx.font = `800 132px ${DISPLAY}`
+    ctx.fillStyle = GOLD
+    ctx.font = `700 116px ${DISPLAY}`
     ctx.fillText(`×${bestStreak}`, CARD_W / 2, 862)
 
     // Challenge
-    ctx.font = `800 62px ${DISPLAY}`
+    ctx.font = `700 52px ${DISPLAY}`
     ctx.fillStyle = 'rgba(20,34,74,0.35)'
     ctx.fillText('Think you can beat me?', CARD_W / 2, 1122)
     ctx.fillStyle = '#FFFFFF'
@@ -218,7 +219,7 @@ export const ShareCard = ({ correct, total, bestStreak, onClose }: Props) => {
 
           <p className="share-card__challenge">Think you can beat me?</p>
           <p className="share-card__foot">
-            <ShieldMark size={13} /> Play Shield Rush on Airtel
+            <AirtelShield size={15} /> Play Shield Rush on Airtel
           </p>
         </div>
 

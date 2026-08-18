@@ -141,6 +141,20 @@ export const STAGES: Stage[] = [
   },
 ]
 
+/* ---- Winners ticker ------------------------------------------------------ */
+
+/**
+ * PLACEHOLDER for the live winners feed. These are invented rows, shown only
+ * so the ticker has something to scroll — wire this to the real endpoint
+ * before shipping rather than presenting made-up results as other players.
+ */
+export const recentWinners: Array<{ id: string; result: string }> = [
+  { id: '156****4764', result: 'handled 14/16' },
+  { id: '134****8390', result: 'streak ×9' },
+  { id: '189****2215', result: 'handled 15/17' },
+  { id: '177****6048', result: 'streak ×7' },
+]
+
 /* ---- Personalisation placeholder ---------------------------------------- */
 
 export interface SafetyReport {

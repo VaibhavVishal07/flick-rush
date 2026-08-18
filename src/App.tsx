@@ -4,6 +4,7 @@ import { GameIntro } from './components/GameIntro'
 import { GameArena } from './components/GameArena'
 import { ResultScreen } from './components/ResultScreen'
 import { SafetyReportSheet } from './components/SafetyReportSheet'
+import { RulesSheet } from './components/RulesSheet'
 import { audio } from './game/audio'
 import { setHapticsEnabled } from './game/haptics'
 import type { GameResult } from './game/types'
@@ -38,6 +39,7 @@ export default function App() {
   const [soundOn, setSoundOn] = useState(true)
   const [round, setRound] = useState(0)
   const [showReport, setShowReport] = useState(false)
+  const [showRules, setShowRules] = useState(false)
   const reducedMotion = usePrefersReducedMotion()
   const challenge = useMemo(readChallenge, [])
 
@@ -73,6 +75,8 @@ export default function App() {
             onPlay={play}
             soundOn={soundOn}
             onToggleSound={() => setSoundOn((s) => !s)}
+            onRules={() => setShowRules(true)}
+            onReport={() => setShowReport(true)}
             returning={round > 0}
           />
         </>
@@ -94,6 +98,7 @@ export default function App() {
       ) : null}
 
       {showReport ? <SafetyReportSheet onClose={() => setShowReport(false)} /> : null}
+      {showRules ? <RulesSheet onClose={() => setShowRules(false)} /> : null}
     </GameShell>
   )
 }

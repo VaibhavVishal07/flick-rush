@@ -26,7 +26,7 @@
   inset: 0;
   z-index: 14;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(22, 10, 56, 0.93), rgba(84, 10, 38, 0.9));
+  background: linear-gradient(180deg, rgba(8, 10, 32, 0.94), rgba(58, 4, 18, 0.92));
   animation: fade-in 0.34s ease both;
 }
 
@@ -64,22 +64,30 @@
 .hud__btn {
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: var(--paper);
+  background: linear-gradient(180deg, #ffffff, #ffeceb);
   color: var(--ink);
   cursor: pointer;
-  box-shadow: 0 4px 0 rgba(20, 34, 74, 0.22);
-  transition: transform 0.1s var(--ease-out), box-shadow 0.1s var(--ease-out);
+  box-shadow:
+    0 0 0 3px #fff,
+    0 0 0 5px rgba(60, 4, 16, 0.2),
+    0 5px 0 #d9c3c3,
+    0 10px 14px rgba(60, 4, 16, 0.3);
+  transition: transform 0.09s var(--ease-out), box-shadow 0.09s var(--ease-out);
   -webkit-tap-highlight-color: transparent;
 }
 
 .hud__btn:active:not(:disabled) {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 rgba(20, 34, 74, 0.22);
+  transform: translateY(4px);
+  box-shadow:
+    0 0 0 3px #fff,
+    0 0 0 5px rgba(60, 4, 16, 0.2),
+    0 1px 0 #d9c3c3,
+    0 4px 8px rgba(60, 4, 16, 0.26);
 }
 
 .hud__btn:disabled {
@@ -93,13 +101,13 @@
 }
 
 .hud__clock {
-  padding: 5px 18px;
+  padding: 6px 18px 4px;
   border-radius: 999px;
   background: var(--ink);
   color: #fff;
   font-family: var(--display);
   font-size: 25px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.15;
   font-variant-numeric: tabular-nums;
   box-shadow: 0 4px 0 rgba(10, 18, 42, 0.45), inset 0 -2px 0 rgba(255, 255, 255, 0.12);
@@ -120,16 +128,16 @@
   text-transform: uppercase;
   color: #fff;
   opacity: 0.85;
-  text-shadow: 0 2px 0 rgba(20, 34, 74, 0.4);
+  text-shadow: 0 2px 0 rgba(60, 4, 16, 0.5);
 }
 
 .hud__score-value {
   font-family: var(--display);
   font-size: 30px;
-  font-weight: 800;
+  font-weight: 700;
   color: #fff;
   font-variant-numeric: tabular-nums;
-  text-shadow: 0 3px 0 rgba(20, 34, 74, 0.42);
+  text-shadow: 0 3px 0 rgba(60, 4, 16, 0.55);
 }
 
 /* ---------------------------------------------------------------- arena -- */
@@ -167,8 +175,8 @@
 .phone-target__device {
   position: relative;
   z-index: 3;
-  filter: drop-shadow(0 14px 0 rgba(20, 34, 74, 0.22))
-    drop-shadow(0 24px 30px rgba(20, 34, 74, 0.35));
+  filter: drop-shadow(0 14px 0 rgba(60, 4, 16, 0.26))
+    drop-shadow(0 24px 30px rgba(60, 4, 16, 0.4));
   animation: device-bob 3.4s var(--ease-in-out) infinite;
   transition: transform 0.4s var(--ease-back);
 }
@@ -218,7 +226,7 @@
   width: 130px;
   height: 130px;
   border-radius: 50%;
-  border: 5px solid var(--threat);
+  border: 5px solid var(--ink);
   animation: impact-ring 0.44s var(--ease-out) forwards;
 }
 
@@ -261,18 +269,18 @@
 .safe-field__ring--inner {
   width: 236px;
   height: 236px;
-  border: 7px solid var(--airtel);
-  background: radial-gradient(circle, rgba(232, 17, 45, 0.16), transparent 70%);
+  border: 7px solid #fff;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.18), transparent 70%);
   box-shadow:
-    0 0 0 4px #fff,
-    inset 0 0 0 4px #fff,
-    0 0 40px rgba(232, 17, 45, 0.5);
+    0 0 0 4px var(--gold),
+    inset 0 0 0 4px var(--gold),
+    0 0 44px rgba(255, 255, 255, 0.6);
 }
 
 .safe-field__ring--mid {
   width: 274px;
   height: 274px;
-  border: 4px dashed rgba(255, 255, 255, 0.75);
+  border: 4px dashed rgba(255, 224, 138, 0.9);
   animation-delay: 0.07s;
 }
 
@@ -299,7 +307,7 @@
   width: 236px;
   height: 236px;
   border-radius: 50%;
-  border: 5px solid var(--airtel-hi);
+  border: 5px solid #fff;
 }
 
 .safe-field.is-active .safe-field__pulse {
@@ -323,12 +331,11 @@
   bottom: -136px;
   display: grid;
   place-items: center;
-  width: 42px;
-  height: 42px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  color: #fff;
-  background: linear-gradient(180deg, var(--airtel-hi), var(--airtel));
-  box-shadow: 0 0 0 4px #fff, 0 5px 0 var(--airtel-lo);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(20, 34, 74, 0.14), 0 5px 0 rgba(20, 34, 74, 0.2);
   transform: scale(0);
 }
 
@@ -369,7 +376,7 @@
   box-shadow:
     0 0 0 3px #fff,
     0 5px 0 var(--chip-edge),
-    0 11px 16px rgba(20, 34, 74, 0.28);
+    0 11px 16px rgba(60, 4, 16, 0.34);
   transform: scale(var(--heft, 1));
   transform-origin: center;
 }
@@ -395,9 +402,9 @@
 }
 
 .obj__label {
-  font-family: var(--display);
+  font-family: var(--font);
   font-size: 12.5px;
-  font-weight: 800;
+  font-weight: 900;
   letter-spacing: 0.005em;
   color: #fff;
   text-shadow: 0 2px 0 rgba(20, 34, 74, 0.3);
@@ -409,29 +416,30 @@
   color: rgba(255, 255, 255, 0.82);
 }
 
-/* Six hues, so the arena reads as a playground and not a threat console. */
+/* Threats are the cool-dark family and genuine items the bright family.
+   Both hold up against red; the old coral threats did not. */
 .obj[data-trust='threat'] {
-  --chip-hi: #ff6076;
+  --chip-hi: #8b5cf6;
   --chip-lo: var(--threat-lo);
-  --chip-edge: #8c081f;
+  --chip-edge: var(--threat-edge);
 }
 
 .obj[data-trust='threat'][data-family='sms'] {
-  --chip-hi: #ffa462;
+  --chip-hi: #818cf8;
   --chip-lo: var(--sms-lo);
-  --chip-edge: #93380a;
+  --chip-edge: var(--sms-edge);
 }
 
 .obj[data-trust='threat'][data-family='link'] {
-  --chip-hi: #c084fc;
+  --chip-hi: #3b82f6;
   --chip-lo: var(--link-lo);
-  --chip-edge: #4c1480;
+  --chip-edge: var(--link-edge);
 }
 
 .obj[data-trust='threat'][data-family='alert'] {
-  --chip-hi: #ffd75e;
+  --chip-hi: #fde047;
   --chip-lo: var(--alert-lo);
-  --chip-edge: #8a5f00;
+  --chip-edge: var(--alert-edge);
 }
 
 .obj[data-trust='threat'][data-family='alert'] .obj__body {
@@ -460,14 +468,14 @@
 .obj[data-trust='genuine'] {
   --chip-hi: #4ade80;
   --chip-lo: var(--good-lo);
-  --chip-edge: #0a5228;
+  --chip-edge: var(--good-edge);
 }
 
 .obj[data-trust='genuine'][data-family='sms'],
 .obj[data-trust='genuine'][data-family='otp'] {
-  --chip-hi: #7dd3fc;
+  --chip-hi: #67e8f9;
   --chip-lo: var(--good-blue-lo);
-  --chip-edge: #024a72;
+  --chip-edge: var(--good-blue-edge);
 }
 
 /* Genuine things arrive with a friendly halo so they read as welcome. */
@@ -483,11 +491,11 @@
 }
 
 .trail--threat {
-  background: radial-gradient(circle, rgba(255, 59, 92, 0.28), transparent 64%);
+  background: radial-gradient(circle, rgba(30, 10, 70, 0.32), transparent 64%);
 }
 
 .trail--genuine {
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent 62%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.45), transparent 62%);
 }
 
 /* ------------------------------------------------------------- verdicts -- */
@@ -510,7 +518,7 @@
   border-radius: 999px;
   font-family: var(--display);
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.02em;
   color: #fff;
   transform: rotate(-6deg);
@@ -520,14 +528,20 @@
 .verdict__points {
   font-family: var(--display);
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
   color: #fff;
   font-variant-numeric: tabular-nums;
-  text-shadow: 0 3px 0 rgba(20, 34, 74, 0.45);
+  text-shadow: 0 3px 0 rgba(60, 4, 16, 0.5);
 }
 
+/* A white plate with Airtel red inside it — the strongest possible mark on a
+   red field, and on brand. Needs a dark keyline, since the default white one
+   would disappear into the plate. */
 .verdict--blocked .verdict__label {
-  background: linear-gradient(180deg, #ff6076, var(--threat-lo));
+  background: #fff;
+  color: var(--airtel);
+  text-shadow: none;
+  box-shadow: 0 0 0 3px var(--ink), 0 4px 0 rgba(60, 4, 16, 0.34);
 }
 
 .verdict--safe .verdict__label,
@@ -542,8 +556,11 @@
   transform: rotate(4deg);
 }
 
+/* Airtel Safe's own stamp: gold, so automation reads as the win. */
 .verdict--auto-blocked .verdict__label {
-  background: linear-gradient(180deg, var(--airtel-hi), var(--airtel));
+  background: linear-gradient(180deg, var(--gold-hi), var(--gold));
+  color: #4a2f00;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.4);
   animation: stamp 0.26s var(--ease-back);
 }
 
@@ -648,10 +665,10 @@
   background: var(--paper);
   font-family: var(--display);
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--ink);
   white-space: nowrap;
-  box-shadow: 0 0 0 3px rgba(20, 34, 74, 0.14), 0 5px 0 rgba(20, 34, 74, 0.2);
+  box-shadow: 0 0 0 3px rgba(60, 4, 16, 0.18), 0 5px 0 rgba(60, 4, 16, 0.24);
   animation: coach-in 0.42s var(--ease-back) both;
   pointer-events: none;
   z-index: 19;
@@ -713,20 +730,20 @@
   inset: 0;
   display: grid;
   place-items: center;
-  background: rgba(15, 30, 80, 0.34);
+  background: rgba(40, 2, 10, 0.36);
   z-index: 12;
 }
 
 .countdown__num {
   font-family: var(--display);
   font-size: 120px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
   color: #fff;
   text-shadow:
-    0 6px 0 var(--airtel),
-    0 12px 0 var(--airtel-lo),
-    0 20px 30px rgba(20, 34, 74, 0.5);
+    0 6px 0 var(--gold),
+    0 12px 0 var(--gold-lo),
+    0 20px 30px rgba(60, 4, 16, 0.55);
   animation: count-pop 0.6s var(--ease-back);
 }
 
@@ -756,14 +773,14 @@
   justify-items: center;
   gap: 18px;
   padding: 0 40px;
-  background: rgba(15, 30, 80, 0.72);
+  background: rgba(40, 2, 10, 0.74);
 }
 
 .paused__title {
   margin: 0;
   font-family: var(--display);
   font-size: 34px;
-  font-weight: 800;
+  font-weight: 700;
   color: #fff;
   text-shadow: 0 4px 0 rgba(20, 34, 74, 0.5);
 }
@@ -781,14 +798,14 @@
   padding: 9px 18px;
   border-radius: 999px;
   background: linear-gradient(180deg, #ffd75e, #f59e0b);
-  box-shadow: 0 0 0 3.5px #fff, 0 6px 0 #a16207, 0 12px 18px rgba(20, 34, 74, 0.3);
+  box-shadow: 0 0 0 3.5px #fff, 0 6px 0 #a16207, 0 12px 18px rgba(60, 4, 16, 0.34);
   animation: streak-in 0.5s var(--ease-back) both;
 }
 
 .streak__label {
   font-family: var(--display);
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.03em;
   color: #4a2f00;
 }
@@ -796,7 +813,7 @@
 .streak__count {
   font-family: var(--display);
   font-size: 19px;
-  font-weight: 800;
+  font-weight: 700;
   color: #fff;
   font-variant-numeric: tabular-nums;
   text-shadow: 0 2px 0 rgba(120, 74, 0, 0.6);
@@ -834,7 +851,7 @@
   margin: 0;
   font-family: var(--display);
   font-size: 28px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.12;
   text-wrap: balance;
   animation: line-in 0.5s var(--ease-back) both;
@@ -880,7 +897,7 @@
 .takeover__status-text {
   font-family: var(--display);
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--ink);
 }
 

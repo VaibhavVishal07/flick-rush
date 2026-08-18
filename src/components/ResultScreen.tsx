@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { AirtelSafeMark, ShieldMark } from '../assets/icons'
 import { ShareCard } from './ShareCard'
+import { safetyReport } from '../game/gameConfig'
 import type { GameResult } from '../game/types'
 
 interface Props {
@@ -33,7 +34,7 @@ export const ResultScreen = ({ result, onReplay, onReport }: Props) => {
 
         <div className="score-block score-block--safe">
           <p className="score-block__who">
-            <ShieldMark size={14} /> Airtel Safe
+            <ShieldMark size={15} /> Airtel Safe
           </p>
           <p className="score-block__value">
             {result.autoHandled} <span>/ {result.total}</span>
@@ -69,6 +70,11 @@ export const ResultScreen = ({ result, onReplay, onReport }: Props) => {
         <button type="button" className="btn btn--primary btn--lg" onClick={onReport}>
           See My Safety Report
         </button>
+        {safetyReport ? (
+          <p className="btn-sub">
+            {safetyReport.totalHandled} things handled for you this week
+          </p>
+        ) : null}
         <button type="button" className="btn btn--ghost" onClick={onReplay}>
           Play Again
         </button>

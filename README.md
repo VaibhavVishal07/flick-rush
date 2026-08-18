@@ -41,6 +41,23 @@ React 18 + TypeScript + Vite. DOM-based gameplay driven by a single
 `requestAnimationFrame` loop — no game engine, no canvas for the interface, so
 everything stays inspectable and tunable in the browser.
 
+### Look
+
+An Airtel-red arena: deep crimson overhead through to warm sand underfoot.
+Because the ground is red, nothing that matters can be red — threats are the
+cool-dark family (violet, indigo, amber), genuine items the bright family
+(green, cyan), and the primary action is gold. Every object is a sticker with
+a white keyline, a hard bottom edge and a real press travel.
+
+Display type is Pixelify Sans, UI type is Nunito, both embedded as woff2 data
+URIs. Object labels always use the UI face — a pixel `C` reads as an `O` at
+12px, and the player has a fraction of a second to tell a spam call from Mom.
+
+The Airtel Safe lockup is the supplied master artwork, inlined as SVG. Its
+"safe" is set in black, so it always sits on a white plate; the shield alone
+is used where space is tight, and a plain white glyph stands in wherever the
+background is red.
+
 ```
 src/
   game/

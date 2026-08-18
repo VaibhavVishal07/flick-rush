@@ -1,4 +1,4 @@
-import { ShieldMark } from './icons'
+import { AirtelShield } from './AirtelSafeLogo'
 
 /**
  * The Airtel Safe protective field: a soft ring that expands around the phone
@@ -11,7 +11,7 @@ export const SafeField = ({ active }: { active: boolean }) => (
     <span className="safe-field__ring safe-field__ring--inner" />
     <span className="safe-field__pulse" />
     <span className="safe-field__badge">
-      <ShieldMark size={15} />
+      <AirtelShield size={26} />
     </span>
   </div>
 )

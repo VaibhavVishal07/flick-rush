@@ -1,16 +1,25 @@
-import { AirtelSafeMark, SoundOffIcon, SoundOnIcon, familyIcon } from '../assets/icons'
+import {
+  AirtelSafeMark,
+  ShieldMark,
+  SoundOffIcon,
+  SoundOnIcon,
+  familyIcon,
+} from '../assets/icons'
 import { PhoneDevice } from '../assets/PhoneDevice'
-import { safetyReport } from '../game/gameConfig'
+import { WinnerTicker } from './WinnerTicker'
+import { GAME_CONFIG, safetyReport } from '../game/gameConfig'
 import type { Family, Trust } from '../game/objectTypes'
 
 interface Props {
   onPlay: () => void
   soundOn: boolean
   onToggleSound: () => void
+  onRules: () => void
+  onReport: () => void
   returning: boolean
 }
 
-/** The four chips that orbit the phone on the ingress. */
+/** The four stickers that orbit the phone on the ingress. */
 const PREVIEW: Array<{
   label: string
   family: Family
@@ -23,7 +32,14 @@ const PREVIEW: Array<{
   { label: 'Spam SMS', family: 'sms', trust: 'threat', lane: 'd' },
 ]
 
-export const GameIntro = ({ onPlay, soundOn, onToggleSound, returning }: Props) => (
+export const GameIntro = ({
+  onPlay,
+  soundOn,
+  onToggleSound,
+  onRules,
+  onReport,
+  returning,
+}: Props) => (
   <section className="intro" aria-label="Shield Rush">
     <header className="intro__top">
       <AirtelSafeMark />
@@ -38,9 +54,28 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, returning }: Props) 
       </button>
     </header>
 
-    <div className="intro__stage" aria-hidden="true">
-      <span className="intro__glow" />
-      <div className="intro__device">
+    {/* Streak ladder, in the station-reward style of the reference campaigns. */}
+    <div className="stations">
+      <p className="stations__label">
+        Streak
+        <br />
+        bonus
+      </p>
+      <ol className="stations__list">
+        {GAME_CONFIG.STREAK_TIERS.map((t) => (
+          <li key={t.at}>
+            <span className="stations__count">×{t.at}</span>
+            <span className="stations__name">{t.label}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <WinnerTicker />
+
+    <div className="intro__stage">
+      <div className="intro__glow" aria-hidden="true" />
+      <div className="intro__device" aria-hidden="true">
         <PhoneDevice width={78} />
       </div>
       {PREVIEW.map((p) => (
@@ -49,11 +84,24 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, returning }: Props) 
           className={`intro__chip intro__chip--${p.lane}`}
           data-trust={p.trust}
           data-family={p.family}
+          aria-hidden="true"
         >
-          <span className="intro__chip-icon">{familyIcon(p.family, p.trust, 16)}</span>
+          <span className="intro__chip-icon">{familyIcon(p.family, p.trust, 15)}</span>
           <span>{p.label}</span>
         </div>
       ))}
+
+      <div className="rail intro__rail">
+        <button type="button" className="tile" data-tone="rules" onClick={onRules}>
+          <ShieldMark size={19} />
+          <span className="tile__label">Rules</span>
+        </button>
+        <button type="button" className="tile" data-tone="report" onClick={onReport}>
+          <span className="tile__pip" aria-hidden="true" />
+          {familyIcon('calendar', 'genuine', 19)}
+          <span className="tile__label">Report</span>
+        </button>
+      </div>
     </div>
 
     <div className="intro__copy">
@@ -79,7 +127,7 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, returning }: Props) 
       <button type="button" className="btn btn--primary btn--lg" onClick={onPlay}>
         {returning ? 'Play Again' : 'Play Now'}
       </button>
-      <p className="intro__hint">Takes 20 seconds</p>
+      <p className="btn-sub">Takes 20 seconds · 1 round</p>
     </div>
   </section>
 )
