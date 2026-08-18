@@ -18,7 +18,7 @@ The takeaway is never "be more careful online". It is "you shouldn't have to be.
 | Tutorial | ~3.5s | A **TAP!** badge and a pressing finger ride the first threat; a **LEAVE IT** badge rides the genuine call. No "Next" button. |
 | Countdown | ~1.9s | 3 · 2 · 1 |
 | Gameplay | 17s | Learn → Rush → Chaos → Swarm → **Flood** |
-| Takeover | ~3.6s | Everything freezes. "Tough keeping up?" · "You shouldn't have to." Then a banner names it plainly — **Airtel Safe is handling it automatically** — and counts the blocks and allows as they happen. |
+| Takeover | ~5.5s | Everything freezes. "Tough keeping up?" · "You shouldn't have to." Then a banner names it plainly — **Airtel Safe is handling it automatically** — and counts the blocks and allows as they happen. The last 1.2s stops spawning so the field clears and the arc ends calm. |
 | Result | — | Verdict first, then throughput: you against Airtel Safe on the same job, itemised. |
 
 First play lands around 29 seconds. Replays skip the tutorial and are live in
@@ -62,7 +62,9 @@ cool-dark family (violet, indigo, amber), genuine items the bright family
 a white keyline, a hard bottom edge and a real press travel.
 
 Display type is Pixelify Sans, UI type is Inter, both embedded as woff2 data
-URIs. Object labels always use the UI face — a pixel `C` reads as an `O` at
+URIs. **All numerals are Inter** — Pixelify's `5` reads as an `S` and its `8`
+and `9` are hard to tell apart, which is no good on a clock or a score.
+Object labels also use the UI face — a pixel `C` reads as an `O` at
 12px, and the player has a fraction of a second to tell a spam call from Mom.
 
 The Airtel Safe lockup is the supplied master artwork, inlined as SVG. Its

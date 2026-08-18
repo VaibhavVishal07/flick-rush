@@ -65,14 +65,26 @@ export const ResultScreen = ({ result, onReplay, onReport }: Props) => {
         </div>
 
         <div className="result__say">
+          {/* Says what just happened in plain words. "Better automation" was a
+              comparative with no subject — it read as a slogan, not a fact. */}
           <h2 className="result__headline">
-            Good reflexes.
-            <br />
-            <em>Better automation.</em>
+            {result.slipped > 0 ? (
+              <>
+                Some got past you.
+                <br />
+                <em>None get past Airtel Safe.</em>
+              </>
+            ) : (
+              <>
+                A perfect run.
+                <br />
+                <em>Airtel Safe does that every time.</em>
+              </>
+            )}
           </h2>
           <p className="result__body">
-            Airtel Safe blocks spam calls, suspicious links and messages automatically. You
-            don&rsquo;t have to do a thing.
+            It blocks spam calls, suspicious links and messages automatically — every hour of
+            every day, without you tapping anything.
           </p>
         </div>
       </div>

@@ -50,9 +50,10 @@
 }
 
 .stations__count {
-  font-family: var(--display);
+  font-family: var(--num);
+  letter-spacing: -0.03em;
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 900;
   line-height: 1;
   color: var(--airtel);
 }
@@ -484,9 +485,10 @@
 
 .versus__num {
   margin: 0;
-  font-family: var(--display);
+  font-family: var(--num);
+  letter-spacing: -0.03em;
   font-size: 62px;
-  font-weight: 700;
+  font-weight: 900;
   line-height: 0.92;
   font-variant-numeric: tabular-nums;
 }
@@ -646,9 +648,10 @@
 
 .share-card__score {
   margin: 3px 0 0;
-  font-family: var(--display);
+  font-family: var(--num);
+  letter-spacing: -0.03em;
   font-size: 54px;
-  font-weight: 700;
+  font-weight: 900;
   line-height: 1;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
@@ -668,9 +671,10 @@
 
 .share-card__streak {
   margin: 3px 0 0;
-  font-family: var(--display);
+  font-family: var(--num);
+  letter-spacing: -0.03em;
   font-size: 36px;
-  font-weight: 700;
+  font-weight: 900;
   color: var(--airtel);
   font-variant-numeric: tabular-nums;
 }
@@ -760,9 +764,10 @@
 }
 
 .report__value {
-  font-family: var(--display);
+  font-family: var(--num);
+  letter-spacing: -0.03em;
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 900;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
 }

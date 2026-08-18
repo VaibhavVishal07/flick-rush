@@ -106,7 +106,12 @@ export const GameArena = ({
           </div>
         ))}
 
-        <SafeTakeover phase={g.phase} revealStep={g.revealStep} autoTally={g.autoTally} />
+        <SafeTakeover
+          phase={g.phase}
+          revealStep={g.revealStep}
+          autoTally={g.autoTally}
+          settled={g.settled}
+        />
 
         {tutorial ? (
           <p key={g.phase} className="coach">

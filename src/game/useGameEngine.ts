@@ -107,6 +107,7 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
   const [pop, setPop] = useState(0)
   /** 0 → 1 across the final stages; drives how frantic the arena looks. */
   const [panic, setPanic] = useState(0)
+  const [settled, setSettled] = useState(false)
   const [flash, setFlash] = useState(0)
   const emptyAuto: AutoTally = { calls: 0, messages: 0, links: 0, allowed: 0 }
   const [autoTally, setAutoTally] = useState<AutoTally>(emptyAuto)
@@ -379,6 +380,9 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
         }
       } else if (auto) {
         autoElapsed.current += dt
+        const calm =
+          autoElapsed.current >= GAME_CONFIG.TAKEOVER_DURATION - GAME_CONFIG.TAKEOVER_HOLD
+        setSettled((prev) => (prev === calm ? prev : calm))
         if (autoElapsed.current >= GAME_CONFIG.TAKEOVER_DURATION) {
           finish()
           return
@@ -397,8 +401,12 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
           dirty = true
         }
       } else if (auto) {
+        // Stop feeding the field for the last beat so it empties out and the
+        // player sees the calm Airtel Safe leaves behind.
+        const settling =
+          autoElapsed.current >= GAME_CONFIG.TAKEOVER_DURATION - GAME_CONFIG.TAKEOVER_HOLD
         spawnClock.current += dt
-        if (spawnClock.current >= AUTO_SPAWN_INTERVAL && aliveCount() < AUTO_MAX_ALIVE) {
+        if (!settling && spawnClock.current >= AUTO_SPAWN_INTERVAL && aliveCount() < AUTO_MAX_ALIVE) {
           spawnClock.current = 0
           const stage = stageAt(GAME_CONFIG.GAME_DURATION - 1)
           objectsRef.current.push(
@@ -724,6 +732,7 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
     pop,
     flash,
     panic,
+    settled,
     autoTally,
     cue:
       phase === 'tutorial-threat' && !cueUsed

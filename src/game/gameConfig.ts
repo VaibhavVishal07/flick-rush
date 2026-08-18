@@ -10,7 +10,13 @@ export const GAME_CONFIG = {
   /** Elapsed manual time at which Airtel Safe steps in. */
   TAKEOVER_TIME: 17_000,
   /** How long the automatic sequence runs before the result screen. */
-  TAKEOVER_DURATION: 3_200,
+  TAKEOVER_DURATION: 5_200,
+  /**
+   * The tail of that window stops spawning, so the field clears and the
+   * banner rests on its final numbers. The arc is meant to end calm, not to
+   * cut away mid-chaos.
+   */
+  TAKEOVER_HOLD: 1_200,
   /** Beat structure of the takeover reveal. */
   FREEZE_HOLD: 400,
   REVEAL_LINE_B: 700,

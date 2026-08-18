@@ -108,7 +108,7 @@ export const ShareCard = ({ correct, total, bestStreak, onClose }: Props) => {
     setTracking(ctx, '0px')
 
     ctx.fillStyle = INK
-    ctx.font = `700 168px ${DISPLAY}`
+    ctx.font = `900 156px ${UI}`
     ctx.fillText(`${correct} / ${total}`, CARD_W / 2, 570)
 
     // Divider
@@ -124,7 +124,7 @@ export const ShareCard = ({ correct, total, bestStreak, onClose }: Props) => {
     setTracking(ctx, '0px')
 
     ctx.fillStyle = GOLD
-    ctx.font = `700 116px ${DISPLAY}`
+    ctx.font = `900 108px ${UI}`
     ctx.fillText(`×${bestStreak}`, CARD_W / 2, 862)
 
     // Challenge

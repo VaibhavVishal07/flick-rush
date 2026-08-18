@@ -114,9 +114,10 @@
   border-radius: var(--r);
   background: var(--outline);
   color: #fff;
-  font-family: var(--display);
+  font-family: var(--num);
+  letter-spacing: -0.03em;
   font-size: 25px;
-  font-weight: 700;
+  font-weight: 900;
   line-height: 1.15;
   font-variant-numeric: tabular-nums;
   box-shadow: var(--drop-sm);
@@ -141,9 +142,10 @@
 }
 
 .hud__score-value {
-  font-family: var(--display);
+  font-family: var(--num);
+  letter-spacing: -0.03em;
   font-size: 30px;
-  font-weight: 700;
+  font-weight: 900;
   color: #fff;
   font-variant-numeric: tabular-nums;
   text-shadow: 3px 3px 0 var(--outline);
@@ -626,9 +628,10 @@
 }
 
 .verdict__points {
-  font-family: var(--display);
+  font-family: var(--num);
+  letter-spacing: -0.03em;
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 900;
   color: #fff;
   font-variant-numeric: tabular-nums;
   text-shadow: 0 3px 0 rgba(60, 4, 16, 0.5);
@@ -947,9 +950,10 @@
 }
 
 .countdown__num {
-  font-family: var(--display);
+  font-family: var(--num);
+  letter-spacing: -0.03em;
   font-size: 120px;
-  font-weight: 700;
+  font-weight: 900;
   line-height: 1;
   color: #fff;
   text-shadow:
@@ -1022,9 +1026,10 @@
 }
 
 .streak__count {
-  font-family: var(--display);
+  font-family: var(--num);
+  letter-spacing: -0.03em;
   font-size: 21px;
-  font-weight: 700;
+  font-weight: 900;
   color: #fff;
   font-variant-numeric: tabular-nums;
   text-shadow: 0 2px 0 rgba(120, 74, 0, 0.6);
@@ -1188,9 +1193,10 @@
 
 .auto-banner__tally dd {
   margin: 0;
-  font-family: var(--display);
+  font-family: var(--num);
+  letter-spacing: -0.03em;
   font-size: 23px;
-  font-weight: 700;
+  font-weight: 900;
   line-height: 1;
   color: var(--airtel);
   font-variant-numeric: tabular-nums;
@@ -1525,5 +1531,26 @@
   .obj[data-trust='threat'] .obj__label,
   .obj[data-trust='genuine'] .obj__icon {
     animation: none;
+  }
+}
+
+/* The banner takes a breath once the field has cleared. */
+.auto-banner.is-settled {
+  animation: settle 0.5s var(--ease-back);
+}
+
+.auto-banner.is-settled .auto-banner__tally dd {
+  color: var(--good-lo);
+}
+
+@keyframes settle {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
   }
 }

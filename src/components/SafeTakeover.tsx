@@ -8,6 +8,8 @@ interface Props {
   phase: Phase
   revealStep: number
   autoTally: AutoTally
+  /** The field has emptied and the banner is resting on its final numbers. */
+  settled: boolean
 }
 
 /**
@@ -15,7 +17,7 @@ interface Props {
  * the question, then the answer, then the work — and the work is counted out
  * loud, because "automatically" only lands if you can watch it happen.
  */
-export const SafeTakeover = ({ phase, revealStep, autoTally }: Props) => {
+export const SafeTakeover = ({ phase, revealStep, autoTally, settled }: Props) => {
   const engaged = phase === 'freeze' || phase === 'reveal' || phase === 'auto'
   if (!engaged) return null
 
@@ -42,14 +44,16 @@ export const SafeTakeover = ({ phase, revealStep, autoTally }: Props) => {
           ) : null}
         </div>
       ) : (
-        <div className="auto-banner">
+        <div className={`auto-banner${settled ? ' is-settled' : ''}`}>
           <p className="auto-banner__head">
             <AirtelShield size={22} />
             <span>
               Airtel Safe is handling it <b>automatically</b>
             </span>
           </p>
-          <p className="auto-banner__sub">You&rsquo;re not touching the screen.</p>
+          <p className="auto-banner__sub">
+            {settled ? 'All clear. You did nothing.' : 'You’re not touching the screen.'}
+          </p>
           {/* Named categories, not a single "blocked" number — this is the
               claim being spelled out as it happens. */}
           <dl className="auto-banner__tally">
