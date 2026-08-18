@@ -9,7 +9,10 @@ export type Family = 'call' | 'sms' | 'link' | 'alert' | 'delivery' | 'calendar'
 export interface ObjectDef {
   id: string
   label: string
-  /** Tiny second line. Kept fictional and non-actionable. */
+  /**
+   * Optional second line. Unused today — every pill reads as a single label —
+   * but kept so a future object type can carry one without a schema change.
+   */
   caption?: string
   trust: Trust
   family: Family
@@ -28,7 +31,6 @@ export const OBJECT_TYPES: Record<string, ObjectDef> = {
   'spam-call': {
     id: 'spam-call',
     label: 'Spam Call',
-    caption: 'Unsaved number',
     trust: 'threat',
     family: 'call',
     speed: 0.92,
@@ -39,7 +41,6 @@ export const OBJECT_TYPES: Record<string, ObjectDef> = {
   'spam-sms': {
     id: 'spam-sms',
     label: 'Spam SMS',
-    caption: 'Bulk sender',
     trust: 'threat',
     family: 'sms',
     speed: 1.22,
@@ -60,7 +61,6 @@ export const OBJECT_TYPES: Record<string, ObjectDef> = {
   'unknown-caller': {
     id: 'unknown-caller',
     label: 'Unknown Caller',
-    caption: '+91 ••••• ••012',
     trust: 'threat',
     family: 'call',
     speed: 0.98,
@@ -71,7 +71,6 @@ export const OBJECT_TYPES: Record<string, ObjectDef> = {
   'fake-reward': {
     id: 'fake-reward',
     label: 'Fake Reward',
-    caption: 'You have won!',
     trust: 'threat',
     family: 'alert',
     speed: 1.12,
@@ -82,7 +81,6 @@ export const OBJECT_TYPES: Record<string, ObjectDef> = {
   'risky-message': {
     id: 'risky-message',
     label: 'Risky Message',
-    caption: 'Act now',
     trust: 'threat',
     family: 'alert',
     speed: 1.16,
