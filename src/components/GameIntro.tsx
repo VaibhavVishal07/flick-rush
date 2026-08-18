@@ -8,7 +8,6 @@ import {
   familyIcon,
 } from '../assets/icons'
 import { PhoneDevice } from '../assets/PhoneDevice'
-import { safetyReport } from '../game/gameConfig'
 import type { Family, Trust } from '../game/objectTypes'
 
 interface Props {
@@ -80,11 +79,6 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
         <br />
         Tap it away.
       </p>
-      {safetyReport ? (
-        <p className="intro__note">
-          Airtel Safe handled <b>{safetyReport.totalHandled} things</b> for you this week.
-        </p>
-      ) : null}
     </div>
 
     <div className="intro__cta">

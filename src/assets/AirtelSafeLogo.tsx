@@ -35,13 +35,21 @@ const Gradient = ({ id }: { id: string }) => (
   </defs>
 )
 
-/** Full lockup: shield + "airtel safe". */
+/**
+ * Full lockup: shield + "airtel safe".
+ *
+ * `mono` is the reversed treatment for the red field — the whole lockup in
+ * white with the swoosh knocked out, because the master's red "airtel" and
+ * red shield both disappear against Airtel red.
+ */
 export const AirtelSafeLogo = ({
   width = 132,
   onDark = false,
+  mono = false,
 }: {
   width?: number
   onDark?: boolean
+  mono?: boolean
 }) => (
   <svg
     width={width}
@@ -51,11 +59,25 @@ export const AirtelSafeLogo = ({
     role="img"
     aria-label="Airtel Safe"
   >
-    <Gradient id="sr-shield-full" />
-    <path d={SHIELD_D} fill="url(#sr-shield-full)" />
-    <path d={SWOOSH_D} fill="#fff" />
-    <path d={AIRTEL_D} fill="#D32328" />
-    <path d={SAFE_D} fill={onDark ? '#FFFFFF' : '#010101'} />
+    {mono ? (
+      <>
+        <mask id="sr-shield-knockout">
+          <path d={SHIELD_D} fill="#fff" />
+          <path d={SWOOSH_D} fill="#000" />
+        </mask>
+        <rect x="0" y="0" width="121" height="144" fill="#fff" mask="url(#sr-shield-knockout)" />
+        <path d={AIRTEL_D} fill="#fff" />
+        <path d={SAFE_D} fill="#fff" />
+      </>
+    ) : (
+      <>
+        <Gradient id="sr-shield-full" />
+        <path d={SHIELD_D} fill="url(#sr-shield-full)" />
+        <path d={SWOOSH_D} fill="#fff" />
+        <path d={AIRTEL_D} fill="#D32328" />
+        <path d={SAFE_D} fill={onDark ? '#FFFFFF' : '#010101'} />
+      </>
+    )}
   </svg>
 )
 

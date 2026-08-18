@@ -21,6 +21,11 @@ export const PhoneTarget = ({ guarded, impact, welcome, hero }: Props) => (
   >
     <span className="phone-target__zone phone-target__zone--far" aria-hidden="true" />
     <span className="phone-target__zone phone-target__zone--near" aria-hidden="true" />
+    <span className="phone-target__zone phone-target__zone--ripple" aria-hidden="true" />
+    <span
+      className="phone-target__zone phone-target__zone--ripple phone-target__zone--ripple2"
+      aria-hidden="true"
+    />
     {impact ? <span key={impact} className="phone-target__impact" aria-hidden="true" /> : null}
     {welcome ? <span key={`w${welcome}`} className="phone-target__welcome" aria-hidden="true" /> : null}
     <SafeField active={guarded} />

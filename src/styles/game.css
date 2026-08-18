@@ -205,29 +205,43 @@
   animation-duration: 1.9s;
 }
 
-/* Dashed landing zone — reads as a target, not a radar sweep. */
+/* Soft filled ripples rather than dashed rings — the phone sits in still
+   water, and the zone reads as calm instead of as a radar sweep. */
 .phone-target__zone {
   position: absolute;
   border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .phone-target__zone--near {
-  width: 204px;
-  height: 204px;
-  border: 4px dashed rgba(13, 13, 18, 0.34);
-  animation: zone-spin 26s linear infinite;
+  width: 212px;
+  height: 212px;
 }
 
 .phone-target__zone--far {
-  width: 290px;
-  height: 290px;
-  border: 3px dashed rgba(13, 13, 18, 0.2);
-  animation: zone-spin 40s linear infinite reverse;
+  width: 302px;
+  height: 302px;
+  background: rgba(255, 255, 255, 0.06);
 }
 
-@keyframes zone-spin {
-  to {
-    transform: rotate(360deg);
+.phone-target__zone--ripple {
+  width: 212px;
+  height: 212px;
+  animation: zone-ripple 3.4s var(--ease-out) infinite;
+}
+
+.phone-target__zone--ripple2 {
+  animation-delay: 1.7s;
+}
+
+@keyframes zone-ripple {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
   }
 }
 
@@ -431,8 +445,8 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 9px;
-  padding: 7px 8px 7px 7px;
+  gap: 10px;
+  padding: 8px 10px 8px 8px;
   border-radius: 999px;
   background: linear-gradient(180deg, var(--chip-hi), var(--chip-lo));
   box-shadow:
@@ -447,8 +461,8 @@
   display: grid;
   place-items: center;
   flex: none;
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   color: var(--chip-accent);
   background: var(--chip-icon-bg, #fff);
@@ -464,14 +478,14 @@
 
 .obj__label {
   font-family: var(--font);
-  font-size: 12.5px;
+  font-size: 15px;
   font-weight: 900;
   letter-spacing: -0.01em;
   color: var(--chip-ink);
 }
 
 .obj__caption {
-  font-size: 9.5px;
+  font-size: 11.5px;
   font-weight: 700;
   color: var(--chip-ink-2);
 }
@@ -481,8 +495,8 @@
   display: grid;
   place-items: center;
   flex: none;
-  width: 21px;
-  height: 21px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   color: #fff;
   background: var(--chip-flag);
@@ -504,19 +518,6 @@
 
 .obj[data-trust='threat'] .obj__body {
   border-radius: 9px;
-  padding-left: 13px;
-}
-
-/* Hazard bar down the leading edge, coloured by what kind of nuisance it is. */
-.obj[data-trust='threat'] .obj__body::before {
-  content: '';
-  position: absolute;
-  left: 4px;
-  top: 6px;
-  bottom: 6px;
-  width: 5px;
-  border-radius: 3px;
-  background: var(--chip-accent);
 }
 
 .obj[data-trust='threat'] .obj__icon {
@@ -1098,149 +1099,61 @@
   }
 }
 
-/* --------------------------------------------------------- auto banner -- */
+/* ----------------------------------------------------------- auto hero -- */
 
-/* "Automatically" only lands if you can watch it happen — so the takeover
-   names the product plainly and counts the work out loud. */
-.auto-banner {
+/* No card. On the takeover the screen carries the mark and the promise, and
+   the blocking happening underneath is the proof. */
+.auto-hero {
   position: absolute;
-  top: 12px;
-  left: 10px;
-  right: 10px;
-  max-height: calc(100% - 24px);
-  overflow: hidden;
+  top: 26px;
+  left: 0;
+  right: 0;
+  padding: 0 16px;
   display: grid;
   justify-items: center;
-  gap: 4px;
-  padding: 10px 12px 9px;
-  border: var(--line-w) solid var(--outline);
-  border-radius: var(--r);
-  background: var(--paper);
-  box-shadow: var(--drop);
-  animation: banner-drop 0.45s var(--ease-back) both;
+  gap: 14px;
+  text-align: center;
+  isolation: isolate;
+  animation: hero-copy-in 0.5s var(--ease-back) both;
 }
 
-@keyframes banner-drop {
+.auto-hero > svg {
+  position: relative;
+}
+
+@keyframes hero-copy-in {
   from {
-    transform: translateY(-22px);
+    transform: translateY(-18px);
     opacity: 0;
   }
 }
 
-.auto-banner__head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  text-align: center;
-  font-size: 15.5px;
-  font-weight: 800;
-  line-height: 1.2;
-  color: var(--ink);
-}
-
-.auto-banner__head b {
-  color: var(--airtel);
-  font-weight: 900;
-}
-
-.auto-banner__sub {
-  margin: 0;
-  font-size: 11.5px;
-  font-weight: 700;
-  color: var(--ink-3);
-}
-
-.auto-banner__foot {
-  margin: 7px 0 0;
-  text-align: center;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1.35;
-  color: var(--ink-3);
-}
-
-.auto-banner__foot b {
-  font-weight: 900;
-  color: var(--good-lo);
-}
-
-.auto-banner__tally {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  width: 100%;
-  margin: 6px 0 0;
-}
-
-.auto-banner__tally > div {
-  display: grid;
-  justify-items: center;
-  gap: 1px;
-  padding: 5px 4px 4px;
-  border: 2.5px solid var(--outline);
-  border-radius: 5px;
-  background: #f1f3f8;
-}
-
-.auto-banner__tally dt {
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-.auto-banner__tally dd {
-  margin: 0;
-  font-family: var(--num);
-  letter-spacing: -0.03em;
-  font-size: 23px;
-  font-weight: 900;
-  line-height: 1;
-  color: var(--airtel);
-  font-variant-numeric: tabular-nums;
-}
-
-/* ------------------------------------------------------------------ juice -- */
-
-/* The score punches whenever it moves. */
-.hud__score-value.is-pop {
-  animation: score-pop 0.22s steps(3, end);
-}
-
-@keyframes score-pop {
-  0% {
-    transform: scale(1);
-  }
-  40% {
-    transform: scale(1.35);
-    color: var(--gold);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* Streak milestone: the whole screen takes a hit of light. */
-.milestone-flash {
+/* Not a card — a wash, so the mark and the line stay legible while stickers
+   keep flying through behind them. */
+.auto-hero__wash {
   position: absolute;
-  inset: 0;
-  z-index: 21;
-  pointer-events: none;
-  background: radial-gradient(circle at 50% 62%, rgba(255, 224, 138, 0.85), transparent 62%);
-  animation: milestone 0.4s steps(4, end) forwards;
+  left: 0;
+  right: 0;
+  top: -40px;
+  bottom: -34px;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgba(70, 4, 16, 0.72) 0%,
+    rgba(70, 4, 16, 0.55) 55%,
+    transparent 100%
+  );
 }
 
-@keyframes milestone {
-  0% {
-    opacity: 0.9;
-    transform: scale(0.7);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.4);
-  }
+.auto-hero__line {
+  position: relative;
+  margin: 0;
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.34;
+  letter-spacing: -0.015em;
+  color: #fff;
+  text-shadow: 2px 2px 0 var(--outline);
 }
 
 /* ----------------------------------------------------------------- panic -- */
@@ -1318,11 +1231,11 @@
 
 .obj__tell {
   position: absolute;
-  left: 7px;
+  left: 8px;
   top: 50%;
-  width: 28px;
-  height: 28px;
-  margin-top: -14px;
+  width: 34px;
+  height: 34px;
+  margin-top: -17px;
   border-radius: 50%;
   pointer-events: none;
 }

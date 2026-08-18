@@ -96,13 +96,31 @@
   margin: 10px -22px 0;
 }
 
+/* Same still-water treatment as the arena: soft filled discs with a slow
+   ripple, rather than a dashed ring. */
 .intro__glow {
   position: absolute;
-  width: 268px;
-  height: 268px;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
-  border: 5px dashed rgba(13, 13, 18, 0.35);
-  animation: zone-spin 30s linear infinite;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.intro__glow::before,
+.intro__glow::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 212px;
+  height: 212px;
+  margin: -106px 0 0 -106px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.intro__glow::after {
+  animation: zone-ripple 3.4s var(--ease-out) infinite;
 }
 
 .intro__device {
@@ -139,25 +157,11 @@
     0 11px 16px rgba(60, 4, 16, 0.34);
 }
 
-.intro__chip[data-trust='threat']::before {
-  content: '';
-  position: absolute;
-  left: 4px;
-  top: 6px;
-  bottom: 6px;
-  width: 5px;
-  border-radius: 3px;
-  background: var(--chip-accent, #ff6b7d);
-}
 
 .intro__chip[data-family='link'] {
   --chip-accent: #a78bfa;
-  padding-left: 5px;
 }
 
-.intro__chip[data-family='link']::before {
-  display: none;
-}
 
 .intro__chip[data-family='sms'][data-trust='threat'] {
   --chip-accent: #ff9f45;
@@ -173,8 +177,8 @@
 .intro__chip-icon {
   display: grid;
   place-items: center;
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
   border-radius: 7px;
   color: var(--chip-accent, #ff6b7d);
   background: rgba(255, 255, 255, 0.12);
@@ -189,8 +193,8 @@
 .intro__chip-flag {
   display: grid;
   place-items: center;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   color: #fff;
   background: #e8112d;
