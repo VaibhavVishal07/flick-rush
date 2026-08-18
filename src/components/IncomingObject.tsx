@@ -25,6 +25,7 @@ const IncomingObjectBase = ({ object: o, cue, register, onDown, onMove, onUp }: 
         <span className="obj__label">{o.def.label}</span>
         {o.def.caption ? <span className="obj__caption">{o.def.caption}</span> : null}
       </span>
+      {threat ? <span className="obj__tell" aria-hidden="true" /> : null}
       <span className="obj__flag" aria-hidden="true">
         {threat ? <CrossIcon size={13} /> : <TickIcon size={13} />}
       </span>

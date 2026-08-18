@@ -132,19 +132,19 @@ export const STAGES: Stage[] = [
   // 1 — Learn. One at a time, almost all threats, unmissable.
   {
     name: 'Learn',
-    until: 4_000,
-    spawnInterval: 1_400,
+    until: 3_500,
+    spawnInterval: 1_250,
     speed: 1,
     maxAlive: 1,
     threatRatio: 0.9,
     pool: EARLY,
   },
-  // 2 — Rush. Genuine objects join in; occasionally two at once.
+  // 2 — Rush. Genuine items join in; occasionally two at once.
   {
     name: 'Rush',
-    until: 10_000,
-    spawnInterval: 900,
-    speed: 1.24,
+    until: 8_500,
+    spawnInterval: 800,
+    speed: 1.3,
     maxAlive: 2,
     threatRatio: 0.66,
     pool: MID,
@@ -152,24 +152,39 @@ export const STAGES: Stage[] = [
   // 3 — Chaos. Three or four in the air, faster, every type in play.
   {
     name: 'Chaos',
-    until: 15_000,
-    spawnInterval: 620,
-    speed: 1.52,
+    until: 12_500,
+    spawnInterval: 520,
+    speed: 1.62,
     maxAlive: 4,
     threatRatio: 0.62,
     pool: ALL,
   },
-  // 4 — Impossible. Deliberately more than one pair of hands can track.
+  // 4 — Swarm. More than one pair of eyes can track.
   {
-    name: 'Impossible',
-    until: 17_000,
+    name: 'Swarm',
+    until: 15_000,
     spawnInterval: 300,
-    speed: 1.9,
-    maxAlive: 7,
+    speed: 2,
+    maxAlive: 8,
     threatRatio: 0.68,
     pool: ALL,
   },
+  // 5 — Flood. The last two seconds are not winnable, and that is the whole
+  // argument. Everything arrives at once so "Tough keeping up?" lands on a
+  // player who has already stopped coping.
+  {
+    name: 'Flood',
+    until: 17_000,
+    spawnInterval: 150,
+    speed: 2.5,
+    maxAlive: 14,
+    threatRatio: 0.72,
+    pool: ALL,
+  },
 ]
+
+/** Elapsed time after which the arena visibly starts to panic. */
+export const PANIC_FROM = 12_500
 
 /* ---- Personalisation placeholder ---------------------------------------- */
 

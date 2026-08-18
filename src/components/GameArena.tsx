@@ -57,6 +57,7 @@ export const GameArena = ({
       className={`arena-shell${g.impact ? ' is-hit' : ''}${g.kick ? ' is-kick' : ''}${
         storm ? ' is-storm' : ''
       }`}
+      style={{ ['--panic' as string]: g.panic }}
       aria-label="Shield Rush game"
     >
       <ScoreHUD
@@ -71,6 +72,7 @@ export const GameArena = ({
       />
 
       <div className="arena" ref={g.arenaRef}>
+        <span className="panic-vignette" aria-hidden="true" />
         <PhoneTarget guarded={guarded} impact={g.impact} welcome={g.welcome} />
 
         {g.objects.map((o, i) => (

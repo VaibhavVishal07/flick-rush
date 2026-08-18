@@ -260,8 +260,10 @@
 
 .intro__copy {
   display: grid;
+  justify-items: center;
   gap: 10px;
   padding-top: 10px;
+  text-align: center;
 }
 
 /* The personalisation hook — a quiet caption, not another pill. */
@@ -279,7 +281,7 @@
 }
 
 .intro__eyebrow {
-  justify-self: start;
+  justify-self: center;
   margin: 0;
   padding: 5px 12px;
   border: var(--line-w) solid var(--outline);
@@ -304,18 +306,17 @@
   line-height: 0.96;
   letter-spacing: 0.01em;
   color: #fff;
+  text-align: center;
   text-transform: uppercase;
   text-shadow:
     4px 4px 0 var(--outline),
     8px 8px 0 rgba(13, 13, 18, 0.35);
   transform: rotate(-2deg);
-  transform-origin: left center;
 }
 
 .intro__title span {
   display: block;
   color: var(--gold);
-  margin-left: 0.1em;
 }
 
 .intro__lede {

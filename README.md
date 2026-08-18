@@ -17,7 +17,7 @@ The takeaway is never "be more careful online". It is "you shouldn't have to be.
 | Ingress | — | Four stickers orbit a phone — three to tap, one to leave. One button: **Play Now**. |
 | Tutorial | ~3.5s | A **TAP!** badge and a pressing finger ride the first threat; a **LEAVE IT** badge rides the genuine call. No "Next" button. |
 | Countdown | ~1.9s | 3 · 2 · 1 |
-| Gameplay | 17s | Learn → Rush → Chaos → Impossible |
+| Gameplay | 17s | Learn → Rush → Chaos → Swarm → **Flood** |
 | Takeover | ~3.6s | Everything freezes. "Tough keeping up?" · "You shouldn't have to." Then a banner names it plainly — **Airtel Safe is handling it automatically** — and counts the blocks and allows as they happen. |
 | Result | — | Verdict first, then throughput: you against Airtel Safe on the same job, itemised. |
 
@@ -92,6 +92,24 @@ src/
 React owns which objects exist; the loop writes `transform` and `opacity`
 straight to the DOM nodes each frame. Spawning and despawning re-render, motion
 does not.
+
+### The last two seconds
+
+The Flood stage is not winnable, and that is the argument. Spawns drop to
+150ms with up to fourteen objects live, and from 12.5s the arena starts to
+panic: the edges darken, saturation climbs and the clock pulses. By the time
+"Tough keeping up?" appears, the player has already stopped coping — the line
+describes what they are feeling rather than telling them to feel it.
+
+### Character
+
+Every nuisance behaves like the thing it is, because a shared silhouette
+with a swapped accent colour is exactly what reads as machine-made. Spam
+calls ring — pulsing arcs, a handset shaking in its cradle. Messages carry a
+blinking unread dot and twitch twice as fast. Suspicious links glitch, with
+an RGB split across the label and a scanline over the fill. Fake rewards
+glint and breathe. Genuine items do none of it: a contact avatar with a
+double ring, breathing slowly, sitting level.
 
 ### Telling good from bad
 

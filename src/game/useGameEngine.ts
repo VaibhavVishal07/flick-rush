@@ -6,7 +6,7 @@ import {
   useState,
   type PointerEvent as ReactPointerEvent,
 } from 'react'
-import { GAME_CONFIG } from './gameConfig'
+import { GAME_CONFIG, PANIC_FROM } from './gameConfig'
 import { getDef } from './objectTypes'
 import { LaneRotator, makeObject, pickForStage, stageAt } from './spawnEngine'
 import {
@@ -105,6 +105,8 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
   const [kick, setKick] = useState(0)
   const [welcome, setWelcome] = useState(0)
   const [pop, setPop] = useState(0)
+  /** 0 → 1 across the final stages; drives how frantic the arena looks. */
+  const [panic, setPanic] = useState(0)
   const [flash, setFlash] = useState(0)
   const emptyAuto: AutoTally = { calls: 0, messages: 0, links: 0, allowed: 0 }
   const [autoTally, setAutoTally] = useState<AutoTally>(emptyAuto)
@@ -332,7 +334,18 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
           Math.ceil((GAME_CONFIG.GAME_DURATION - elapsed.current) / 1000),
         )
         setSecondsLeft((prev) => (prev === left ? prev : left))
+
+        const p01 =
+          elapsed.current <= PANIC_FROM
+            ? 0
+            : Math.min(
+                1,
+                (elapsed.current - PANIC_FROM) / (GAME_CONFIG.GAME_DURATION - PANIC_FROM),
+              )
+        const stepped = Math.round(p01 * 5) / 5
+        setPanic((prev) => (prev === stepped ? prev : stepped))
         if (elapsed.current >= GAME_CONFIG.TAKEOVER_TIME) {
+          setPanic(0)
           releaseHeld()
           setStreakBadge(null)
           goPhase('freeze')
@@ -710,6 +723,7 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
     welcome,
     pop,
     flash,
+    panic,
     autoTally,
     cue:
       phase === 'tutorial-threat' && !cueUsed
