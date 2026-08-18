@@ -425,10 +425,14 @@
   }
 }
 
+/* The mark lands on the same line it occupied on the takeover screen a beat
+   earlier, at the same size, so it reads as one continuous lockup rather than
+   two screens that each happen to be branded. The number is the takeover's
+   own offset (78px below the HUD) minus this section's own top padding. */
 .result__top {
   display: flex;
   justify-content: center;
-  padding-top: 26px;
+  padding-top: 135px;
   line-height: 0;
 }
 
@@ -443,7 +447,7 @@
   flex-direction: column;
   justify-content: center;
   gap: 22px;
-  padding: 8px 0;
+  padding: 3px 0;
 }
 
 /* --------------------------------------------------------------- versus -- */
@@ -806,17 +810,15 @@
     padding-bottom: calc(10px + env(safe-area-inset-bottom));
   }
 
+  /* Same line as the takeover mark. The mark does not shrink here — matching
+     the previous screen matters more than the pixels it costs, so the middle
+     gives up the room instead. */
   .result__top {
-    padding-top: 18px;
-  }
-
-  .result__top svg {
-    width: 186px;
-    height: auto;
+    padding-top: 137px;
   }
 
   .result__mid {
-    gap: 16px;
+    gap: 12px;
   }
 
   .versus__num {
@@ -889,5 +891,31 @@
   .result__cta .btn--lg {
     min-height: 48px;
     font-size: 18px;
+  }
+}
+
+/* Sub-600px viewports. The mark rides up here — matched by the same shift on
+   the takeover screen — and the supporting line goes, so the card, the
+   headline and the buttons all still land without scrolling. */
+@media (max-height: 600px) {
+  .result__top {
+    padding-top: 81px;
+  }
+
+  .result__mid {
+    gap: 6px;
+  }
+
+  .result__body {
+    display: none;
+  }
+
+  .versus__grid {
+    padding: 5px 4px 4px;
+  }
+
+  .versus__foot {
+    padding: 5px 10px 6px;
+    font-size: 11px;
   }
 }

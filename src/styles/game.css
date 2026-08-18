@@ -65,6 +65,8 @@
 /* ------------------------------------------------------------------ HUD -- */
 
 .hud {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
@@ -153,17 +155,24 @@
 
 /* ---------------------------------------------------------------- arena -- */
 
+/* Deliberately NOT clipped. The arena is only the middle band of the frame,
+   so clipping here sliced every incoming pill along two hard horizontal lines
+   at the HUD and the footer. The frame does the clipping instead, and the
+   HUD and footer paint over the top, so pills arrive from the real screen
+   edges and slide in from behind the chrome. */
 .arena {
   position: relative;
   flex: 1;
   min-height: 0;
-  overflow: hidden;
+  overflow: visible;
   touch-action: none;
   -webkit-user-select: none;
   user-select: none;
 }
 
 .arena-foot {
+  position: relative;
+  z-index: 2;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -181,6 +190,28 @@
   display: grid;
   place-items: center;
   pointer-events: none;
+}
+
+/* The one thing the tutorial can't show with a sticker: what the object in
+   the middle actually is. Absolute so it hangs off the device without
+   shifting the grid that centres everything else on it. */
+.phone-target__label {
+  position: absolute;
+  top: calc(50% + 96px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  padding: 3px 10px 4px;
+  border-radius: 999px;
+  background: rgba(13, 13, 18, 0.6);
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #fff;
+  animation: coach-in 0.42s var(--ease-back) both;
 }
 
 .phone-target__device {
@@ -801,29 +832,49 @@
 
 /* ----------------------------------------------------- coaching / cues --- */
 
+/* Sits at the top, where the sticker enters and the eye already is — at the
+   bottom it was read after the beat it was meant to set up. Two lines: what
+   the thing on screen is, then what to do about it. */
 .coach {
   position: absolute;
   left: 50%;
-  bottom: 26px;
+  top: 12px;
   transform: translateX(-50%);
   margin: 0;
-  padding: 9px 20px;
-  border-radius: 999px;
+  padding: 10px 22px 12px;
+  border-radius: 18px;
   background: var(--paper);
-  font-family: var(--display);
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--ink);
-  white-space: nowrap;
+  text-align: center;
   box-shadow: 0 0 0 3px rgba(60, 4, 16, 0.18), 0 5px 0 rgba(60, 4, 16, 0.24);
   animation: coach-in 0.42s var(--ease-back) both;
   pointer-events: none;
   z-index: 19;
 }
 
+.coach__lead {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.coach__sub {
+  margin: 3px 0 0;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
 @keyframes coach-in {
   from {
-    transform: translateX(-50%) translateY(16px) scale(0.9);
+    transform: translateX(-50%) translateY(-16px) scale(0.9);
     opacity: 0;
   }
 }
@@ -1073,7 +1124,7 @@
   gap: 4px;
   text-align: center;
   padding: 0 16px;
-  transform: translateY(-60px);
+  transform: translateY(-18px);
   max-width: 100%;
 }
 
@@ -1099,11 +1150,6 @@
   text-shadow: 3px 3px 0 var(--outline);
 }
 
-.takeover__mark {
-  margin-top: 12px;
-  animation: line-in 0.5s var(--ease-back) 0.12s both;
-}
-
 @keyframes line-in {
   from {
     transform: translateY(18px) scale(0.9);
@@ -1114,10 +1160,12 @@
 /* ----------------------------------------------------------- auto hero -- */
 
 /* No card. On the takeover the screen carries the mark and the promise, and
-   the blocking happening underneath is the proof. */
+   the blocking happening underneath is the proof. The mark sits at
+   the lockup sits low enough to clear the HUD, and the result screen that
+   follows repeats the same offset so the mark never jumps between them. */
 .auto-hero {
   position: absolute;
-  top: 54px;
+  top: 78px;
   left: 0;
   right: 0;
   padding: 0 16px;
@@ -1133,9 +1181,20 @@
   position: relative;
 }
 
+/* Very short viewports: the mark moves up, and the result screen's mark moves
+   up by exactly the same amount, so the two stay on one line whatever the
+   screen is. */
+@media (max-height: 600px) {
+  .auto-hero {
+    top: 22px;
+  }
+}
+
+/* Comes up from below into its resting line and stops there. It is the same
+   node for the rest of the sequence, so this plays exactly once. */
 @keyframes hero-copy-in {
   from {
-    transform: translateY(-18px);
+    transform: translateY(26px);
     opacity: 0;
   }
 }
@@ -1146,13 +1205,16 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: -40px;
-  bottom: -34px;
+  top: -86px;
+  bottom: -40px;
   z-index: -1;
+  /* Transparent at both ends. Starting the gradient at full strength drew a
+     hard horizontal line across the screen that read as a rendering seam. */
   background: linear-gradient(
     180deg,
-    rgba(70, 4, 16, 0.72) 0%,
-    rgba(70, 4, 16, 0.55) 55%,
+    transparent 0%,
+    rgba(70, 4, 16, 0.68) 36%,
+    rgba(70, 4, 16, 0.52) 74%,
     transparent 100%
   );
 }

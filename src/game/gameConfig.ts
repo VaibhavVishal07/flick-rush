@@ -20,8 +20,12 @@ export const GAME_CONFIG = {
   /** Beat structure of the takeover reveal. */
   FREEZE_HOLD: 400,
   REVEAL_LINE_B: 700,
-  /** Beat between the second line and Airtel Safe actually taking over. */
-  TAKEOVER_ARM: 900,
+  /**
+   * Beat between the second line and Airtel Safe actually taking over. Two
+   * full seconds: this is the turn of the whole piece, and it was gone before
+   * anyone had finished reading it.
+   */
+  TAKEOVER_ARM: 2_000,
   /** 3 - 2 - 1 before manual play. */
   COUNTDOWN_FROM: 3,
   COUNTDOWN_STEP: 620,

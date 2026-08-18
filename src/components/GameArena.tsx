@@ -16,10 +16,15 @@ interface Props {
   skipTutorial: boolean
 }
 
-const TUTORIAL_COPY: Record<string, string> = {
-  'tutorial-threat': 'Tap the ✕ ones',
-  'tutorial-genuine': 'Leave the ✓ ones',
-  'tutorial-done': 'Got it.',
+/**
+ * Two beats, and each one names the thing on screen before it asks for
+ * anything. "Tap the ✕ ones" assumed the player had already worked out what
+ * the badge meant and what the phone in the middle was for; this says both.
+ */
+const TUTORIAL_COPY: Record<string, { lead: string; sub: string }> = {
+  'tutorial-threat': { lead: 'This one is spam', sub: 'Tap it to block it' },
+  'tutorial-genuine': { lead: 'This one is real', sub: 'Let it reach your phone' },
+  'tutorial-done': { lead: "That's the game", sub: 'Now they come in fast' },
 }
 
 export const GameArena = ({
@@ -78,6 +83,10 @@ export const GameArena = ({
           impact={g.impact}
           welcome={g.welcome}
           hero={g.phase === 'auto'}
+          /* The target only gets named while learning. Once play starts the
+             label is noise, but for the first two beats it is the difference
+             between "a phone" and "the thing you are defending". */
+          label={tutorial ? 'your phone' : null}
         />
 
         {g.objects.map((o, i) => (
@@ -114,9 +123,10 @@ export const GameArena = ({
         <SafeTakeover phase={g.phase} revealStep={g.revealStep} />
 
         {tutorial ? (
-          <p key={g.phase} className="coach">
-            {TUTORIAL_COPY[g.phase]}
-          </p>
+          <div key={g.phase} className="coach" aria-live="polite">
+            <p className="coach__lead">{TUTORIAL_COPY[g.phase].lead}</p>
+            <p className="coach__sub">{TUTORIAL_COPY[g.phase].sub}</p>
+          </div>
         ) : null}
 
         {g.phase === 'countdown' ? (

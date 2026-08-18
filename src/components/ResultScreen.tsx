@@ -85,9 +85,10 @@ export const ResultScreen = ({ result, onReplay, onReport }: Props) => {
               </>
             )}
           </h2>
+          {/* One line. The takeover screen already named what it blocks; the
+              only thing left to say is that it never asks you to. */}
           <p className="result__body">
-            It blocks spam calls, suspicious links and messages automatically — every hour of
-            every day, without you tapping anything.
+            Every hour of every day, without you tapping anything.
           </p>
         </div>
       </div>

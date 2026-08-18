@@ -11,9 +11,11 @@ interface Props {
   welcome: number
   /** Takeover: the device takes over the lower half of the screen. */
   hero: boolean
+  /** Names the target during the tutorial; null once play starts. */
+  label?: string | null
 }
 
-export const PhoneTarget = ({ guarded, impact, welcome, hero }: Props) => (
+export const PhoneTarget = ({ guarded, impact, welcome, hero, label }: Props) => (
   <div
     className={`phone-target${guarded ? ' is-guarded' : ''}${welcome ? ' is-welcoming' : ''}${
       hero ? ' is-hero' : ''
@@ -32,5 +34,6 @@ export const PhoneTarget = ({ guarded, impact, welcome, hero }: Props) => (
     <div className="phone-target__device">
       {hero ? <PhoneHero width={228} /> : <PhoneDevice width={89} />}
     </div>
+    {label ? <span className="phone-target__label">{label}</span> : null}
   </div>
 )

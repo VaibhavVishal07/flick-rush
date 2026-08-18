@@ -1,4 +1,3 @@
-import { AirtelSafeMark } from '../assets/icons'
 import { AirtelSafeLogo } from '../assets/AirtelSafeLogo'
 import type { Phase } from '../game/types'
 
@@ -18,6 +17,14 @@ export const SafeTakeover = ({ phase, revealStep }: Props) => {
   if (!engaged) return null
 
   const auto = phase === 'auto'
+  /**
+   * The lockup mounts once, on "You shouldn't have to.", and is the *same*
+   * DOM node through the automation that follows — no key, no remount, so it
+   * rises into place once and then simply stays there while the phase flips
+   * underneath it. The result screen puts its mark on the same line at the
+   * same size, so the mark holds still across all three screens.
+   */
+  const marked = auto || revealStep >= 2
 
   return (
     <div
@@ -25,31 +32,30 @@ export const SafeTakeover = ({ phase, revealStep }: Props) => {
       data-step={revealStep}
       aria-live="polite"
     >
+      {marked ? (
+        <div className="auto-hero">
+          <span className="auto-hero__wash" aria-hidden="true" />
+          <AirtelSafeLogo width={214} mono />
+          {auto ? (
+            <p className="auto-hero__line">
+              Saves you from all spam calls
+              <br />
+              and suspicious links.
+            </p>
+          ) : null}
+        </div>
+      ) : null}
+
       {!auto ? (
         <div className="takeover__copy">
           {revealStep >= 1 ? (
             <p className="takeover__line takeover__line--a">Tough keeping up?</p>
           ) : null}
           {revealStep >= 2 ? (
-            <>
-              <p className="takeover__line takeover__line--b">You shouldn&rsquo;t have to.</p>
-              <div className="takeover__mark">
-                <AirtelSafeMark />
-              </div>
-            </>
+            <p className="takeover__line takeover__line--b">You shouldn&rsquo;t have to.</p>
           ) : null}
         </div>
-      ) : (
-        <div className="auto-hero">
-          <span className="auto-hero__wash" aria-hidden="true" />
-          <AirtelSafeLogo width={214} mono />
-          <p className="auto-hero__line">
-            Saves you from all spam calls
-            <br />
-            and suspicious links.
-          </p>
-        </div>
-      )}
+      ) : null}
     </div>
   )
 }
