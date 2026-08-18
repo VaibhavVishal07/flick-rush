@@ -50,7 +50,6 @@ export const OBJECT_TYPES: Record<string, ObjectDef> = {
   'suspicious-link': {
     id: 'suspicious-link',
     label: 'Suspicious Link',
-    caption: 'Shortened link',
     trust: 'threat',
     family: 'link',
     speed: 1.06,

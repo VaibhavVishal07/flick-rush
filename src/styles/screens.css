@@ -152,6 +152,11 @@
 
 .intro__chip[data-family='link'] {
   --chip-accent: #a78bfa;
+  padding-left: 5px;
+}
+
+.intro__chip[data-family='link']::before {
+  display: none;
 }
 
 .intro__chip[data-family='sms'][data-trust='threat'] {
@@ -575,7 +580,10 @@
 
 .result__headline em {
   font-style: normal;
-  color: var(--gold);
+  /* Four pixels up on whatever the breakpoint set, so the emphasis is size
+     rather than colour. */
+  font-size: calc(1em + 4px);
+  color: #fff;
 }
 
 .result__body {
