@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { AirtelSafeMark, ShieldMark } from '../assets/icons'
+import { ShieldMark } from '../assets/icons'
+import { AirtelSafeLogo } from '../assets/AirtelSafeLogo'
 import { ShareCard } from './ShareCard'
 import { GAME_CONFIG, safetyReport } from '../game/gameConfig'
 import type { GameResult } from '../game/types'
@@ -26,8 +27,10 @@ export const ResultScreen = ({ result, onReplay, onReport }: Props) => {
 
   return (
     <section className="result" aria-label="Your result">
+      {/* Same mark, same treatment as the takeover screen it follows:
+          reversed white, no plate. */}
       <header className="result__top">
-        <AirtelSafeMark />
+        <AirtelSafeLogo width={214} mono />
       </header>
 
       <div className="result__mid">

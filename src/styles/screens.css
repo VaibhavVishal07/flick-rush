@@ -414,7 +414,7 @@
   grid-template-rows: auto minmax(0, 1fr) auto;
   height: 100%;
   overflow: hidden;
-  padding: calc(14px + env(safe-area-inset-top)) 20px calc(14px + env(safe-area-inset-bottom));
+  padding: calc(8px + env(safe-area-inset-top)) 20px calc(14px + env(safe-area-inset-bottom));
   animation: result-in 0.5s var(--ease-out) both;
 }
 
@@ -428,6 +428,8 @@
 .result__top {
   display: flex;
   justify-content: center;
+  padding-top: 26px;
+  line-height: 0;
 }
 
 /* Flex, not grid: `align-content: center` on a scroll container is
@@ -800,8 +802,17 @@
    are the last thing that should shrink. */
 @media (max-height: 700px) {
   .result {
-    padding-top: calc(10px + env(safe-area-inset-top));
+    padding-top: calc(6px + env(safe-area-inset-top));
     padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  }
+
+  .result__top {
+    padding-top: 18px;
+  }
+
+  .result__top svg {
+    width: 186px;
+    height: auto;
   }
 
   .result__mid {
