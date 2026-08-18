@@ -18,7 +18,7 @@ The takeaway is never "be more careful online". It is "you shouldn't have to be.
 | Tutorial | ~3.5s | A **TAP!** badge and a pressing finger ride the first threat; a **LEAVE IT** badge rides the genuine call. No "Next" button. |
 | Countdown | ~1.9s | 3 · 2 · 1 |
 | Gameplay | 17s | Learn → Rush → Chaos → Swarm → **Flood** |
-| Takeover | ~5.5s | Everything freezes. "Tough keeping up?" · "You shouldn't have to." Then a banner names it plainly — **Airtel Safe is handling it automatically** — and counts the blocks and allows as they happen. The last 1.2s stops spawning so the field clears and the arc ends calm. |
+| Takeover | ~5.5s | The phone becomes the hero — a large handset mockup running Airtel Safe, dropped into the lower half and cropped by the bottom of the screen. Everything freezes first. "Tough keeping up?" · "You shouldn't have to." Then a banner names it plainly — **Airtel Safe is handling it automatically** — and counts the blocks and allows as they happen. The last 1.2s stops spawning so the field clears and the arc ends calm. |
 | Result | — | Verdict first, then throughput: you against Airtel Safe on the same job, itemised. |
 
 First play lands around 29 seconds. Replays skip the tutorial and are live in

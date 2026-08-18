@@ -556,18 +556,21 @@
 
 .result__say {
   display: grid;
-  gap: 7px;
+  justify-items: center;
+  gap: 8px;
+  text-align: center;
 }
 
 .result__headline {
   margin: 0;
-  font-family: var(--display);
-  font-size: 25px;
-  font-weight: 700;
-  line-height: 1.08;
+  font-family: var(--font);
+  font-size: 23px;
+  font-weight: 900;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
   text-wrap: balance;
   color: #fff;
-  text-shadow: 3px 3px 0 var(--outline);
+  text-shadow: 2px 2px 0 var(--outline);
 }
 
 .result__headline em {
@@ -807,7 +810,7 @@
   }
 
   .result__headline {
-    font-size: 21px;
+    font-size: 20px;
   }
 
   .result__body {
@@ -853,7 +856,7 @@
   }
 
   .result__headline {
-    font-size: 19px;
+    font-size: 18px;
   }
 
   .result__body {

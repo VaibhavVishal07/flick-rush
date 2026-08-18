@@ -32,7 +32,15 @@ export const GAME_CONFIG = {
   /** Objects spawn this far beyond the arena edge along their lane. */
   SPAWN_PAD: 44,
   /** Radius at which Airtel Safe knocks a threat back during the takeover. */
-  SAFE_FIELD_RADIUS: 118,
+  SAFE_FIELD_RADIUS: 168,
+  /**
+   * During the takeover the phone becomes the hero: bigger, dropped into the
+   * lower half and cropped by the bottom of the screen. The collision centre
+   * has to move with it, or objects would converge on empty space.
+   */
+  AUTO_TARGET_Y: 0.78,
+  /** Collision radius of the hero device. */
+  AUTO_PHONE_RADIUS: 96,
 
   /* ---- Movement --------------------------------------------------------- */
   /** Base homing speed in px per millisecond (≈105 px/s). */

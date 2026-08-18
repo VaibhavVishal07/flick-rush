@@ -1,4 +1,5 @@
 import { PhoneDevice } from '../assets/PhoneDevice'
+import { PhoneHero } from '../assets/PhoneHero'
 import { SafeField } from '../assets/SafeField'
 
 interface Props {
@@ -8,11 +9,15 @@ interface Props {
   impact: number
   /** A genuine item just arrived — the device says thank you. */
   welcome: number
+  /** Takeover: the device takes over the lower half of the screen. */
+  hero: boolean
 }
 
-export const PhoneTarget = ({ guarded, impact, welcome }: Props) => (
+export const PhoneTarget = ({ guarded, impact, welcome, hero }: Props) => (
   <div
-    className={`phone-target${guarded ? ' is-guarded' : ''}${welcome ? ' is-welcoming' : ''}`}
+    className={`phone-target${guarded ? ' is-guarded' : ''}${welcome ? ' is-welcoming' : ''}${
+      hero ? ' is-hero' : ''
+    }`}
   >
     <span className="phone-target__zone phone-target__zone--far" aria-hidden="true" />
     <span className="phone-target__zone phone-target__zone--near" aria-hidden="true" />
@@ -20,7 +25,7 @@ export const PhoneTarget = ({ guarded, impact, welcome }: Props) => (
     {welcome ? <span key={`w${welcome}`} className="phone-target__welcome" aria-hidden="true" /> : null}
     <SafeField active={guarded} />
     <div className="phone-target__device">
-      <PhoneDevice width={89} />
+      {hero ? <PhoneHero width={228} /> : <PhoneDevice width={89} />}
     </div>
   </div>
 )

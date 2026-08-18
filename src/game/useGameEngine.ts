@@ -321,10 +321,12 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
       if (p === 'finished' || pausedRef.current) return
 
       const { w, h } = size.current
-      const cx = w / 2
-      const cy = h / 2
       const auto = p === 'auto'
       const frozen = p === 'freeze' || p === 'reveal'
+      const cx = w / 2
+      // The hero device sits low during the takeover; everything aims at it.
+      const cy = auto ? h * GAME_CONFIG.AUTO_TARGET_Y : h / 2
+      const phoneR = auto ? GAME_CONFIG.AUTO_PHONE_RADIUS : GAME_CONFIG.PHONE_RADIUS
       let dirty = false
 
       /* ---------------- timeline ---------------- */
@@ -462,7 +464,7 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
           continue
         }
 
-        if (d < GAME_CONFIG.PHONE_RADIUS) {
+        if (d < phoneR) {
           const genuine = o.def.trust === 'genuine'
           o.state = genuine ? 'absorbing' : 'gone'
           if (genuine) dirty = true
