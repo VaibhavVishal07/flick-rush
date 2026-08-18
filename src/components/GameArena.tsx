@@ -70,7 +70,7 @@ export const GameArena = ({
       />
 
       <div className="arena" ref={g.arenaRef}>
-        <PhoneTarget guarded={guarded} impact={g.impact} />
+        <PhoneTarget guarded={guarded} impact={g.impact} welcome={g.welcome} />
 
         {g.objects.map((o, i) => (
           <IncomingObject

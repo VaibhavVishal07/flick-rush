@@ -134,6 +134,19 @@ export const knockBack = (o: LiveObject, cx: number, cy: number) => {
   o.scale = 1.2
 }
 
+/**
+ * Genuine items are pulled into the phone rather than deleted on contact.
+ * Accelerating inward reads as the device accepting it, not as a collision.
+ */
+export const stepAbsorbing = (o: LiveObject, cx: number, cy: number, dt: number) => {
+  const pull = Math.min(1, GAME_CONFIG.ABSORB_PULL * dt)
+  o.x += (cx - o.x) * pull
+  o.y += (cy - o.y) * pull
+  o.scale = Math.max(0.12, o.scale - dt * GAME_CONFIG.ABSORB_SHRINK)
+  o.opacity = Math.max(0, o.opacity - dt * GAME_CONFIG.ABSORB_FADE)
+  o.rot *= 0.94
+}
+
 export const isOffstage = (o: LiveObject, w: number, h: number) =>
   o.opacity <= 0.02 ||
   o.x < -160 ||

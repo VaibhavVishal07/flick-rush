@@ -32,7 +32,9 @@ const IncomingObjectBase = ({ object: o, cue, register, onDown, onMove, onUp }: 
   return (
     <div
       ref={(el) => register(o.id, el)}
-      className={`obj${o.broken ? ' is-broken' : ''}`}
+      className={`obj${o.broken ? ' is-broken' : ''}${
+        o.state === 'absorbing' ? ' is-absorbing' : ''
+      }`}
       data-trust={o.def.trust}
       data-family={o.def.family}
       role="button"

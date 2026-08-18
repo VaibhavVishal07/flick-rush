@@ -23,6 +23,8 @@ export const haptics = {
   grab: () => buzz(6),
   /** Threat flicked away — a short double tick, so it reads as a break. */
   block: () => buzz([9, 22, 14]),
+  /** A genuine call landing safely — softer and rounder than a block. */
+  safe: () => buzz(10),
   /** Genuine item flicked by mistake — a different, doubled shape. */
   wrong: () => buzz([16, 40, 16]),
   /** Threat got through — one blunt impact. */

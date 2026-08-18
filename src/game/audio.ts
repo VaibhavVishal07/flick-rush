@@ -132,11 +132,13 @@ class AudioKit {
         this.tone(784, { type: 'triangle', peak: 0.15, decay: 0.07 })
         this.tone(1046.5, { type: 'triangle', peak: 0.11, decay: 0.09, delay: 0.045 })
         break
-      // Warm and welcoming: a major chord, no edge to it.
+      // A rising major arpeggio that resolves an octave up — the sound of
+      // something arriving safely, not merely of nothing going wrong.
       case 'genuine':
-        this.tone(523.25, { type: 'sine', peak: 0.11, decay: 0.14 })
-        this.tone(659.25, { type: 'sine', peak: 0.09, decay: 0.16, delay: 0.05 })
-        this.tone(1046.5, { type: 'sine', peak: 0.05, decay: 0.18, delay: 0.1 })
+        this.tone(523.25, { type: 'sine', peak: 0.12, decay: 0.16 })
+        this.tone(659.25, { type: 'sine', peak: 0.1, decay: 0.18, delay: 0.06 })
+        this.tone(783.99, { type: 'sine', peak: 0.09, decay: 0.2, delay: 0.12 })
+        this.tone(1046.5, { type: 'triangle', peak: 0.07, decay: 0.3, delay: 0.18 })
         break
       // A cartoon bonk, not an alarm.
       case 'miss':

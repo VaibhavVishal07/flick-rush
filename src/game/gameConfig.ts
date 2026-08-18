@@ -61,6 +61,11 @@ export const GAME_CONFIG = {
   HITSTOP: 95,
   /** Fraction of the launch velocity applied during hitstop. */
   HITSTOP_DRAG: 0.12,
+  /** How fast a genuine item is drawn into the phone, fraction per ms. */
+  ABSORB_PULL: 0.011,
+  /** How fast it shrinks and fades on the way in. */
+  ABSORB_SHRINK: 0.0028,
+  ABSORB_FADE: 0.0032,
   /** Spin imparted per px/ms of release speed, in deg/ms. Kept low —
    *  a tumbling chip is unreadable, and unreadable reads as sloppy. */
   FLICK_SPIN: 0.16,

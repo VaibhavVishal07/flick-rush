@@ -1,6 +1,6 @@
 import type { ObjectDef } from './objectTypes'
 
-export type ObjectState = 'incoming' | 'held' | 'flicked' | 'gone'
+export type ObjectState = 'incoming' | 'held' | 'flicked' | 'absorbing' | 'gone'
 
 export interface LiveObject {
   id: number

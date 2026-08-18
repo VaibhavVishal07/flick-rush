@@ -112,6 +112,15 @@ Grab, release and impact each get their own tick: a short haptic and a click
 on pick-up, a whoosh on release, a noise crack plus a major-third pop on the
 break, and a 1.2% screen kick — much smaller than the shake a miss earns.
 
+### Letting one through
+
+Doing nothing had no reward, which made half the game feel like the absence
+of a mistake. A genuine item is now **pulled into the phone** rather than
+deleted on contact: it accelerates inward, shrinks, and blooms green while
+the device bounces and throws a soft green ring — the warm counterpart to
+the red ripple a missed threat earns. It comes with its own soft haptic and
+a rising major arpeggio that resolves an octave up.
+
 ### Flick physics
 
 Pointer samples are collected on the way down, and release velocity is measured

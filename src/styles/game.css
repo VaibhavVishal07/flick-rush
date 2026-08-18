@@ -237,6 +237,48 @@
   }
 }
 
+/* A genuine item arriving: a soft green ring outward and a happy bounce, the
+   warm counterpart to the red ripple a missed threat earns. */
+.phone-target__welcome {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 5px solid var(--good);
+  box-shadow: 0 0 26px rgba(34, 197, 94, 0.55);
+  animation: welcome-ring 0.62s var(--ease-out) forwards;
+}
+
+@keyframes welcome-ring {
+  from {
+    transform: scale(0.42);
+    opacity: 0.95;
+  }
+  to {
+    transform: scale(1.85);
+    opacity: 0;
+  }
+}
+
+.phone-target.is-welcoming .phone-target__device {
+  animation: welcome-bounce 0.5s var(--ease-back);
+}
+
+@keyframes welcome-bounce {
+  0% {
+    transform: scale(1);
+  }
+  32% {
+    transform: scale(1.14, 0.9) translateY(3px);
+  }
+  62% {
+    transform: scale(0.96, 1.06) translateY(-3px);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .phone-target__impact {
   position: absolute;
   width: 130px;
@@ -617,6 +659,7 @@
 .verdict--auto-allowed .verdict__label {
   background: linear-gradient(180deg, #4ade80, var(--good-lo));
   transform: rotate(5deg);
+  animation: stamp 0.26s var(--ease-back);
 }
 
 .verdict--missed .verdict__label,

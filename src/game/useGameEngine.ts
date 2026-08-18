@@ -24,6 +24,7 @@ import {
   knockBack,
   launch,
   releaseVelocity,
+  stepAbsorbing,
   stepFlicked,
   stepIncoming,
   type Sample,
@@ -101,6 +102,7 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
   const [revealStep, setRevealStep] = useState(0)
   const [impact, setImpact] = useState(0)
   const [kick, setKick] = useState(0)
+  const [welcome, setWelcome] = useState(0)
   const [cueVisible, setCueVisible] = useState(true)
 
   const goPhase = useCallback((p: Phase) => {
@@ -177,6 +179,9 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
       } else if (verdict === 'safe') {
         pushBurst(o.x, o.y, 'genuine')
         audio.play('genuine')
+        haptics.safe()
+        setWelcome((n) => n + 1)
+        window.setTimeout(() => setWelcome(0), 620)
       } else if (verdict === 'missed') {
         audio.play('miss')
         haptics.miss()
@@ -381,6 +386,12 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
           if (isOffstage(o, w, h)) o.state = 'gone'
           continue
         }
+
+        if (o.state === 'absorbing') {
+          stepAbsorbing(o, cx, cy, dt)
+          if (o.opacity <= 0.02) o.state = 'gone'
+          continue
+        }
         if (frozen) continue
 
         stepIncoming(o, cx, cy, dt, now, reducedMotion)
@@ -403,13 +414,18 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
         }
 
         if (d < GAME_CONFIG.PHONE_RADIUS) {
-          o.state = 'gone'
+          const genuine = o.def.trust === 'genuine'
+          o.state = genuine ? 'absorbing' : 'gone'
+          if (genuine) dirty = true
           if (p === 'play') {
-            resolve(o, o.def.trust === 'threat' ? 'missed' : 'safe')
+            resolve(o, genuine ? 'safe' : 'missed')
           } else if (p === 'tutorial-genuine') {
             pushFeedback({ kind: 'safe', x: o.x, y: o.y, label: '✓ Safe' })
             pushBurst(o.x, o.y, 'genuine')
             audio.play('genuine')
+            haptics.safe()
+            setWelcome((n) => n + 1)
+            window.setTimeout(() => setWelcome(0), 620)
             goPhase('tutorial-done')
             gateAt.current = now + 950
           } else if (p === 'tutorial-threat') {
@@ -663,6 +679,7 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
     revealStep,
     impact,
     kick,
+    welcome,
     showCue: cueVisible && phase === 'tutorial-threat',
     onObjectPointerDown,
     onObjectPointerMove,
