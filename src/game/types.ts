@@ -70,10 +70,21 @@ export interface Tally {
   bestStreak: number
 }
 
+/** What Airtel Safe dealt with during the takeover, by category. */
+export interface AutoTally {
+  calls: number
+  messages: number
+  links: number
+  allowed: number
+}
+
 export interface GameResult {
   score: number
   correct: number
+  /** Threats that got through plus genuine items you removed by mistake. */
+  slipped: number
   total: number
   bestStreak: number
   autoHandled: number
+  auto: AutoTally
 }

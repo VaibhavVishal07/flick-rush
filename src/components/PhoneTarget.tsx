@@ -20,7 +20,7 @@ export const PhoneTarget = ({ guarded, impact, welcome }: Props) => (
     {welcome ? <span key={`w${welcome}`} className="phone-target__welcome" aria-hidden="true" /> : null}
     <SafeField active={guarded} />
     <div className="phone-target__device">
-      <PhoneDevice width={74} />
+      <PhoneDevice width={89} />
     </div>
   </div>
 )

@@ -19,7 +19,7 @@ The takeaway is never "be more careful online". It is "you shouldn't have to be.
 | Countdown | ~1.9s | 3 · 2 · 1 |
 | Gameplay | 17s | Learn → Rush → Chaos → Impossible |
 | Takeover | ~3.6s | Everything freezes. "Tough keeping up?" · "You shouldn't have to." Then a banner names it plainly — **Airtel Safe is handling it automatically** — and counts the blocks and allows as they happen. |
-| Result | — | One card, two bars: you against Airtel Safe on the same job. |
+| Result | — | Verdict first, then throughput: you against Airtel Safe on the same job, itemised. |
 
 First play lands around 29 seconds. Replays skip the tutorial and are live in
 about two.
@@ -49,7 +49,7 @@ cool-dark family (violet, indigo, amber), genuine items the bright family
 (green, cyan), and the primary action is gold. Every object is a sticker with
 a white keyline, a hard bottom edge and a real press travel.
 
-Display type is Pixelify Sans, UI type is Nunito, both embedded as woff2 data
+Display type is Pixelify Sans, UI type is Inter, both embedded as woff2 data
 URIs. Object labels always use the UI face — a pixel `C` reads as an `O` at
 12px, and the player has a fraction of a second to tell a spam call from Mom.
 
@@ -88,10 +88,15 @@ players. Threats and genuine items differ on four independent channels:
 
 | | Threats | Genuine |
 | --- | --- | --- |
-| Silhouette | hard-edged tag, square icon badge | soft pill, round icon badge |
-| Colour | cool-dark: violet, indigo, amber | bright: green, cyan |
-| Glyph | ✕ | ✓ |
+| **Value** | near-black | white |
+| Silhouette | hard-edged tag, hazard bar, square icon | soft pill, round icon |
+| Colour | hazard bar by category — red, orange, violet, amber | green or cyan |
+| Glyph | ✕ in red | ✓ in green |
 | Motion | constant jitter | glides, level |
+
+Value carries it. Lightness is the one difference the eye resolves in
+peripheral vision, before hue and long before you read a label — hue alone
+was not enough at speed.
 
 The ingress preview chips carry the same treatment, so the language is
 taught before the first round rather than during it.

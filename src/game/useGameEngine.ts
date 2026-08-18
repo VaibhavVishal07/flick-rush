@@ -32,6 +32,7 @@ import {
 import { audio } from './audio'
 import { haptics } from './haptics'
 import type {
+  AutoTally,
   Burst,
   Feedback,
   GameResult,
@@ -103,7 +104,9 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
   const [impact, setImpact] = useState(0)
   const [kick, setKick] = useState(0)
   const [welcome, setWelcome] = useState(0)
-  const [autoTally, setAutoTally] = useState({ blocked: 0, allowed: 0 })
+  const emptyAuto: AutoTally = { calls: 0, messages: 0, links: 0, allowed: 0 }
+  const [autoTally, setAutoTally] = useState<AutoTally>(emptyAuto)
+  const autoRef = useRef<AutoTally>(emptyAuto)
   const [cueUsed, setCueUsed] = useState(false)
 
   const goPhase = useCallback((p: Phase) => {
@@ -257,9 +260,11 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
     onFinish({
       score: t.score,
       correct: correctOf(t),
+      slipped: t.missed + t.oops,
       total,
       bestStreak: t.bestStreak,
       autoHandled: total,
+      auto: autoRef.current,
     })
   }, [goPhase, onFinish])
 
@@ -406,7 +411,16 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
               pushFeedback({ kind: 'auto-blocked', x: o.x, y: o.y, label: 'BLOCKED' })
               pushBurst(o.x, o.y, 'safe')
               audio.play('autoBlock')
-              setAutoTally((t) => ({ ...t, blocked: t.blocked + 1 }))
+              // Same three buckets the Safety Report uses, so the live count
+              // and the weekly summary speak the same language.
+              const bucket =
+                o.def.family === 'call'
+                  ? 'calls'
+                  : o.def.family === 'link'
+                    ? 'links'
+                    : 'messages'
+              autoRef.current = { ...autoRef.current, [bucket]: autoRef.current[bucket] + 1 }
+              setAutoTally(autoRef.current)
             }
           } else if (d < GAME_CONFIG.PHONE_RADIUS) {
             o.state = 'gone'

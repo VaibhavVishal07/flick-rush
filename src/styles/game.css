@@ -218,15 +218,15 @@
 }
 
 .phone-target__zone--near {
-  width: 186px;
-  height: 186px;
+  width: 204px;
+  height: 204px;
   border: 3px dashed rgba(255, 255, 255, 0.5);
   animation: zone-spin 26s linear infinite;
 }
 
 .phone-target__zone--far {
-  width: 276px;
-  height: 276px;
+  width: 290px;
+  height: 290px;
   border: 2px dashed rgba(255, 255, 255, 0.26);
   animation: zone-spin 40s linear infinite reverse;
 }
@@ -432,19 +432,20 @@
   filter: brightness(1.08);
 }
 
-/* Threats and genuine items differ on four independent channels: silhouette,
-   colour, glyph and motion. Colour alone is too slow to read at speed, and
-   fails entirely for colour-blind players. */
+/* Threats and genuine items differ on FIVE channels, the first of which is
+   value: threats are near-black, genuine items are white. Lightness is the
+   one difference the eye resolves in peripheral vision, before hue and long
+   before you read a label. */
 .obj__body {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 8px 6px 6px;
+  gap: 9px;
+  padding: 7px 8px 7px 7px;
   border-radius: 999px;
   background: linear-gradient(180deg, var(--chip-hi), var(--chip-lo));
   box-shadow:
-    0 0 0 3px #fff,
+    0 0 0 3px var(--chip-ring, #fff),
     0 5px 0 var(--chip-edge),
     0 11px 16px rgba(60, 4, 16, 0.34);
   transform: scale(var(--heft, 1));
@@ -455,69 +456,18 @@
   display: grid;
   place-items: center;
   flex: none;
-  width: 27px;
-  height: 27px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  color: var(--chip-lo);
-  background: #fff;
-  box-shadow: inset 0 -2px 0 rgba(20, 34, 74, 0.14);
-}
-
-/* Trailing glyph: ✕ on anything you should throw, ✓ on anything you should
-   leave alone. */
-.obj__flag {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 19px;
-  height: 19px;
-  margin-left: 1px;
-  border-radius: 6px;
-  color: var(--chip-lo);
-  background: rgba(255, 255, 255, 0.92);
-}
-
-/* --- silhouette: threats are hard-edged tags, genuine items soft pills -- */
-.obj[data-trust='threat'] .obj__body {
-  border-radius: 8px;
-}
-
-.obj[data-trust='threat'] .obj__icon {
-  border-radius: 7px;
-}
-
-.obj[data-trust='threat'] .obj__flag {
-  border-radius: 50%;
-}
-
-.obj[data-trust='genuine'] .obj__body {
-  border-radius: 999px;
-}
-
-.obj[data-trust='genuine'] .obj__flag {
-  border-radius: 50%;
-}
-
-/* --- motion: threats never sit still, genuine items glide -------------- */
-.obj[data-trust='threat']:not(.is-broken) .obj__body {
-  animation: threat-jitter 0.62s steps(2, end) infinite;
-}
-
-@keyframes threat-jitter {
-  0%,
-  100% {
-    transform: scale(var(--heft, 1)) rotate(-1.6deg);
-  }
-  50% {
-    transform: scale(var(--heft, 1)) rotate(1.6deg);
-  }
+  color: var(--chip-accent);
+  background: var(--chip-icon-bg, #fff);
 }
 
 .obj__text {
   display: flex;
   flex-direction: column;
   gap: 1px;
-  line-height: 1.06;
+  line-height: 1.08;
   white-space: nowrap;
 }
 
@@ -525,68 +475,118 @@
   font-family: var(--font);
   font-size: 12.5px;
   font-weight: 900;
-  letter-spacing: 0.005em;
-  color: #fff;
-  text-shadow: 0 2px 0 rgba(20, 34, 74, 0.3);
+  letter-spacing: -0.01em;
+  color: var(--chip-ink);
 }
 
 .obj__caption {
   font-size: 9.5px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.82);
+  color: var(--chip-ink-2);
 }
 
-/* Threats are the cool-dark family and genuine items the bright family.
-   Both hold up against red; the old coral threats did not. */
+/* Trailing glyph: ✕ on anything you should remove, ✓ on anything to leave. */
+.obj__flag {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--chip-flag);
+}
+
+/* ------------------------------------------------------------- threats -- */
+
 .obj[data-trust='threat'] {
-  --chip-hi: #8b5cf6;
-  --chip-lo: var(--threat-lo);
-  --chip-edge: var(--threat-edge);
+  --chip-hi: #1d2540;
+  --chip-lo: #0b1022;
+  --chip-edge: #04060f;
+  --chip-ring: rgba(255, 255, 255, 0.5);
+  --chip-ink: #ffffff;
+  --chip-ink-2: rgba(255, 255, 255, 0.6);
+  --chip-icon-bg: rgba(255, 255, 255, 0.12);
+  --chip-accent: #ff6b7d;
+  --chip-flag: #e8112d;
+}
+
+.obj[data-trust='threat'] .obj__body {
+  border-radius: 9px;
+  padding-left: 13px;
+}
+
+/* Hazard bar down the leading edge, coloured by what kind of nuisance it is. */
+.obj[data-trust='threat'] .obj__body::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 6px;
+  bottom: 6px;
+  width: 5px;
+  border-radius: 3px;
+  background: var(--chip-accent);
+}
+
+.obj[data-trust='threat'] .obj__icon {
+  border-radius: 7px;
 }
 
 .obj[data-trust='threat'][data-family='sms'] {
-  --chip-hi: #818cf8;
-  --chip-lo: var(--sms-lo);
-  --chip-edge: var(--sms-edge);
+  --chip-accent: #ff9f45;
 }
 
 .obj[data-trust='threat'][data-family='link'] {
-  --chip-hi: #3b82f6;
-  --chip-lo: var(--link-lo);
-  --chip-edge: var(--link-edge);
+  --chip-accent: #a78bfa;
 }
 
 .obj[data-trust='threat'][data-family='alert'] {
-  --chip-hi: #fde047;
-  --chip-lo: var(--alert-lo);
-  --chip-edge: var(--alert-edge);
+  --chip-accent: #fbbf24;
 }
 
-.obj[data-trust='threat'][data-family='alert'] .obj__label {
-  color: #3d2a00;
-  text-shadow: none;
+/* Threats never sit still. */
+.obj[data-trust='threat']:not(.is-broken):not(.is-absorbing) .obj__body {
+  animation: threat-jitter 0.62s steps(2, end) infinite;
 }
 
-.obj[data-trust='threat'][data-family='alert'] .obj__caption {
-  color: rgba(61, 42, 0, 0.72);
+@keyframes threat-jitter {
+  0%,
+  100% {
+    transform: scale(var(--heft, 1)) rotate(-1.7deg);
+  }
+  50% {
+    transform: scale(var(--heft, 1)) rotate(1.7deg);
+  }
 }
 
-.obj[data-trust='threat'][data-family='alert'] .obj__flag {
-  background: rgba(61, 42, 0, 0.85);
-  color: #fde047;
-}
+/* ------------------------------------------------------------- genuine -- */
 
 .obj[data-trust='genuine'] {
-  --chip-hi: #4ade80;
-  --chip-lo: var(--good-lo);
-  --chip-edge: var(--good-edge);
+  --chip-hi: #ffffff;
+  --chip-lo: #eefaf1;
+  --chip-edge: #b7d8c2;
+  --chip-ring: #14803c;
+  --chip-ink: #10321f;
+  --chip-ink-2: rgba(16, 50, 31, 0.6);
+  --chip-icon-bg: #d9f5e2;
+  --chip-accent: #14803c;
+  --chip-flag: #16a34a;
+}
+
+.obj[data-trust='genuine'] .obj__body {
+  border-radius: 999px;
 }
 
 .obj[data-trust='genuine'][data-family='sms'],
 .obj[data-trust='genuine'][data-family='otp'] {
-  --chip-hi: #67e8f9;
-  --chip-lo: var(--good-blue-lo);
-  --chip-edge: var(--good-blue-edge);
+  --chip-ring: #0b5f7a;
+  --chip-ink: #06303d;
+  --chip-ink-2: rgba(6, 48, 61, 0.6);
+  --chip-icon-bg: #d3f1fb;
+  --chip-accent: #0b6a80;
+  --chip-flag: #0891b2;
+  --chip-lo: #edf9fd;
+  --chip-edge: #a9d5e2;
 }
 
 /* Genuine things arrive with a friendly halo so they read as welcome. */
@@ -1067,7 +1067,8 @@
   gap: 4px;
   text-align: center;
   padding: 0 16px;
-  transform: translateY(-72px);
+  transform: translateY(-60px);
+  max-width: 100%;
 }
 
 .takeover__line {
@@ -1110,13 +1111,15 @@
    names the product plainly and counts the work out loud. */
 .auto-banner {
   position: absolute;
-  top: 14px;
-  left: 12px;
-  right: 12px;
+  top: 12px;
+  left: 10px;
+  right: 10px;
+  max-height: calc(100% - 24px);
+  overflow: hidden;
   display: grid;
   justify-items: center;
   gap: 4px;
-  padding: 12px 14px 11px;
+  padding: 11px 13px 10px;
   border-radius: 22px;
   background: var(--paper);
   box-shadow:
@@ -1152,14 +1155,28 @@
 
 .auto-banner__sub {
   margin: 0;
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 11.5px;
+  font-weight: 700;
   color: var(--ink-3);
+}
+
+.auto-banner__foot {
+  margin: 7px 0 0;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink-3);
+}
+
+.auto-banner__foot b {
+  font-weight: 900;
+  color: var(--good-lo);
 }
 
 .auto-banner__tally {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   width: 100%;
   margin: 6px 0 0;
@@ -1175,7 +1192,7 @@
 }
 
 .auto-banner__tally dt {
-  font-size: 9.5px;
+  font-size: 9px;
   font-weight: 900;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -1185,7 +1202,7 @@
 .auto-banner__tally dd {
   margin: 0;
   font-family: var(--display);
-  font-size: 26px;
+  font-size: 23px;
   font-weight: 700;
   line-height: 1;
   color: var(--airtel);

@@ -22,7 +22,7 @@ export const GAME_CONFIG = {
 
   /* ---- Arena geometry (px, arena-local) --------------------------------- */
   /** Radius of the device silhouette's hit area. */
-  PHONE_RADIUS: 52,
+  PHONE_RADIUS: 60,
   /** Objects spawn this far beyond the arena edge along their lane. */
   SPAWN_PAD: 44,
   /** Radius at which Airtel Safe knocks a threat back during the takeover. */

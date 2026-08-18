@@ -2,10 +2,12 @@ import { AirtelSafeMark } from '../assets/icons'
 import { AirtelShield } from '../assets/AirtelSafeLogo'
 import type { Phase } from '../game/types'
 
+import type { AutoTally } from '../game/types'
+
 interface Props {
   phase: Phase
   revealStep: number
-  autoTally: { blocked: number; allowed: number }
+  autoTally: AutoTally
 }
 
 /**
@@ -48,16 +50,25 @@ export const SafeTakeover = ({ phase, revealStep, autoTally }: Props) => {
             </span>
           </p>
           <p className="auto-banner__sub">You&rsquo;re not touching the screen.</p>
+          {/* Named categories, not a single "blocked" number — this is the
+              claim being spelled out as it happens. */}
           <dl className="auto-banner__tally">
             <div>
-              <dt>Blocked</dt>
-              <dd>{autoTally.blocked}</dd>
+              <dt>Spam calls</dt>
+              <dd>{autoTally.calls}</dd>
             </div>
             <div>
-              <dt>Let through</dt>
-              <dd>{autoTally.allowed}</dd>
+              <dt>Messages</dt>
+              <dd>{autoTally.messages}</dd>
+            </div>
+            <div>
+              <dt>Links</dt>
+              <dd>{autoTally.links}</dd>
             </div>
           </dl>
+          <p className="auto-banner__foot">
+            <b>{autoTally.allowed}</b> genuine calls and messages let straight through
+          </p>
         </div>
       )}
     </div>

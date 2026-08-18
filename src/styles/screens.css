@@ -118,87 +118,80 @@
   z-index: 3;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 6px 4px 4px;
+  gap: 8px;
+  padding: 5px 6px 5px 6px;
   border-radius: 999px;
   font-family: var(--font);
   font-size: 12px;
   font-weight: 900;
+  letter-spacing: -0.01em;
   white-space: nowrap;
+}
+
+/* Threats: near-black tags with a hazard edge. */
+.intro__chip[data-trust='threat'] {
+  padding-left: 12px;
+  border-radius: 9px;
   color: #fff;
-  text-shadow: 0 2px 0 rgba(20, 34, 74, 0.28);
-  background: linear-gradient(180deg, #8b5cf6, var(--threat-lo));
-  box-shadow: 0 0 0 3px #fff, 0 5px 0 var(--threat-edge), 0 11px 16px rgba(60, 4, 16, 0.32);
+  background: linear-gradient(180deg, #1d2540, #0b1022);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5), 0 5px 0 #04060f,
+    0 11px 16px rgba(60, 4, 16, 0.34);
+}
+
+.intro__chip[data-trust='threat']::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 6px;
+  bottom: 6px;
+  width: 5px;
+  border-radius: 3px;
+  background: var(--chip-accent, #ff6b7d);
 }
 
 .intro__chip[data-family='link'] {
-  background: linear-gradient(180deg, #3b82f6, var(--link-lo));
-  box-shadow: 0 0 0 3px #fff, 0 5px 0 var(--link-edge), 0 11px 16px rgba(60, 4, 16, 0.32);
+  --chip-accent: #a78bfa;
 }
 
 .intro__chip[data-family='sms'][data-trust='threat'] {
-  background: linear-gradient(180deg, #818cf8, var(--sms-lo));
-  box-shadow: 0 0 0 3px #fff, 0 5px 0 var(--sms-edge), 0 11px 16px rgba(60, 4, 16, 0.32);
+  --chip-accent: #ff9f45;
 }
 
+/* Genuine: white pills. */
 .intro__chip[data-trust='genuine'] {
-  background: linear-gradient(180deg, #4ade80, var(--good-lo));
-  box-shadow: 0 0 0 3px #fff, 0 5px 0 var(--good-edge), 0 11px 16px rgba(60, 4, 16, 0.32);
-}
-
-/* Same trailing glyph the in-game stickers use, so the ingress teaches it. */
-.intro__chip-flag {
-  display: grid;
-  place-items: center;
-  width: 18px;
-  height: 18px;
-  margin-left: 1px;
-  border-radius: 50%;
-  color: var(--threat-lo);
-  background: rgba(255, 255, 255, 0.92);
-}
-
-.intro__chip[data-family='link'] .intro__chip-flag {
-  color: var(--link-lo);
-}
-
-.intro__chip[data-family='sms'][data-trust='threat'] .intro__chip-flag {
-  color: var(--sms-lo);
-}
-
-.intro__chip[data-trust='genuine'] .intro__chip-flag {
-  color: var(--good-lo);
-}
-
-/* Threats are hard-edged tags; genuine items stay soft pills. */
-.intro__chip[data-trust='threat'] {
-  border-radius: 8px;
-}
-
-.intro__chip[data-trust='threat'] .intro__chip-icon {
-  border-radius: 7px;
+  color: #10321f;
+  background: linear-gradient(180deg, #ffffff, #eefaf1);
+  box-shadow: 0 0 0 3px #14803c, 0 5px 0 #b7d8c2, 0 11px 16px rgba(60, 4, 16, 0.3);
 }
 
 .intro__chip-icon {
   display: grid;
   place-items: center;
-  width: 23px;
-  height: 23px;
-  border-radius: 50%;
-  color: var(--threat-lo);
-  background: #fff;
-}
-
-.intro__chip[data-family='link'] .intro__chip-icon {
-  color: var(--link-lo);
-}
-
-.intro__chip[data-family='sms'][data-trust='threat'] .intro__chip-icon {
-  color: var(--sms-lo);
+  width: 25px;
+  height: 25px;
+  border-radius: 7px;
+  color: var(--chip-accent, #ff6b7d);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .intro__chip[data-trust='genuine'] .intro__chip-icon {
-  color: var(--good-lo);
+  border-radius: 50%;
+  color: #14803c;
+  background: #d9f5e2;
+}
+
+.intro__chip-flag {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: #fff;
+  background: #e8112d;
+}
+
+.intro__chip[data-trust='genuine'] .intro__chip-flag {
+  background: #16a34a;
 }
 
 .intro__chip--a {
@@ -401,13 +394,15 @@
 
 /* Explicit rows: brand, card, breathing room, buttons. Auto margins split
    the leftover space unevenly here, so the middle row owns it instead. */
+/* Brand, a scrolling middle, buttons pinned. Only the middle scrolls, so the
+   call to action never walks off the bottom. */
 .result {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-rows: auto auto 1fr auto;
+  grid-template-rows: auto 1fr auto;
   height: 100%;
-  overflow-y: auto;
+  overflow: hidden;
   overscroll-behavior: contain;
   padding: calc(14px + env(safe-area-inset-top)) 20px calc(16px + env(safe-area-inset-bottom));
   animation: result-in 0.5s var(--ease-out) both;
@@ -428,7 +423,7 @@
 /* One card, two bars. The comparison is the point of this screen, so it gets
    to be the only object on it. */
 .tally {
-  margin-top: 14px;
+  margin-top: 0;
   padding: 14px 16px 12px;
   border-radius: 22px;
   background: var(--paper);
@@ -495,7 +490,7 @@
 
 .tally__num {
   margin: 0;
-  min-width: 56px;
+  min-width: 52px;
   text-align: right;
   font-family: var(--display);
   font-size: 26px;
@@ -515,6 +510,18 @@
   color: var(--ink-4);
 }
 
+.tally__punch {
+  margin: 9px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.tally__punch b {
+  font-weight: 900;
+  color: var(--airtel);
+}
+
 .tally__foot {
   margin: 10px 0 0;
   padding-top: 9px;
@@ -525,15 +532,162 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* The middle scrolls. A hard clip against the button block reads as a broken
+   card, so the last few pixels fade out instead. */
+.result__scroll {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: grid;
+  align-content: start;
+  gap: 9px;
+  padding: 10px 0 18px;
+  mask-image: linear-gradient(180deg, #000 calc(100% - 26px), transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - 26px), transparent 100%);
+}
+
 .result__verdict {
-  align-self: center;
-  padding: 16px 0;
+  padding: 0 0 2px;
+}
+
+.result__meta {
+  margin: 0;
+  padding-bottom: 2px;
+  text-align: center;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.78);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- the stark bit ------------------------------------------------------ */
+
+.slipped {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top: 2px solid rgba(20, 34, 74, 0.08);
+}
+
+.slipped__col {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.slipped__cap {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.slipped__num {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.slipped__num--bad {
+  color: var(--ink);
+}
+
+.slipped__num--good {
+  color: var(--good);
+}
+
+/* --- the claim, itemised ------------------------------------------------ */
+
+.protect {
+  padding: 12px 14px 11px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.13);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.28);
+}
+
+.protect__cap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 9px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.protect__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.protect__list li {
+  display: grid;
+  justify-items: center;
+  gap: 1px;
+  padding: 7px 4px 6px;
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: 0 3px 0 rgba(60, 4, 16, 0.22);
+}
+
+.protect__icon {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(180deg, var(--airtel-hi), var(--airtel));
+}
+
+.protect__num {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.protect__label {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.protect__foot {
+  margin: 9px 0 0;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.protect__foot b {
+  font-weight: 900;
+  color: var(--gold-hi);
 }
 
 .result__headline {
   margin: 0;
   font-family: var(--display);
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
   line-height: 1.06;
   text-wrap: balance;
@@ -557,12 +711,13 @@
 
 .result__cta {
   display: grid;
-  gap: 8px;
-  padding-top: 4px;
+  gap: 7px;
+  padding-top: 2px;
 }
 
 .result__cta .btn-sub {
-  margin: 11px 0 3px;
+  margin: 10px 0 1px;
+  font-size: 13px;
   color: rgba(40, 2, 10, 0.72);
 }
 
@@ -795,8 +950,15 @@
   }
 
   .tally {
-    margin-top: 10px;
     padding: 11px 14px 10px;
+  }
+
+  .slipped__num {
+    font-size: 36px;
+  }
+
+  .protect {
+    padding: 10px 12px 9px;
   }
 
   .tally__num {

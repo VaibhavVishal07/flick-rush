@@ -53,7 +53,7 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
     <div className="intro__stage" aria-hidden="true">
       <div className="intro__glow" />
       <div className="intro__device">
-        <PhoneDevice width={80} />
+        <PhoneDevice width={96} />
       </div>
       {PREVIEW.map((p) => (
         <div
