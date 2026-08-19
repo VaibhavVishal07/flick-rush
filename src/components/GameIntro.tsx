@@ -115,7 +115,7 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
         <div className="intro__glow" />
 
         <div className={`intro__device${beat === 'through' ? ' is-welcoming' : ''}`}>
-          <PhoneDevice width={112} />
+          <PhoneDevice width={136} />
         </div>
 
         {showBad ? (
@@ -153,21 +153,6 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
         <span className="intro__caption-lead">{caption.lead}</span>
         <span className="intro__caption-sub">{caption.sub}</span>
       </p>
-
-      <div className="intro__rule" aria-hidden="true">
-        <span className="intro__rule-row" data-trust="threat">
-          <span className="intro__rule-flag">
-            <PixelCross size={20} />
-          </span>
-          <b>Tap it</b>
-        </span>
-        <span className="intro__rule-row" data-trust="genuine">
-          <span className="intro__rule-flag">
-            <PixelTick size={20} />
-          </span>
-          <b>Leave it</b>
-        </span>
-      </div>
 
       <div className="intro__cta">
         <button type="button" className="btn btn--primary btn--lg" onClick={onPlay}>

@@ -96,7 +96,7 @@
   flex: none;
   /* Fluid: a fixed 292px pushed the buttons off the bottom of a 540px screen.
      The floor is the phone's own height plus a little air. */
-  height: clamp(224px, 42vh, 292px);
+  height: clamp(250px, 45vh, 306px);
   display: grid;
   place-items: center;
   /* `auto` top margin pairs with the one on the CTA: the slack splits evenly
@@ -155,10 +155,13 @@
   animation: caption-in 0.32s var(--ease-back) both;
 }
 
+/* Inter, not the display face. This is the line that has to be read and
+   understood, not the one that has to look like a game. */
 .intro__caption-lead {
-  font-family: var(--display);
-  font-size: 26px;
-  font-weight: 700;
+  font-family: var(--font);
+  font-size: 25px;
+  letter-spacing: -0.02em;
+  font-weight: 900;
   line-height: 1.05;
   color: #fff;
   text-shadow: 3px 3px 0 var(--outline);
@@ -177,6 +180,16 @@
   from {
     transform: translateY(8px) scale(0.94);
     opacity: 0;
+  }
+}
+
+/* Short screens get a smaller handset. Done by resizing the SVG rather than
+   with `transform: scale`, which the device's bob animation would overwrite
+   and which would leave the layout box at full height anyway. */
+@media (max-height: 640px) {
+  .intro__device svg {
+    width: 116px;
+    height: auto;
   }
 }
 
@@ -368,52 +381,6 @@
     transform: scale(1.5);
     opacity: 0;
   }
-}
-
-/* The rule stands still under the captions while the demo repeats. */
-.intro__rule {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 10px 0 0;
-}
-
-.intro__rule-row {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 14px 9px;
-  border-radius: 13px;
-  background: var(--chip-bg);
-  box-shadow: inset 0 2px 0 var(--chip-gloss), 0 3px 0 var(--chip-edge);
-  font-family: var(--display);
-  font-size: 17px;
-  font-weight: 700;
-  white-space: nowrap;
-  color: var(--chip-ink);
-}
-
-.intro__rule-row[data-trust='threat'] {
-  --chip-bg: #17131f;
-  --chip-edge: #050308;
-  --chip-gloss: rgba(255, 255, 255, 0.16);
-  --chip-ink: #ffffff;
-  --chip-mark: #ff5470;
-}
-
-.intro__rule-row[data-trust='genuine'] {
-  --chip-bg: #eafaef;
-  --chip-edge: #a4cdb4;
-  --chip-gloss: rgba(255, 255, 255, 0.9);
-  --chip-ink: #0f5c2e;
-  --chip-mark: #12994a;
-}
-
-.intro__rule-flag {
-  display: grid;
-  place-items: center;
-  flex: none;
-  color: var(--chip-mark);
 }
 
 @media (prefers-reduced-motion: reduce) {
