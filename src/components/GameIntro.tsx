@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { AirtelSafeMark, ShieldMark, SoundOffIcon, SoundOnIcon } from '../assets/icons'
 import { PixelCross, PixelHand, PixelTick, pixelFamilyIcon } from '../assets/PixelIcon'
 import { ParticleBurst } from '../assets/ParticleBurst'
-import { PhoneDevice } from '../assets/PhoneDevice'
 import { audio } from '../game/audio'
 import type { Burst } from '../game/types'
 
@@ -15,44 +14,40 @@ interface Props {
 }
 
 /**
- * The intro shows the game instead of asking for it.
+ * Two rules, demonstrated one at a time on an empty field.
  *
- * Asking did not work. A screen that waits for the right tap is a screen you
- * can fail at, and the instruction has to be read before anything happens.
- * This one plays itself: spam arrives, a hand comes in and smashes it, a real
- * call arrives and is allowed through, and then it does it again. Nothing to
- * get right, nothing to read first — you watch it twice and you have it.
+ * Modelled on how an arcade game teaches: a single object, nothing else on
+ * screen, one instruction, and a cue drawn on the object itself. The phone is
+ * gone from this screen — it was a second thing to look at while the card was
+ * the thing being explained, and it made every beat a two-object scene.
  *
- * The phone is the subject and sits high; the words sit under it and are
- * captions, not instructions.
+ * Beat one: a spam card, a hand taps it, it is destroyed. Beat two: a real
+ * card, a hand with a line through it, and nothing happens to the card. That
+ * is the whole game.
  */
-type Beat = 'spam' | 'gone' | 'real' | 'through'
+type Beat = 'bad' | 'badDone' | 'good' | 'goodDone'
 
-/**
- * Captions that teach rather than narrate. "Spam is coming / watch what
- * happens" described the animation; these name the badge and say what it is
- * for, which is the only thing the player has to carry into the game.
- */
-/**
- * Four words a beat, at most. The card being described is on screen while the
- * line is read, so the line does not have to describe it — naming the colour
- * and the mark as well was belt-and-braces, and it read as homework.
- */
-const CAPTION: Record<Beat, { lead: string; sub: string; tone: 'bad' | 'good' }> = {
-  spam: { lead: 'Bad one.', sub: 'Tap it.', tone: 'bad' },
-  gone: { lead: 'Gone.', sub: 'It never got in.', tone: 'bad' },
-  real: { lead: 'Good one.', sub: 'Leave it.', tone: 'good' },
-  through: { lead: 'It got in.', sub: 'That’s what you want.', tone: 'good' },
+const RULE: Record<Beat, string> = {
+  bad: 'Tap the bad ones',
+  badDone: 'Tap the bad ones',
+  good: 'Don’t tap the good ones',
+  goodDone: 'Don’t tap the good ones',
 }
 
-/** The loop, in milliseconds from the start of each beat. */
-const SPAM_TAP = 1150
-const SPAM_HOLD = 850
-const REAL_TRAVEL = 900
-const REAL_HOLD = 950
+const OUTCOME: Record<Beat, string> = {
+  bad: '',
+  badDone: 'Gone.',
+  good: '',
+  goodDone: 'Still here.',
+}
+
+const BAD_TAP = 1450
+const BAD_HOLD = 1250
+const GOOD_HOLD = 1900
+const GOOD_END = 1350
 
 export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }: Props) => {
-  const [beat, setBeat] = useState<Beat>('spam')
+  const [beat, setBeat] = useState<Beat>('bad')
   const [bursts, setBursts] = useState<Burst[]>([])
   const uid = useRef(0)
   const stage = useRef<HTMLDivElement>(null)
@@ -78,27 +73,21 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
       ])
       after(700, () => setBursts((list) => list.filter((x) => x.id !== id)))
     }
-    // Only if the visitor has already interacted — browsers block audio otherwise.
     audio.play('block')
-    setBeat('gone')
+    setBeat('badDone')
   }, [after])
 
   useEffect(() => {
-    if (beat === 'spam') after(SPAM_TAP, smash)
-    if (beat === 'gone') after(SPAM_HOLD, () => setBeat('real'))
-    if (beat === 'real') after(REAL_TRAVEL + 500, () => setBeat('through'))
-    if (beat === 'through') after(REAL_HOLD, () => setBeat('spam'))
+    if (beat === 'bad') after(BAD_TAP, smash)
+    if (beat === 'badDone') after(BAD_HOLD, () => setBeat('good'))
+    if (beat === 'good') after(GOOD_HOLD, () => setBeat('goodDone'))
+    if (beat === 'goodDone') after(GOOD_END, () => setBeat('bad'))
   }, [beat, after, smash])
 
-
-  const caption = CAPTION[beat]
-  // Kept mounted through `gone` so the break and the hand's retreat can
-  // finish — unmounting on the tap cut both off at the frame they started.
-  const showBad = beat === 'spam' || beat === 'gone'
-  const showGood = beat === 'real' || beat === 'through'
+  const bad = beat === 'bad' || beat === 'badDone'
 
   return (
-    <section className="intro" data-tone={caption.tone} aria-label="Shield Rush">
+    <section className="intro" aria-label="Shield Rush">
       <header className="intro__top">
         <AirtelSafeMark />
         <div className="intro__tools">
@@ -117,54 +106,60 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
         </div>
       </header>
 
-      <div className={`intro__stage${beat === 'gone' ? ' is-hit' : ''}`} ref={stage} aria-hidden="true">
-        <div className="intro__glow" />
+      <div className="intro__stage" ref={stage} aria-hidden="true">
+        <span className="intro__spot" />
 
-        <div className={`intro__device${beat === 'through' ? ' is-welcoming' : ''}`}>
-          <PhoneDevice width={136} />
-        </div>
-
-        {showBad ? (
+        {bad ? (
           <>
-            <div ref={card} className="intro__card intro__card--bad" data-trust="threat">
-              <span className="intro__card-icon">{pixelFamilyIcon('call', 'threat', 16)}</span>
+            <div ref={card} className="intro__card" data-trust="threat" data-state={beat}>
+              <span className="intro__card-icon">{pixelFamilyIcon('call', 'threat', 20)}</span>
               <span>Spam Call</span>
               <span className="intro__card-flag">
-                <PixelCross size={19} />
+                <PixelCross size={24} />
               </span>
             </div>
-            <span className="intro__finger">
-              <PixelHand size={70} />
-            </span>
+            {beat === 'bad' ? (
+              <span className="intro__hand">
+                <PixelHand size={76} />
+              </span>
+            ) : null}
           </>
-        ) : null}
-
-        {showGood ? (
-          <div className={`intro__card intro__card--good${beat === 'through' ? ' is-in' : ''}`} data-trust="genuine">
-            <span className="intro__card-icon">{pixelFamilyIcon('call', 'genuine', 16)}</span>
-            <span>Mom Calling</span>
-            <span className="intro__card-flag">
-              <PixelTick size={19} />
-            </span>
-          </div>
-        ) : null}
+        ) : (
+          <>
+            <div className="intro__card" data-trust="genuine" data-state={beat}>
+              <span className="intro__card-icon">{pixelFamilyIcon('call', 'genuine', 20)}</span>
+              <span>Mom Calling</span>
+              <span className="intro__card-flag">
+                <PixelTick size={24} />
+              </span>
+            </div>
+            {beat === 'good' ? (
+              <span className="intro__nohand">
+                <PixelHand size={76} />
+                <span className="intro__nohand-bar" />
+              </span>
+            ) : null}
+          </>
+        )}
 
         {bursts.map((b) => (
           <ParticleBurst key={b.id} burst={b} />
         ))}
       </div>
 
-      {/* Under the phone, because the phone is the thing being watched. */}
-      <p key={beat} className="intro__caption" data-tone={caption.tone} aria-live="polite">
-        <span className="intro__caption-lead">{caption.lead}</span>
-        <span className="intro__caption-sub">{caption.sub}</span>
+      <p className="intro__caption" aria-live="polite">
+        <span key={RULE[beat]} className="intro__caption-lead">
+          {RULE[beat]}
+        </span>
+        <span key={OUTCOME[beat] || 'blank'} className="intro__caption-sub">
+          {OUTCOME[beat] || ' '}
+        </span>
       </p>
 
       <div className="intro__cta">
         <button type="button" className="btn btn--primary btn--lg" onClick={onPlay}>
           {returning ? 'Play Again' : 'Play Now'}
         </button>
-        {/* Says what the next 20 seconds will ask of them. */}
         <p className="btn-sub">Takes 20 seconds</p>
       </div>
     </section>

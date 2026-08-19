@@ -76,37 +76,6 @@
   padding: calc(14px + env(safe-area-inset-top)) 22px calc(20px + env(safe-area-inset-bottom));
 }
 
-/* When a real call gets through, the whole screen goes green. The red ground
-   is the game's alarm state; letting it swing all the way over for two beats
-   is the loudest available way to say "this one was fine". Behind the content
-   (z-index -1 inside `.intro`'s own stacking context), so nothing on top of it
-   has to change colour. */
-.intro::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.55s var(--ease-out);
-  background: radial-gradient(
-    130% 75% at 50% 38%,
-    #16a34a 0%,
-    #0c7a37 52%,
-    #085c29 100%
-  );
-}
-
-.intro[data-tone='good']::before {
-  opacity: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .intro::before {
-    transition: none;
-  }
-}
-
 .intro__top {
   display: flex;
   align-items: center;
@@ -118,153 +87,55 @@
   gap: 8px;
 }
 
-/* Sized to its contents, NOT flex:1. Absorbing the spare height pushed the
-   phone into the middle of a tall empty box and left the caption stranded
-   half a screen below the thing it is captioning. The slack goes to the CTA
-   block instead, which is pinned to the bottom. */
+/* A clear field with one thing on it. Sized to its contents so the caption
+   stays under the object rather than half a screen below it, with `auto`
+   margins here and on the CTA splitting the slack evenly above and below. */
 .intro__stage {
   position: relative;
   flex: none;
-  /* Fluid: a fixed 292px pushed the buttons off the bottom of a 540px screen.
-     The floor is the phone's own height plus a little air. */
-  height: clamp(250px, 45vh, 306px);
+  height: clamp(200px, 34vh, 250px);
   display: grid;
   place-items: center;
-  /* `auto` top margin pairs with the one on the CTA: the slack splits evenly
-     above and below, so the phone-caption-rule cluster sits optically centred
-     instead of leaving one large hole above the button. */
   margin: auto -22px 0;
 }
 
-/* Same still-water treatment as the arena: soft filled discs with a slow
-   ripple, rather than a dashed ring. */
-.intro__glow {
+/* A soft spotlight, so the single object on the field has somewhere to sit. */
+.intro__spot {
   position: absolute;
-  width: 300px;
-  height: 300px;
+  width: min(320px, 82vw);
+  aspect-ratio: 1;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.13) 0%,
+    rgba(255, 255, 255, 0.06) 52%,
+    transparent 72%
+  );
 }
 
-.intro__glow::before,
-.intro__glow::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 212px;
-  height: 212px;
-  margin: -106px 0 0 -106px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.intro__glow::after {
-  animation: zone-ripple 3.4s var(--ease-out) infinite;
-}
-
-.intro__device {
-  position: relative;
-  z-index: 2;
-  filter: drop-shadow(0 14px 0 rgba(20, 34, 74, 0.22))
-    drop-shadow(0 26px 32px rgba(20, 34, 74, 0.36));
-  animation: device-bob 3.6s var(--ease-in-out) infinite;
-}
-
-/* ------------------------------------------------ the intro plays itself -- */
-
-/* The phone is the subject and sits high. The words sit under it and are
-   captions on what just happened, not instructions to be read first. */
-
-.intro__caption {
-  display: grid;
-  justify-items: center;
-  gap: 3px;
-  margin: 0;
-  /* Every lead is one line now, so this only has to be tall enough to stop
-     the block breathing between beats. */
-  min-height: 70px;
-  align-content: start;
-  text-align: center;
-  animation: caption-in 0.36s var(--ease-back) both;
-}
-
-/* Inter, not the display face. This is the line that has to be read and
-   understood, not the one that has to look like a game — and it is the loudest
-   thing under the phone, because it is the instruction. */
-.intro__caption-lead {
-  font-family: var(--font);
-  font-size: 36px;
-  letter-spacing: -0.035em;
-  font-weight: 900;
-  line-height: 1;
-  color: #fff;
-  text-shadow: 4px 4px 0 var(--outline);
-}
-
-/* The beat's own colour, on the supporting line. */
-.intro__caption[data-tone='bad'] .intro__caption-sub {
-  color: #ffc9d2;
-}
-
-.intro__caption[data-tone='good'] .intro__caption-sub {
-  color: #a9f0c4;
-}
-
-.intro__caption-sub {
-  font-family: var(--font);
-  font-size: 17px;
-  font-weight: 800;
-  line-height: 1.25;
-  color: #fff;
-  text-shadow: 1px 2px 0 rgba(13, 13, 18, 0.8);
-}
-
-@keyframes caption-in {
-  0% {
-    transform: translateY(10px) scale(0.82);
-    opacity: 0;
-  }
-  55% {
-    transform: translateY(0) scale(1.06);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-}
-
-/* Short screens get a smaller handset. Done by resizing the SVG rather than
-   with `transform: scale`, which the device's bob animation would overwrite
-   and which would leave the layout box at full height anyway. */
-@media (max-height: 640px) {
-  .intro__device svg {
-    width: 116px;
-    height: auto;
-  }
-}
-
+/* ONE card, centred, alone. Same construction as the game's, sized up because
+   nothing is competing with it. */
 .intro__card {
-  position: absolute;
+  position: relative;
   z-index: 3;
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  padding: 12px 20px 13px;
-  border-radius: 18px;
+  gap: 11px;
+  padding: 14px 22px 15px;
+  border-radius: 20px;
   background: var(--chip-bg);
   box-shadow:
     inset 0 2px 0 var(--chip-gloss),
     inset 0 -3px 0 rgba(0, 0, 0, 0.1),
-    0 4px 0 var(--chip-edge),
-    0 10px 16px rgba(60, 4, 16, 0.32);
+    0 5px 0 var(--chip-edge),
+    0 12px 20px rgba(60, 4, 16, 0.34);
   font-family: var(--display);
-  font-size: 25px;
+  font-size: 28px;
   font-weight: 700;
   line-height: 1.02;
   white-space: nowrap;
   color: var(--chip-ink);
+  animation: card-in 0.44s var(--ease-back) both;
 }
 
 .intro__card[data-trust='threat'] {
@@ -300,166 +171,175 @@
   color: var(--chip-mark);
 }
 
-/* Spam drops in at the phone and is destroyed where it stops. */
-.intro__card--bad {
-  top: 15%;
-  left: 50%;
-  animation: bad-in 0.42s var(--ease-back) both,
-    bad-out 0.34s var(--ease-out) 1.15s forwards;
-}
-
-@keyframes bad-in {
+@keyframes card-in {
   from {
-    transform: translate(-50%, -38px) scale(0.86);
+    transform: translateY(-26px) scale(0.84);
     opacity: 0;
   }
-  to {
-    transform: translate(-50%, 0) scale(1);
-    opacity: 1;
-  }
 }
 
-@keyframes bad-out {
+/* Destroyed, on the frame the hand lands. */
+.intro__card[data-state='badDone'] {
+  animation: card-smash 0.4s var(--ease-out) forwards;
+}
+
+@keyframes card-smash {
   0% {
-    transform: translate(-50%, 0) scale(1);
+    transform: scale(1);
     filter: brightness(1);
     opacity: 1;
   }
-  25% {
-    transform: translate(-50%, 2px) scale(1.16) rotate(-3deg);
-    filter: brightness(3.4);
+  22% {
+    transform: scale(1.18) rotate(-3deg);
+    filter: brightness(3.6);
     opacity: 1;
   }
   100% {
-    transform: translate(-50%, 10px) scale(0.32) rotate(11deg);
+    transform: scale(0.3) rotate(12deg);
     opacity: 0;
   }
 }
 
-/* The hand: in from the lower right, one press, out. The press lands on the
-   same frame the card breaks. */
-.intro__finger {
+/* Untouched, and it simply carries on. */
+.intro__card[data-state='goodDone'] {
+  animation: card-pass 1.1s var(--ease-in-out) forwards;
+}
+
+@keyframes card-pass {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(74px) scale(0.94);
+    opacity: 0;
+  }
+}
+
+/* The hand presses the card, on a loop, until it lands. */
+.intro__hand {
   position: absolute;
   z-index: 6;
-  top: calc(15% - 4px);
-  left: calc(50% + 66px);
+  left: calc(50% + 34px);
+  top: calc(50% + 24px);
   line-height: 0;
   color: #fff;
   --px-accent: #fff;
-  filter: drop-shadow(3px 4px 0 rgba(13, 13, 18, 0.55));
-  animation: finger-tap 1.7s var(--ease-out) both;
+  filter: drop-shadow(4px 5px 0 rgba(13, 13, 18, 0.55));
+  animation: hand-tap 1.45s var(--ease-out) both;
 }
 
-@keyframes finger-tap {
+@keyframes hand-tap {
   0% {
-    transform: translate(58px, 62px) rotate(10deg) scale(0.86);
+    transform: translate(64px, 76px) rotate(11deg) scale(0.84);
     opacity: 0;
   }
-  26% {
+  30% {
     transform: translate(0, 0) rotate(0deg) scale(1);
-    opacity: 1;
-  }
-  60% {
-    transform: translate(0, 0) rotate(0deg) scale(1);
-    opacity: 1;
-  }
-  68% {
-    transform: translate(0, 9px) rotate(-2deg) scale(0.88);
     opacity: 1;
   }
   76% {
     transform: translate(0, 0) rotate(0deg) scale(1);
     opacity: 1;
   }
+  88% {
+    transform: translate(0, -11px) rotate(-3deg) scale(0.88);
+    opacity: 1;
+  }
   100% {
-    transform: translate(52px, 58px) rotate(9deg) scale(0.88);
-    opacity: 0;
-  }
-}
-
-/* The real one travels all the way in, untouched. */
-.intro__card--good {
-  top: 15%;
-  left: 50%;
-  animation: good-in 0.42s var(--ease-back) both;
-}
-
-@keyframes good-in {
-  from {
-    transform: translate(-50%, -38px) scale(0.86);
-    opacity: 0;
-  }
-  to {
-    transform: translate(-50%, 0) scale(1);
+    transform: translate(0, 0) rotate(0deg) scale(1);
     opacity: 1;
   }
 }
 
-.intro__card--good.is-in {
-  animation: good-absorb 0.9s var(--ease-in-out) forwards;
-}
-
-@keyframes good-absorb {
-  0% {
-    transform: translate(-50%, 0) scale(1);
-    opacity: 1;
-  }
-  74% {
-    transform: translate(-50%, 108px) scale(0.6);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, 132px) scale(0.26);
-    opacity: 0;
-  }
-}
-
-/* The whole stage takes the hit. */
-.intro__stage.is-hit {
-  animation: stage-hit 0.32s var(--ease-out);
-}
-
-@keyframes stage-hit {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-  22% {
-    transform: translate3d(-7px, 4px, 0) rotate(-0.6deg);
-  }
-  48% {
-    transform: translate3d(6px, -3px, 0) rotate(0.5deg);
-  }
-  74% {
-    transform: translate3d(-3px, 2px, 0);
-  }
-}
-
-/* The phone says thank you when a real call lands. */
-.intro__device.is-welcoming::after {
-  content: '';
+/* The counter-example: the same hand with a line through it. */
+.intro__nohand {
   position: absolute;
-  inset: -20px;
-  border-radius: 50%;
-  border: 5px solid var(--good);
-  animation: welcome-ring 0.85s var(--ease-out) forwards;
+  z-index: 6;
+  left: calc(50% + 34px);
+  top: calc(50% + 24px);
+  line-height: 0;
+  color: rgba(255, 255, 255, 0.62);
+  --px-accent: rgba(255, 255, 255, 0.62);
+  filter: drop-shadow(4px 5px 0 rgba(13, 13, 18, 0.45));
+  animation: nohand-in 0.42s var(--ease-back) both;
 }
 
-@keyframes welcome-ring {
+.intro__nohand-bar {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 104px;
+  height: 12px;
+  margin: -6px 0 0 -52px;
+  border-radius: 2px;
+  background: #ff2f4d;
+  box-shadow: 0 0 0 4px #fff;
+  transform: rotate(-42deg);
+}
+
+@keyframes nohand-in {
   from {
-    transform: scale(0.55);
+    transform: scale(0.7) rotate(-8deg);
+    opacity: 0;
+  }
+}
+
+/* The rule, under the object it is about. */
+.intro__caption {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  margin: 0;
+  /* "Tap the bad ones" is one line, "Don't tap the good ones" is two. The box
+     holds the taller of the pair so it never resizes mid-loop. */
+  min-height: 102px;
+  align-content: start;
+  text-align: center;
+}
+
+.intro__caption-lead {
+  font-family: var(--font);
+  font-size: 32px;
+  letter-spacing: -0.035em;
+  font-weight: 900;
+  line-height: 1.06;
+  color: #fff;
+  text-shadow: 4px 4px 0 var(--outline);
+  animation: caption-in 0.36s var(--ease-back) both;
+}
+
+.intro__caption-sub {
+  font-family: var(--font);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #ffd7c8;
+  text-shadow: 1px 2px 0 rgba(13, 13, 18, 0.8);
+  animation: caption-in 0.3s var(--ease-back) both;
+}
+
+@keyframes caption-in {
+  0% {
+    transform: translateY(9px) scale(0.86);
+    opacity: 0;
+  }
+  55% {
+    transform: translateY(0) scale(1.05);
     opacity: 1;
   }
-  to {
-    transform: scale(1.5);
-    opacity: 0;
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .intro__caption,
   .intro__card,
-  .intro__finger {
+  .intro__hand,
+  .intro__nohand,
+  .intro__caption-lead,
+  .intro__caption-sub {
     animation: none;
   }
 }
