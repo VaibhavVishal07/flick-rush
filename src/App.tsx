@@ -101,7 +101,9 @@ export default function App() {
           reducedMotion={reducedMotion}
           soundOn={soundOn}
           onToggleSound={() => setSoundOn((s) => !s)}
-          skipTutorial={round > 1}
+          /* Onboarding lives entirely on the intro screen now; the game opens
+             on the countdown. */
+          skipTutorial
         />
       ) : null}
 

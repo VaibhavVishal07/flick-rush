@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AirtelSafeMark, ShieldMark, SoundOffIcon, SoundOnIcon } from '../assets/icons'
 import { PixelCross, PixelTick, pixelFamilyIcon } from '../assets/PixelIcon'
 import { ParticleBurst } from '../assets/ParticleBurst'
@@ -6,7 +6,6 @@ import { PhoneDevice } from '../assets/PhoneDevice'
 import { audio } from '../game/audio'
 import { haptics } from '../game/haptics'
 import type { Burst } from '../game/types'
-import type { Family, Trust } from '../game/objectTypes'
 
 interface Props {
   onPlay: () => void
@@ -17,51 +16,51 @@ interface Props {
 }
 
 /**
- * The first screen is the tutorial.
+ * The onboarding. All of it, in one place.
  *
- * People kept tapping these stickers, which was read as a bug and is actually
- * the whole lesson trying to happen on its own: the screen shows things flying
- * at a phone, so of course a thumb goes for them. Nothing happened, so nothing
- * was learned, and the real teaching was left to a timed screen where a player
- * is already under pressure.
+ * It used to run twice — a preview here and a tutorial inside the timed game —
+ * which taught the same thing twice and taught it badly both times, because
+ * neither could slow down. This screen owns the job instead, and the game now
+ * starts on the countdown.
  *
- * So the stickers are real here. Tap a black one and it blows up. Tap a pale
- * one and the game says no. There is no clock, no score and nothing to lose —
- * you find out what the game is by poking it, which is the only explanation
- * that works without reading.
+ * The method is hand-holding, literally: one card on screen, one instruction,
+ * and nothing moves on until the player does the thing. Four beats, each
+ * gated or timed, each with a visible consequence.
  */
-const PREVIEW: Array<{ id: string; label: string; family: Family; trust: Trust }> = [
-  { id: 'a', label: 'Spam Call', family: 'call', trust: 'threat' },
-  { id: 'b', label: 'Suspicious Link', family: 'link', trust: 'threat' },
-  { id: 'c', label: 'Mom Calling', family: 'call', trust: 'genuine' },
-  { id: 'd', label: 'Spam SMS', family: 'sms', trust: 'threat' },
-]
+type Step = 'phone' | 'tapBad' | 'badDone' | 'leaveGood' | 'goodDone' | 'ready'
 
-const THREATS = PREVIEW.filter((p) => p.trust === 'threat').length
+const SCRIPT: Record<Step, { lead: string; sub: string }> = {
+  phone: { lead: 'This is your phone', sub: 'Things keep trying to get in.' },
+  tapBad: { lead: 'This one is spam', sub: 'Tap it!' },
+  badDone: { lead: 'Blocked!', sub: 'It never reached your phone.' },
+  leaveGood: { lead: 'This one is real', sub: 'Mom is calling. Don’t tap — watch.' },
+  goodDone: { lead: 'She got through', sub: 'Real things should reach you.' },
+  ready: { lead: 'That’s the whole game', sub: 'Red ✕ = tap it. Green ✓ = leave it.' },
+}
 
 export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }: Props) => {
-  const [popped, setPopped] = useState<string[]>([])
-  const [breaking, setBreaking] = useState<string[]>([])
-  const [scolded, setScolded] = useState<string | null>(null)
+  // Anyone who has played already skips straight to the button.
+  const [step, setStep] = useState<Step>(returning ? 'ready' : 'phone')
+  const [nudged, setNudged] = useState(false)
   const [bursts, setBursts] = useState<Burst[]>([])
   const uid = useRef(0)
   const stage = useRef<HTMLDivElement>(null)
+  const timers = useRef<number[]>([])
 
-  const cleared = popped.length >= THREATS
+  const after = useCallback((ms: number, fn: () => void) => {
+    timers.current.push(window.setTimeout(fn, ms))
+  }, [])
 
-  /**
-   * Coach line. One thing at a time, and only ever the next thing.
-   *
-   * Every line names the badge by colour and by shape — "red ✕", "green ✓" —
-   * because those two marks are the entire rule, and a mark you can point at
-   * beats a sentence about trust. The last line is the rule as an equation.
-   */
-  const coach = useMemo(() => {
-    if (scolded) return { key: 'oops', lead: 'Not that one!', sub: 'Green ✓ means real. Let it through.' }
-    if (cleared) return { key: 'done', lead: 'That’s the whole game', sub: 'Red ✕ = tap it. Green ✓ = leave it.' }
-    if (popped.length) return { key: 'mid', lead: 'Nice — one gone!', sub: 'Get the rest. Leave the green ✓ alone.' }
-    return { key: 'start', lead: 'Tap the red ✕', sub: 'It’s spam, heading for your phone.' }
-  }, [scolded, cleared, popped.length])
+  useEffect(() => () => timers.current.forEach(clearTimeout), [])
+
+  // The beats that run on their own. `tapBad` and `leaveGood` are not here —
+  // one waits for a tap, the other for the card to finish its journey.
+  useEffect(() => {
+    if (step === 'phone') after(1900, () => setStep('tapBad'))
+    if (step === 'badDone') after(1500, () => setStep('leaveGood'))
+    if (step === 'leaveGood') after(2600, () => setStep('goodDone'))
+    if (step === 'goodDone') after(1600, () => setStep('ready'))
+  }, [step, after])
 
   const burstAt = useCallback((el: HTMLElement, tone: Burst['tone']) => {
     const host = stage.current
@@ -73,32 +72,40 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
       ...list,
       { id, x: a.left - b.left + a.width / 2, y: a.top - b.top + a.height / 2, tone, bornAt: 0 },
     ])
-    window.setTimeout(() => setBursts((list) => list.filter((x) => x.id !== id)), 700)
-  }, [])
+    after(700, () => setBursts((list) => list.filter((x) => x.id !== id)))
+  }, [after])
 
-  const onChip = useCallback(
-    (p: (typeof PREVIEW)[number], e: React.MouseEvent<HTMLButtonElement>) => {
-      // The tap is the user gesture the audio graph has been waiting for.
+  const tapBad = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (step !== 'tapBad') return
       audio.unlock()
-      if (p.trust === 'threat') {
-        if (breaking.includes(p.id) || popped.includes(p.id)) return
-        burstAt(e.currentTarget, 'threat')
-        audio.play('block')
-        haptics.block()
-        setBreaking((list) => [...list, p.id])
-        window.setTimeout(() => setPopped((list) => [...list, p.id]), 380)
-      } else {
-        audio.play('wrong')
-        haptics.wrong()
-        setScolded(p.id)
-        window.setTimeout(() => setScolded(null), 1600)
-      }
+      burstAt(e.currentTarget, 'threat')
+      audio.play('block')
+      haptics.block()
+      setStep('badDone')
     },
-    [breaking, popped, burstAt],
+    [step, burstAt],
   )
 
+  // Tapping the real one is the mistake worth making here, where it is free.
+  const tapGood = useCallback(() => {
+    if (step !== 'leaveGood' || nudged) return
+    audio.unlock()
+    audio.play('wrong')
+    haptics.wrong()
+    setNudged(true)
+    after(1500, () => setNudged(false))
+  }, [step, nudged, after])
+
+  const line = nudged
+    ? { lead: 'No — leave that one!', sub: 'Green ✓ is real. Let it in.' }
+    : SCRIPT[step]
+
+  const showBad = step === 'tapBad'
+  const showGood = step === 'leaveGood' || step === 'goodDone'
+
   return (
-    <section className="intro" aria-label="Shield Rush">
+    <section className="intro" aria-label="Shield Rush" data-step={step}>
       <header className="intro__top">
         <AirtelSafeMark />
         <div className="intro__tools">
@@ -117,60 +124,107 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
         </div>
       </header>
 
-      <p key={coach.key} className="intro__coach" aria-live="polite">
-        <span className="intro__coach-lead">{coach.lead}</span>
-        <span className="intro__coach-sub">{coach.sub}</span>
+      <p key={line.lead} className="intro__coach" aria-live="polite">
+        <span className="intro__coach-lead">{line.lead}</span>
+        <span className="intro__coach-sub">{line.sub}</span>
       </p>
 
       <div className="intro__stage" ref={stage}>
         <div className="intro__glow" aria-hidden="true" />
-        <div className="intro__device" aria-hidden="true">
-          <PhoneDevice width={96} />
+
+        <div
+          className={`intro__device${step === 'goodDone' ? ' is-welcoming' : ''}`}
+          aria-hidden="true"
+        >
+          <PhoneDevice width={104} />
         </div>
-        {PREVIEW.filter((p) => !popped.includes(p.id)).map((p) => (
+
+        {step === 'phone' ? (
+          <>
+            <span className="intro__pointer intro__pointer--phone" aria-hidden="true" />
+            <span className="intro__tag" aria-hidden="true">
+              your phone
+            </span>
+          </>
+        ) : null}
+
+        {showBad ? (
+          <>
+            <button type="button" className="intro__card intro__card--bad" data-trust="threat" onClick={tapBad}>
+              <span className="intro__card-icon">{pixelFamilyIcon('call', 'threat', 16)}</span>
+              <span>Spam Call</span>
+              <span className="intro__card-flag">
+                <PixelCross size={19} />
+              </span>
+            </button>
+            <span className="intro__hand" aria-hidden="true">
+              <span className="intro__hand-ring" />
+              <span className="intro__hand-ring intro__hand-ring--late" />
+              <span className="intro__hand-dot" />
+            </span>
+          </>
+        ) : null}
+
+        {showGood ? (
           <button
-            key={p.id}
             type="button"
-            className={`intro__chip intro__chip--${p.id}${
-              breaking.includes(p.id) ? ' is-breaking' : ''
-            }${scolded === p.id ? ' is-scolded' : ''}${
-              p.trust === 'threat' && !popped.length && !breaking.length ? ' is-inviting' : ''
+            className={`intro__card intro__card--good${step === 'goodDone' ? ' is-in' : ''}${
+              nudged ? ' is-refused' : ''
             }`}
-            data-trust={p.trust}
-            data-family={p.family}
-            onClick={(e) => onChip(p, e)}
-            aria-label={
-              p.trust === 'threat' ? `${p.label} — spam, tap to block` : `${p.label} — real, leave it`
-            }
+            data-trust="genuine"
+            onClick={tapGood}
           >
-            <span className="intro__chip-icon">{pixelFamilyIcon(p.family, p.trust, 14)}</span>
-            <span>{p.label}</span>
-            <span className="intro__chip-flag">
-              {p.trust === 'threat' ? <PixelCross size={17} /> : <PixelTick size={17} />}
+            <span className="intro__card-icon">{pixelFamilyIcon('call', 'genuine', 16)}</span>
+            <span>Mom Calling</span>
+            <span className="intro__card-flag">
+              <PixelTick size={19} />
             </span>
           </button>
-        ))}
+        ) : null}
+
+        {step === 'leaveGood' && !nudged ? (
+          <span className="intro__handsoff" aria-hidden="true">
+            DON’T TAP
+          </span>
+        ) : null}
+
+        {step === 'ready' ? (
+          <div className="intro__rule" aria-hidden="true">
+            <span className="intro__rule-row" data-trust="threat">
+              <span className="intro__rule-flag">
+                <PixelCross size={22} />
+              </span>
+              <b>Tap it</b>
+            </span>
+            <span className="intro__rule-row" data-trust="genuine">
+              <span className="intro__rule-flag">
+                <PixelTick size={22} />
+              </span>
+              <b>Leave it</b>
+            </span>
+          </div>
+        ) : null}
 
         {bursts.map((b) => (
           <ParticleBurst key={b.id} burst={b} />
         ))}
       </div>
 
-      <div className="intro__copy">
-        <h1 className="intro__title">
-          Shield<span>Rush</span>
-        </h1>
-      </div>
+      <h1 className="intro__title">
+        Shield<span>Rush</span>
+      </h1>
 
       <div className="intro__cta">
         <button
           type="button"
-          className={`btn btn--primary btn--lg${cleared ? ' is-ready' : ''}`}
+          className={`btn btn--primary btn--lg${step === 'ready' ? ' is-ready' : ''}`}
           onClick={onPlay}
         >
           {returning ? 'Play Again' : 'Play Now'}
         </button>
-        <p className="btn-sub">Takes 20 seconds</p>
+        <p className="btn-sub">
+          {step === 'ready' ? 'Takes 20 seconds' : 'Or skip the intro'}
+        </p>
       </div>
     </section>
   )

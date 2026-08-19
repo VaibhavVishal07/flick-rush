@@ -192,28 +192,6 @@
   pointer-events: none;
 }
 
-/* The one thing the tutorial can't show with a sticker: what the object in
-   the middle actually is. Absolute so it hangs off the device without
-   shifting the grid that centres everything else on it. */
-.phone-target__label {
-  position: absolute;
-  top: calc(50% + 96px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 4;
-  padding: 3px 10px 4px;
-  border-radius: 999px;
-  background: rgba(13, 13, 18, 0.6);
-  font-family: var(--font);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: #fff;
-  animation: coach-in 0.42s var(--ease-back) both;
-}
-
 .phone-target__device {
   position: relative;
   z-index: 3;

@@ -16,19 +16,6 @@ interface Props {
   skipTutorial: boolean
 }
 
-/**
- * Three beats: name the thing, say what to do, then say the rule out loud.
- * Each object in the tutorial is a fixed one, so the copy can name it — "Mom
- * is calling" teaches far more than "this one is real", and the last beat
- * states the whole game in one line rather than leaving it to be inferred
- * from two examples.
- */
-const TUTORIAL_COPY: Record<string, { lead: string; sub: string }> = {
-  'tutorial-threat': { lead: 'Red ✕ — spam!', sub: 'Tap it before it reaches your phone' },
-  'tutorial-genuine': { lead: 'Green ✓ — that’s Mom', sub: "Don't tap. Let it through." },
-  'tutorial-done': { lead: "That's the game", sub: 'Red ✕ = tap it. Green ✓ = leave it.' },
-}
-
 export const GameArena = ({
   onFinish,
   reducedMotion,
@@ -52,7 +39,6 @@ export const GameArena = ({
     return () => window.removeEventListener('keydown', onKey)
   }, [g])
 
-  const tutorial = g.phase.startsWith('tutorial')
   // The sky turns stormy for the beat where the player is losing.
   const storm = g.phase === 'freeze' || g.phase === 'reveal'
   // The field blooms as "You shouldn't have to." lands, then does the work.
@@ -85,10 +71,6 @@ export const GameArena = ({
           impact={g.impact}
           welcome={g.welcome}
           hero={g.phase === 'auto'}
-          /* The target only gets named while learning. Once play starts the
-             label is noise, but for the first two beats it is the difference
-             between "a phone" and "the thing you are defending". */
-          label={tutorial ? 'your phone' : null}
         />
 
         {g.objects.map((o, i) => (
@@ -123,13 +105,6 @@ export const GameArena = ({
         ))}
 
         <SafeTakeover phase={g.phase} revealStep={g.revealStep} />
-
-        {tutorial ? (
-          <div key={g.phase} className="coach" aria-live="polite">
-            <p className="coach__lead">{TUTORIAL_COPY[g.phase].lead}</p>
-            <p className="coach__sub">{TUTORIAL_COPY[g.phase].sub}</p>
-          </div>
-        ) : null}
 
         {g.flash ? <span key={g.flash} className="milestone-flash" aria-hidden="true" /> : null}
       </div>
