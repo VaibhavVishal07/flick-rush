@@ -238,14 +238,17 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
   const runCountdown = useCallback(() => {
     let n = GAME_CONFIG.COUNTDOWN_FROM
     setCountdown(n)
+    haptics.tick()
     const tick = () => {
       n -= 1
       if (n > 0) {
         setCountdown(n)
+        haptics.tick()
         window.setTimeout(tick, GAME_CONFIG.COUNTDOWN_STEP)
         return
       }
       setCountdown(0)
+      haptics.go()
       elapsed.current = 0
       spawnClock.current = 0
       lastFrame.current = performance.now()
@@ -397,7 +400,12 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
         autoElapsed.current += dt
         const calm =
           autoElapsed.current >= GAME_CONFIG.TAKEOVER_DURATION - GAME_CONFIG.TAKEOVER_HOLD
-        setSettled((prev) => (prev === calm ? prev : calm))
+        setSettled((prev) => {
+          // One pulse as the field goes quiet — the physical full stop on
+          // "you don't have to do this any more".
+          if (calm && !prev) haptics.settle()
+          return prev === calm ? prev : calm
+        })
         if (autoElapsed.current >= GAME_CONFIG.TAKEOVER_DURATION) {
           finish()
           return

@@ -6,7 +6,7 @@ import { ResultScreen } from './components/ResultScreen'
 import { SafetyReportSheet } from './components/SafetyReportSheet'
 import { RulesSheet } from './components/RulesSheet'
 import { audio } from './game/audio'
-import { setHapticsEnabled } from './game/haptics'
+import { haptics } from './game/haptics'
 import type { GameResult } from './game/types'
 
 type Screen = 'intro' | 'game' | 'result'
@@ -45,8 +45,21 @@ export default function App() {
 
   useEffect(() => {
     audio.setEnabled(soundOn)
-    setHapticsEnabled(soundOn)
   }, [soundOn])
+
+  /**
+   * One light buzz on every button in the app, delegated from the root rather
+   * than threaded through a dozen click handlers. `pointerdown`, not `click`,
+   * so it lands with the press instead of after it.
+   */
+  useEffect(() => {
+    const onDown = (e: PointerEvent) => {
+      const el = e.target as Element | null
+      if (el?.closest?.('.btn, .hud__btn, .tile')) haptics.tap()
+    }
+    window.addEventListener('pointerdown', onDown)
+    return () => window.removeEventListener('pointerdown', onDown)
+  }, [])
 
   const play = useCallback(() => {
     // The Play tap is our user gesture — safe to build the audio graph here.

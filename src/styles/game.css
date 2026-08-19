@@ -952,13 +952,14 @@
 
 /* ------------------------------------------------------------ countdown -- */
 
+/* Covers the whole frame — it is a child of `.arena-shell`, not the arena. */
 .countdown {
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
-  background: rgba(13, 13, 18, 0.4);
-  z-index: 12;
+  background: rgba(13, 13, 18, 0.45);
+  z-index: 22;
 }
 
 .countdown__num {
@@ -994,7 +995,7 @@
 .paused {
   position: absolute;
   inset: 0;
-  z-index: 20;
+  z-index: 23;
   display: grid;
   place-content: center;
   justify-items: center;

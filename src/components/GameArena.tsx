@@ -131,29 +131,32 @@ export const GameArena = ({
           </div>
         ) : null}
 
-        {g.phase === 'countdown' ? (
-          <div className="countdown" aria-live="assertive">
-            <span key={g.countdown} className="countdown__num">
-              {g.countdown > 0 ? g.countdown : 'Go'}
-            </span>
-          </div>
-        ) : null}
-
         {g.flash ? <span key={g.flash} className="milestone-flash" aria-hidden="true" /> : null}
-
-        {g.paused ? (
-          <div className="paused">
-            <p className="paused__title">Paused</p>
-            <button type="button" className="btn btn--ghost" onClick={g.togglePause}>
-              Resume
-            </button>
-          </div>
-        ) : null}
       </div>
 
       <div className="arena-foot">
         <StreakBadge badge={g.streakBadge} />
       </div>
+
+      {/* Full-screen dimmers live on the shell, not the arena. The arena is
+          only the middle band of the frame, so a scrim inside it stopped dead
+          at the HUD and the footer with two hard horizontal edges. */}
+      {g.phase === 'countdown' ? (
+        <div className="countdown" aria-live="assertive">
+          <span key={g.countdown} className="countdown__num">
+            {g.countdown > 0 ? g.countdown : 'Go'}
+          </span>
+        </div>
+      ) : null}
+
+      {g.paused ? (
+        <div className="paused">
+          <p className="paused__title">Paused</p>
+          <button type="button" className="btn btn--ghost" onClick={g.togglePause}>
+            Resume
+          </button>
+        </div>
+      ) : null}
 
       <p className="sr-only" aria-live="polite">
         {lastVerdict ? lastVerdict.label : ''}
