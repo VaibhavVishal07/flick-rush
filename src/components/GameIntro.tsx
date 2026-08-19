@@ -160,7 +160,6 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
           <span>Spam</span>
           <span>Smash</span>
         </h1>
-        <p className="intro__premise">Spam is coming for your phone.</p>
         <span className="intro__loader" aria-hidden="true">
           <span className="intro__loader-bar" />
         </span>
@@ -172,10 +171,23 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
         {bad ? (
           <>
             <div ref={card} className="intro__card" data-trust="threat" data-state={beat}>
-              <span className="intro__card-icon">{pixelFamilyIcon('call', 'threat', 20)}</span>
-              <span>Spam Call</span>
-              <span className="intro__card-flag">
-                <PixelCross size={24} />
+              {/* Two clipped copies of the same face, thrown opposite ways, so
+                  the card comes apart along a diagonal instead of shrinking
+                  politely out of existence. */}
+              {beat === 'badDone' ? <span className="intro__flash" /> : null}
+              <span className="intro__face intro__face--a">
+                <span className="intro__card-icon">{pixelFamilyIcon('call', 'threat', 20)}</span>
+                <span>Spam Call</span>
+                <span className="intro__card-flag">
+                  <PixelCross size={26} />
+                </span>
+              </span>
+              <span className="intro__face intro__face--b" aria-hidden="true">
+                <span className="intro__card-icon">{pixelFamilyIcon('call', 'threat', 20)}</span>
+                <span>Spam Call</span>
+                <span className="intro__card-flag">
+                  <PixelCross size={26} />
+                </span>
               </span>
             </div>
             {beat === 'bad' ? (
@@ -187,16 +199,20 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
         ) : (
           <>
             <div className="intro__card" data-trust="genuine" data-state={beat}>
-              <span className="intro__card-icon">{pixelFamilyIcon('call', 'genuine', 20)}</span>
-              <span>Mom Calling</span>
-              <span className="intro__card-flag">
-                <PixelTick size={24} />
+              <span className="intro__face intro__face--a">
+                <span className="intro__card-icon">{pixelFamilyIcon('call', 'genuine', 20)}</span>
+                <span>Mom Calling</span>
+                <span className="intro__card-flag">
+                  <PixelTick size={26} />
+                </span>
               </span>
             </div>
             {beat === 'good' ? (
               <span className="intro__nohand">
                 <PixelHand size={62} />
-                <span className="intro__nohand-bar" />
+                <span className="intro__nohand-badge">
+                  <PixelCross size={20} />
+                </span>
               </span>
             ) : null}
           </>
