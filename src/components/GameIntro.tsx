@@ -97,8 +97,7 @@ export const GameIntro = ({ onPlay, returning, soundOn, onToggleSound }: Props) 
   }, [])
 
   /**
-   * Where the music starts. It runs from here to the result screen without
-   * stopping, changing mood as the arc does.
+   * The onboarding loop.
    *
    * A browser will not let any page make a sound before it has been touched,
    * and we would not want it to: the rule is that nothing plays until the
@@ -115,7 +114,7 @@ export const GameIntro = ({ onPlay, returning, soundOn, onToggleSound }: Props) 
       if (!live) return
       audio.unlock()
       audio.setEnabled(sound.current)
-      audio.setMood('menu')
+      audio.startMusic()
       setAudible(true)
     }
     const arm = ['pointerdown', 'keydown', 'touchstart'] as const
@@ -125,12 +124,12 @@ export const GameIntro = ({ onPlay, returning, soundOn, onToggleSound }: Props) 
     }
     if (audio.ready) begin()
     else arm.forEach((e) => window.addEventListener(e, once, { passive: true }))
-    // No stop on unmount: the loop carries into the game, where the engine
-    // takes over the mood. Stopping here would put a gap in the middle of a
-    // piece that is meant to run from this screen to the result.
     return () => {
       live = false
       arm.forEach((e) => window.removeEventListener(e, once))
+      // Gameplay runs dry: seventeen seconds of timing cues should not have a
+      // loop underneath them.
+      audio.stopMusic()
     }
   }, [])
 
@@ -195,7 +194,7 @@ export const GameIntro = ({ onPlay, returning, soundOn, onToggleSound }: Props) 
       {audible ? (
         <button
           type="button"
-          className="mute-btn"
+          className="intro__mute"
           onClick={onToggleSound}
           aria-pressed={soundOn}
           aria-label={soundOn ? 'Turn sound off' : 'Turn sound on'}
@@ -279,7 +278,7 @@ export const GameIntro = ({ onPlay, returning, soundOn, onToggleSound }: Props) 
         >
           {returning ? 'Play Again' : 'Play Now'}
         </button>
-        <p className="btn-sub">Takes 30 seconds</p>
+        <p className="btn-sub">Takes 20 seconds</p>
       </div>
     </section>
   )

@@ -76,11 +76,10 @@
   padding: calc(14px + env(safe-area-inset-top)) 22px calc(20px + env(safe-area-inset-bottom));
 }
 
-/* Silence, on the two screens that have no HUD to put it in. On the intro it
-   appears only once the loop is actually running — a mute button next to
-   silence is just clutter. Small on purpose; the 44px target is the button,
-   not the icon inside it. */
-.mute-btn {
+/* The one control on this screen, and it only appears once the loop is
+   actually running — a mute button next to silence is just clutter. Small on
+   purpose; the 44px tap target comes from the padding, not the icon. */
+.intro__mute {
   position: absolute;
   z-index: 4;
   top: calc(6px + env(safe-area-inset-top));
@@ -99,11 +98,11 @@
   animation: mute-in 0.4s var(--ease-out) both;
 }
 
-.mute-btn:active {
+.intro__mute:active {
   transform: scale(0.92);
 }
 
-.mute-btn:focus-visible {
+.intro__mute:focus-visible {
   outline: 3px solid #fff;
   outline-offset: 2px;
 }
@@ -419,7 +418,7 @@
 /* Everything except the wordmark and the drifting field is already laid out;
    it just has not arrived yet. Fading rather than mounting is what keeps the
    handover free of reflow. */
-.mute-btn,
+.intro__mute,
 .intro__top,
 .intro__stage,
 .intro__caption,
@@ -427,7 +426,7 @@
   transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
 }
 
-.intro.is-loading .mute-btn,
+.intro.is-loading .intro__mute,
 .intro.is-loading .intro__top,
 .intro.is-loading .intro__stage,
 .intro.is-loading .intro__caption,
@@ -439,7 +438,7 @@
 
 /* Its own fade-in would otherwise win over the opacity above — an animation
    beats a plain declaration — and park a button on top of the loader. */
-.intro.is-loading .mute-btn {
+.intro.is-loading .intro__mute {
   animation: none;
 }
 

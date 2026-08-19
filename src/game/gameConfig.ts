@@ -6,23 +6,19 @@
 export const GAME_CONFIG = {
   /* ---- Timeline (ms) ---------------------------------------------------- */
   /** Manual gameplay, from the end of the countdown to the takeover. */
-  GAME_DURATION: 20_000,
+  GAME_DURATION: 17_000,
   /** Elapsed manual time at which Airtel Safe steps in. */
-  TAKEOVER_TIME: 20_000,
+  TAKEOVER_TIME: 17_000,
   /** How long the automatic sequence runs before the result screen. */
-  TAKEOVER_DURATION: 6_400,
+  TAKEOVER_DURATION: 5_200,
   /**
    * The tail of that window stops spawning, so the field clears and the
    * banner rests on its final numbers. The arc is meant to end calm, not to
    * cut away mid-chaos.
    */
   TAKEOVER_HOLD: 1_200,
-  /**
-   * Beat structure of the takeover reveal. The freeze is the full stop after
-   * the meltdown, so it is long enough to be felt as one — everything on
-   * screen and in the music cuts at the same instant and nothing moves.
-   */
-  FREEZE_HOLD: 700,
+  /** Beat structure of the takeover reveal. */
+  FREEZE_HOLD: 400,
   REVEAL_LINE_B: 700,
   /**
    * Beat between the second line and Airtel Safe actually taking over. Two
@@ -191,7 +187,9 @@ export const STAGES: Stage[] = [
     threatRatio: 0.68,
     pool: ALL,
   },
-  // 5 — Flood. Not winnable any more, and that is the whole argument.
+  // 5 — Flood. The last two seconds are not winnable, and that is the whole
+  // argument. Everything arrives at once so "Tough keeping up?" lands on a
+  // player who has already stopped coping.
   {
     name: 'Flood',
     until: 17_000,
@@ -201,30 +199,10 @@ export const STAGES: Stage[] = [
     threatRatio: 0.72,
     pool: ALL,
   },
-  // 6 — Meltdown. The last three seconds stop being a difficulty level and
-  // become a demonstration: more than twenty things in the air, arriving
-  // faster than a hand can move, so "Tough keeping up?" lands on a player who
-  // gave up several seconds ago rather than on one who is merely behind.
-  {
-    name: 'Meltdown',
-    until: 20_000,
-    spawnInterval: 60,
-    speed: 3.05,
-    maxAlive: 22,
-    threatRatio: 0.8,
-    pool: ALL,
-  },
 ]
 
 /** Elapsed time after which the arena visibly starts to panic. */
-export const PANIC_FROM = 13_500
-
-/**
- * Elapsed time after which it stops pretending. Past this the shake, the
- * vignette and the clock go past their panic values into something the player
- * is meant to want out of.
- */
-export const MELTDOWN_FROM = 17_000
+export const PANIC_FROM = 12_500
 
 /* ---- Personalisation placeholder ---------------------------------------- */
 

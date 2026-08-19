@@ -21,127 +21,31 @@ type Cue =
   | 'result'
 
 /**
- * The score. One loop that runs from the onboarding screen all the way to the
- * result, changing mood instead of stopping and starting, so the whole thing
- * plays as a single piece with an arc rather than as four cues.
+ * The onboarding loop: two bars of sixteenths at 128bpm, A minor to F.
  *
- * Every pattern is two bars of sixteenths, `0` for a rest. They share a key
- * (A minor to F) and a grid, so a mood can be swapped on any step and the
- * next note still belongs to the same music.
+ * `0` is a rest. The bass drives, the lead walks the triad, and the hats are
+ * offbeat only — enough pulse to feel like an arcade cabinet is running, not
+ * so much that it competes with the cues sitting on top of it.
  */
-export type Mood = 'menu' | 'play' | 'panic' | 'calm'
-
 const BPM = 128
 const STEP = 60 / BPM / 4
-const A1 = 55, A2 = 110, E2 = 82.41, E3 = 164.81, F2 = 87.31, C3 = 130.81, G2 = 98, Bb2 = 116.54
-const A4 = 440, C5 = 523.25, E5 = 659.25, A5 = 880, B4 = 493.88, D5 = 587.33
-const F4 = 349.23, F5 = 698.46, G5 = 783.99, Eb5 = 622.25, Bb4 = 466.16, C6 = 1046.5
+const A2 = 110, E3 = 164.81, F2 = 87.31, C3 = 130.81
+const A4 = 440, C5 = 523.25, E5 = 659.25, A5 = 880
+const F4 = 349.23, F5 = 698.46
 
-interface Pattern {
-  /** Multiplies the tempo. Panic is not a different tune, it is a faster one. */
-  rate: number
-  /** Overall level, relative to the music bus. */
-  level: number
-  bass: number[]
-  lead: number[]
-  hat: number[]
-  /** Waveforms, so the moods differ in timbre and not only in density. */
-  bassType: OscillatorType
-  leadType: OscillatorType
-  /** Note length multiplier — long for calm, clipped for panic. */
-  hold: number
-}
-
-/** Waiting to start: a groove, not a drive. Room left over the top for cues. */
-const MENU: Pattern = {
-  rate: 1,
-  level: 1,
-  bassType: 'square',
-  leadType: 'triangle',
-  hold: 1,
-  bass: [
-    A2, 0, 0, E3, 0, 0, A2, 0, A2, 0, 0, E3, 0, 0, A2, 0,
-    F2, 0, 0, C3, 0, 0, F2, 0, F2, 0, 0, C3, 0, 0, F2, 0,
-  ],
-  lead: [
-    A4, 0, C5, 0, E5, 0, C5, 0, E5, 0, A5, 0, E5, 0, C5, 0,
-    F4, 0, A4, 0, C5, 0, A4, 0, C5, 0, F5, 0, C5, 0, A4, 0,
-  ],
-  /** Offbeat only — on the beat it would fight the bass. */
-  hat: [
-    0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0,
-    0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0,
-  ],
-}
-
-/** Playing: same tune, driven. Bass on every eighth, hats on every offbeat. */
-const PLAY: Pattern = {
-  rate: 1.06,
-  level: 1,
-  bassType: 'square',
-  leadType: 'square',
-  hold: 0.85,
-  bass: [
-    A2, 0, A2, E3, 0, A2, A2, 0, A2, 0, A2, E3, 0, A2, E2, 0,
-    F2, 0, F2, C3, 0, F2, F2, 0, F2, 0, F2, C3, 0, F2, G2, 0,
-  ],
-  lead: [
-    A4, 0, C5, E5, 0, C5, E5, 0, A5, 0, E5, C5, 0, E5, D5, 0,
-    F4, 0, A4, C5, 0, A4, C5, 0, F5, 0, C5, A4, 0, C5, B4, 0,
-  ],
-  hat: [
-    0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0,
-    0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0,
-  ],
-}
-
-/**
- * The last stretch, when the field stops being winnable. A third faster, a
- * saw bass an octave down, hats on every step, and the melody bent onto the
- * flat fifth and flat sixth — the same key, going wrong.
- */
-const PANIC: Pattern = {
-  rate: 1.34,
-  level: 1.18,
-  bassType: 'sawtooth',
-  leadType: 'sawtooth',
-  hold: 0.7,
-  bass: [
-    A1, A1, A2, A1, A1, A1, A2, A1, A1, A1, A2, A1, E2, E2, E2, E2,
-    A1, A1, A2, A1, A1, A1, A2, A1, Bb2, 0, A1, A1, E2, E2, E2, E2,
-  ],
-  lead: [
-    A5, 0, Eb5, 0, E5, 0, Eb5, 0, A5, 0, G5, 0, Eb5, 0, D5, 0,
-    Bb4, 0, Eb5, 0, E5, 0, G5, 0, A5, 0, Eb5, 0, C5, 0, Bb4, 0,
-  ],
-  hat: [
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  ],
-}
-
-/**
- * After Airtel Safe steps in. Half speed, no percussion, and the first major
- * chord in the whole piece — the relief has to be audible, not just visible.
- */
-const CALM: Pattern = {
-  rate: 0.5,
-  level: 0.8,
-  bassType: 'sine',
-  leadType: 'sine',
-  hold: 2.6,
-  bass: [
-    F2, 0, 0, 0, 0, 0, 0, 0, C3, 0, 0, 0, 0, 0, 0, 0,
-    A2, 0, 0, 0, 0, 0, 0, 0, E3, 0, 0, 0, 0, 0, 0, 0,
-  ],
-  lead: [
-    C5, 0, 0, 0, F5, 0, 0, 0, A5, 0, 0, 0, F5, 0, 0, 0,
-    E5, 0, 0, 0, A5, 0, 0, 0, C6, 0, 0, 0, A5, 0, 0, 0,
-  ],
-  hat: new Array(32).fill(0),
-}
-
-const MOODS: Record<Mood, Pattern> = { menu: MENU, play: PLAY, panic: PANIC, calm: CALM }
+const BASS = [
+  A2, 0, 0, E3, 0, 0, A2, 0, A2, 0, 0, E3, 0, 0, A2, 0,
+  F2, 0, 0, C3, 0, 0, F2, 0, F2, 0, 0, C3, 0, 0, F2, 0,
+]
+const LEAD = [
+  A4, 0, C5, 0, E5, 0, C5, 0, E5, 0, A5, 0, E5, 0, C5, 0,
+  F4, 0, A4, 0, C5, 0, A4, 0, C5, 0, F5, 0, C5, 0, A4, 0,
+]
+/** Offbeat only — on the beat it would fight the bass. */
+const HAT = [
+  0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+  0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+]
 
 /** Under the cues by a wide margin: this is a floor, not a foreground. */
 const MUSIC_GAIN = 0.17
@@ -150,13 +54,7 @@ class AudioKit {
   private ctx: AudioContext | null = null
   private master: GainNode | null = null
   private noise: AudioBuffer | null = null
-  private music: {
-    bus: GainNode
-    timer: number
-    step: number
-    next: number
-    mood: Mood
-  } | null = null
+  private music: { bus: GainNode; timer: number; step: number; next: number } | null = null
   enabled = true
 
   /** True once a gesture has built the graph — music can start without waiting. */
@@ -261,25 +159,12 @@ class AudioKit {
   /* -------------------------------------------------------------- music -- */
 
   /**
-   * Set what the music is doing. `null` stops it.
-   *
-   * Starting is a no-op until a gesture has unlocked the graph, so this can be
-   * called on mount without ever being the thing that autoplays. Changing mood
-   * on a loop that is already running swaps the pattern in place — the cursor,
-   * the bus and the fade all survive, so the piece never restarts.
+   * Start the onboarding loop. A no-op until a gesture has unlocked the graph,
+   * so it can be called on mount without ever being the thing that autoplays.
    */
-  setMood(mood: Mood | null) {
-    if (!mood) {
-      this.stopMusic()
-      return
-    }
+  startMusic() {
     const ctx = this.ctx
-    if (!ctx || !this.master) return
-    if (this.music) {
-      if (this.music.mood === mood) return
-      this.music.mood = mood
-      return
-    }
+    if (!ctx || !this.master || this.music) return
     void ctx.resume()
     const bus = ctx.createGain()
     // Faded in rather than switched on: a loop that simply appears at full
@@ -287,7 +172,7 @@ class AudioKit {
     bus.gain.setValueAtTime(0.0001, ctx.currentTime)
     bus.gain.exponentialRampToValueAtTime(MUSIC_GAIN, ctx.currentTime + 1.1)
     bus.connect(this.master)
-    this.music = { bus, timer: 0, step: 0, next: ctx.currentTime + 0.08, mood }
+    this.music = { bus, timer: 0, step: 0, next: ctx.currentTime + 0.08 }
     this.music.timer = window.setInterval(() => this.pump(), 25)
   }
 
@@ -323,21 +208,13 @@ class AudioKit {
     if (!ctx || !m) return
     if (m.next < ctx.currentTime) m.next = ctx.currentTime + 0.02
     while (m.next < ctx.currentTime + 0.15) {
-      // Read every step, so a mood change lands on the next note rather than
-      // at the end of the bar.
-      const pat = MOODS[m.mood]
-      const i = m.step % pat.bass.length
+      const i = m.step % BASS.length
       const t = m.next
-      const lv = pat.level
-      if (pat.bass[i]) {
-        this.blip(pat.bass[i], t, 0.16 * pat.hold, pat.bassType, 0.22 * lv, m.bus)
-      }
-      if (pat.lead[i]) {
-        this.blip(pat.lead[i], t, 0.11 * pat.hold, pat.leadType, 0.13 * lv, m.bus)
-      }
-      if (pat.hat[i]) this.tick(t, m.bus)
+      if (BASS[i]) this.blip(BASS[i], t, 0.16, 'square', 0.22, m.bus)
+      if (LEAD[i]) this.blip(LEAD[i], t, 0.11, 'triangle', 0.13, m.bus)
+      if (HAT[i]) this.tick(t, m.bus)
       m.step++
-      m.next += STEP / pat.rate
+      m.next += STEP
     }
   }
 

@@ -1,25 +1,16 @@
 import { useState } from 'react'
 import { AirtelSafeLogo } from '../assets/AirtelSafeLogo'
 import { ShareCard } from './ShareCard'
-import { SoundOffIcon, SoundOnIcon } from '../assets/icons'
-import { GAME_CONFIG, safetyReport } from '../game/gameConfig'
+import { safetyReport } from '../game/gameConfig'
 import type { GameResult } from '../game/types'
 
 interface Props {
   result: GameResult
   onReplay: () => void
   onReport: () => void
-  soundOn: boolean
-  onToggleSound: () => void
 }
 
-export const ResultScreen = ({
-  result,
-  onReplay,
-  onReport,
-  soundOn,
-  onToggleSound,
-}: Props) => {
+export const ResultScreen = ({ result, onReplay, onReport }: Props) => {
   const [sharing, setSharing] = useState(false)
 
   /**
@@ -31,18 +22,6 @@ export const ResultScreen = ({
     <section className="result" aria-label="Your result">
       {/* Same mark, same treatment as the takeover screen it follows:
           reversed white, no plate. */}
-      {/* The score runs on into this screen, so the way to silence it has to
-          be on this screen too. Same control as the intro and the HUD. */}
-      <button
-        type="button"
-        className="mute-btn"
-        onClick={onToggleSound}
-        aria-pressed={soundOn}
-        aria-label={soundOn ? 'Turn sound off' : 'Turn sound on'}
-      >
-        {soundOn ? <SoundOnIcon size={17} /> : <SoundOffIcon size={17} />}
-      </button>
-
       <header className="result__top">
         <AirtelSafeLogo width={214} mono />
       </header>
@@ -55,7 +34,7 @@ export const ResultScreen = ({
           <div className="versus__side">
             <p className="versus__cap">Got past you</p>
             <p className="versus__num versus__num--you">{result.slipped}</p>
-            <p className="versus__note">in {GAME_CONFIG.GAME_DURATION / 1000} seconds</p>
+            <p className="versus__note">in 17 seconds</p>
           </div>
 
           <span className="versus__vs" aria-hidden="true">

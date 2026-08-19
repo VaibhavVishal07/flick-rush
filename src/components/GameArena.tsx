@@ -49,7 +49,7 @@ export const GameArena = ({
     <section
       className={`arena-shell${g.impact ? ' is-hit' : ''}${g.kick ? ' is-kick' : ''}${
         storm ? ' is-storm' : ''
-      }${g.phase === 'auto' ? ' is-auto' : ''}${g.meltdown ? ' is-meltdown' : ''}`}
+      }${g.phase === 'auto' ? ' is-auto' : ''}`}
       style={{ ['--panic' as string]: g.panic }}
       aria-label="Spam Smash game"
     >
@@ -64,12 +64,8 @@ export const GameArena = ({
         onToggleSound={onToggleSound}
       />
 
-      {/* On the shell, not inside the arena. The arena is only the middle
-          band of the screen, so a vignette living there stopped at two hard
-          horizontal lines instead of closing in from the edges of the frame. */}
-      <span className="panic-vignette" aria-hidden="true" />
-
       <div className="arena" ref={g.arenaRef}>
+        <span className="panic-vignette" aria-hidden="true" />
         <PhoneTarget
           guarded={guarded}
           impact={g.impact}
