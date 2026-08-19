@@ -152,7 +152,13 @@ button {
   width: 100%;
   max-width: var(--frame-w);
   height: 100%;
+  /* `clip`, not `hidden`. `hidden` still makes this a scroll container, so a
+     scroll-into-view — the browser's own, when a button takes focus — could
+     scroll the frame and leave every screen after it offset by that amount,
+     with no way back because there is no scrollbar. Measured at 90px on the
+     result screen. `clip` clips without ever scrolling. */
   overflow: hidden;
+  overflow: clip;
   isolation: isolate;
   background:
     radial-gradient(120% 60% at 50% 104%, var(--sand) 0%, transparent 56%),

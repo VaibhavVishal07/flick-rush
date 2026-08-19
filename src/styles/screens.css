@@ -93,7 +93,7 @@
 .intro__stage {
   position: relative;
   flex: none;
-  height: clamp(178px, 30vh, 232px);
+  height: clamp(140px, 25vh, 206px);
   display: grid;
   place-items: center;
   margin: auto -22px 0;
@@ -110,6 +110,86 @@
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
+}
+
+/* Halftone over the whole ground plus a vignette — the fill was clean to the
+   point of being nothing. Same dot texture the buttons wear. */
+.intro__grain {
+  position: absolute;
+  inset: 0;
+  background-image: var(--halftone),
+    radial-gradient(120% 78% at 50% 32%, transparent 46%, rgba(60, 0, 12, 0.42) 100%);
+  background-size: 7px 7px, 100% 100%;
+  opacity: 0.55;
+}
+
+/* Pixel glints. Four-cell plus signs, so they belong to the same grid as the
+   icons rather than arriving as generic sparkle. */
+.intro__spark {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #fff;
+  box-shadow:
+    -5px 0 0 #fff,
+    5px 0 0 #fff,
+    0 -5px 0 #fff,
+    0 5px 0 #fff;
+  opacity: 0.16;
+  animation: spark-blink 4.5s steps(2, end) infinite;
+}
+
+.intro__spark--a {
+  left: 12%;
+  top: 15%;
+}
+
+.intro__spark--b {
+  right: 16%;
+  top: 11%;
+  animation-delay: 1.4s;
+}
+
+.intro__spark--c {
+  left: 24%;
+  top: 38%;
+  animation-delay: 2.6s;
+}
+
+.intro__spark--d {
+  right: 9%;
+  top: 44%;
+  animation-delay: 0.7s;
+}
+
+.intro__spark--e {
+  left: 8%;
+  bottom: 32%;
+  animation-delay: 3.3s;
+}
+
+.intro__spark--f {
+  right: 26%;
+  bottom: 24%;
+  animation-delay: 1.9s;
+}
+
+.intro__spark--g {
+  left: 44%;
+  bottom: 8%;
+  animation-delay: 2.2s;
+}
+
+@keyframes spark-blink {
+  0%,
+  100% {
+    opacity: 0.16;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.35);
+  }
 }
 
 .intro__ghost {
@@ -136,16 +216,16 @@
   --ghost-ink: #0f5c2e;
 }
 
-/* Clear of the wordmark — at 20% it still muddied the title behind it. */
+/* Clear of the whole name block, premise line included. */
 .intro__ghost--a {
   left: -6%;
-  top: 26%;
+  top: 37%;
   animation: ghost-a 13s var(--ease-in-out) infinite;
 }
 
 .intro__ghost--b {
   right: -10%;
-  top: 22%;
+  top: 34%;
   animation: ghost-b 16s var(--ease-in-out) infinite;
 }
 
@@ -216,26 +296,131 @@
 /* ------------------------------------------------------ name and premise -- */
 
 .intro__ident {
+  position: relative;
   display: grid;
   justify-items: center;
-  gap: 3px;
-  margin: 6px 0 0;
+  gap: 5px;
+  margin: 26px 0 0;
   text-align: center;
 }
 
+/* ------------------------------------------------------------- loading -- */
+
+/* Absolutely positioned so it never occupies a row: adding and removing it
+   must not move the wordmark by a pixel. */
+.intro__loader {
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  width: 132px;
+  height: 8px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: rgba(13, 13, 18, 0.42);
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.intro.is-loading .intro__loader {
+  opacity: 1;
+}
+
+.intro__loader-bar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--gold);
+  transform-origin: left center;
+  animation: loader-fill 1.5s var(--ease-in-out) forwards;
+}
+
+@keyframes loader-fill {
+  from {
+    transform: scaleX(0.02);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Everything except the wordmark and the drifting field is already laid out;
+   it just has not arrived yet. Fading rather than mounting is what keeps the
+   handover free of reflow. */
+.intro__top,
+.intro__premise,
+.intro__stage,
+.intro__caption,
+.intro__cta {
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+}
+
+.intro.is-loading .intro__top,
+.intro.is-loading .intro__premise,
+.intro.is-loading .intro__stage,
+.intro.is-loading .intro__caption,
+.intro.is-loading .intro__cta {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+/* Arriving in reading order. */
+.intro__top {
+  transition-delay: 0.02s;
+}
+
+.intro__premise {
+  transition-delay: 0.1s;
+}
+
+.intro__stage {
+  transition-delay: 0.18s;
+}
+
+.intro__caption {
+  transition-delay: 0.26s;
+}
+
+.intro__cta {
+  transition-delay: 0.34s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro__top,
+  .intro__premise,
+  .intro__stage,
+  .intro__caption,
+  .intro__cta {
+    transition: opacity 0.2s linear;
+    transform: none;
+  }
+
+  .intro__loader-bar {
+    animation: none;
+  }
+}
+
+/* Stacked, because a two-word name reads as a logo when it is stacked and as
+   a sentence when it is not. */
 .intro__name {
   margin: 0;
   font-family: var(--display);
-  font-size: clamp(30px, 9vw, 38px);
+  font-size: clamp(36px, 11.5vw, 50px);
   font-weight: 700;
-  line-height: 0.98;
-  letter-spacing: 0.01em;
+  line-height: 0.92;
+  letter-spacing: 0.015em;
   text-transform: uppercase;
   color: #fff;
-  text-shadow: 3px 3px 0 var(--outline), 6px 6px 0 rgba(13, 13, 18, 0.32);
+  text-shadow: 4px 4px 0 var(--outline), 8px 8px 0 rgba(13, 13, 18, 0.3);
 }
 
 .intro__name span {
+  display: block;
+}
+
+.intro__name span:last-child {
   color: var(--gold);
 }
 
@@ -371,7 +556,7 @@
   position: absolute;
   z-index: 6;
   left: calc(50% + 34px);
-  top: calc(50% + 24px);
+  top: calc(50% + 16px);
   line-height: 0;
   color: #fff;
   --px-accent: #fff;
@@ -407,7 +592,7 @@
   position: absolute;
   z-index: 6;
   left: calc(50% + 34px);
-  top: calc(50% + 24px);
+  top: calc(50% + 16px);
   line-height: 0;
   color: rgba(255, 255, 255, 0.62);
   --px-accent: rgba(255, 255, 255, 0.62);
@@ -468,6 +653,22 @@
   }
 }
 
+/* Short screens: the cue shrinks with everything else, or it reaches down
+   into the caption. */
+@media (max-height: 640px) {
+  .intro__hand svg,
+  .intro__nohand svg {
+    width: 50px;
+    height: 50px;
+  }
+
+  .intro__nohand-bar {
+    width: 74px;
+    height: 10px;
+    margin: -5px 0 0 -37px;
+  }
+}
+
 /* The rule, under the object it is about. */
 .intro__caption {
   display: grid;
@@ -479,6 +680,11 @@
   min-height: 94px;
   align-content: start;
   text-align: center;
+}
+
+.intro__caption-lead b {
+  display: block;
+  font-weight: inherit;
 }
 
 .intro__caption-lead {
@@ -524,6 +730,7 @@
   .intro__caption-lead,
   .intro__caption-sub,
   .intro__ghost,
+  .intro__spark,
   .btn--primary.is-shimmer::after {
     animation: none;
   }

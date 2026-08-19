@@ -27,12 +27,16 @@ interface Props {
  */
 type Beat = 'bad' | 'badDone' | 'good' | 'goodDone'
 
-const RULE: Record<Beat, string> = {
-  bad: 'Tap to destroy the bad ones',
-  badDone: 'Tap to destroy the bad ones',
-  good: 'Don’t tap the good ones',
-  goodDone: 'Don’t tap the good ones',
+/** Broken where the sense breaks, not where the box happens to run out. */
+const RULE: Record<Beat, [string, string]> = {
+  bad: ['Tap to destroy', 'the bad ones'],
+  badDone: ['Tap to destroy', 'the bad ones'],
+  good: ['Don’t tap', 'the good ones'],
+  goodDone: ['Don’t tap', 'the good ones'],
 }
+
+/** Pixel glints scattered over the ground, so it is a place and not a fill. */
+const SPARKS = ['a', 'b', 'c', 'd', 'e', 'f', 'g'] as const
 
 /** Drifting behind everything, at 20%: the world the game is set in. */
 const FIELD: Array<{ label: string; trust: 'threat' | 'genuine'; lane: string }> = [
@@ -57,6 +61,16 @@ const GOOD_HOLD = 1900
 const GOOD_END = 1350
 
 export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }: Props) => {
+  /**
+   * A 1.5s hold on the wordmark before the rest arrives.
+   *
+   * Nothing moves across the boundary — the wordmark and the drifting cards
+   * are the same elements before and after, sitting in their final positions
+   * the whole time, and everything else is already in the layout at zero
+   * opacity. So the handover is a cross-fade with no reflow: the bar leaves,
+   * the rest arrives, and not a pixel of what was already on screen shifts.
+   */
+  const [loading, setLoading] = useState(true)
   const [beat, setBeat] = useState<Beat>('bad')
   /** Set once the loop has shown both rules; drives the button's shimmer. */
   const seen = useRef(false)
@@ -71,6 +85,11 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
   }, [])
 
   useEffect(() => () => timers.current.forEach(clearTimeout), [])
+
+  useEffect(() => {
+    const id = window.setTimeout(() => setLoading(false), 1500)
+    return () => clearTimeout(id)
+  }, [])
 
   const smash = useCallback(() => {
     const host = stage.current
@@ -90,6 +109,7 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
   }, [after])
 
   useEffect(() => {
+    if (loading) return
     if (beat === 'bad') after(BAD_TAP, smash)
     if (beat === 'badDone') after(BAD_HOLD, () => setBeat('good'))
     if (beat === 'good') after(GOOD_HOLD, () => setBeat('goodDone'))
@@ -97,15 +117,19 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
       seen.current = true
       after(GOOD_END, () => setBeat('bad'))
     }
-  }, [beat, after, smash])
+  }, [beat, after, smash, loading])
 
   const bad = beat === 'bad' || beat === 'badDone'
   // The button starts asking for attention once both rules have been shown.
   const taught = seen.current
 
   return (
-    <section className="intro" aria-label="Spam Smash">
+    <section className={`intro${loading ? ' is-loading' : ''}`} aria-label="Spam Smash">
       <div className="intro__field" aria-hidden="true">
+        <span className="intro__grain" />
+        {SPARKS.map((sp) => (
+          <span key={sp} className={`intro__spark intro__spark--${sp}`} />
+        ))}
         {FIELD.map((c) => (
           <span key={c.lane} className={`intro__ghost intro__ghost--${c.lane}`} data-trust={c.trust}>
             {c.label}
@@ -133,9 +157,13 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
 
       <div className="intro__ident">
         <h1 className="intro__name">
-          Spam<span>Smash</span>
+          <span>Spam</span>
+          <span>Smash</span>
         </h1>
         <p className="intro__premise">Spam is coming for your phone.</p>
+        <span className="intro__loader" aria-hidden="true">
+          <span className="intro__loader-bar" />
+        </span>
       </div>
 
       <div className="intro__stage" ref={stage} aria-hidden="true">
@@ -152,7 +180,7 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
             </div>
             {beat === 'bad' ? (
               <span className="intro__hand">
-                <PixelHand size={76} />
+                <PixelHand size={62} />
               </span>
             ) : null}
           </>
@@ -167,7 +195,7 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
             </div>
             {beat === 'good' ? (
               <span className="intro__nohand">
-                <PixelHand size={76} />
+                <PixelHand size={62} />
                 <span className="intro__nohand-bar" />
               </span>
             ) : null}
@@ -180,8 +208,9 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
       </div>
 
       <p className="intro__caption" aria-live="polite">
-        <span key={RULE[beat]} className="intro__caption-lead">
-          {RULE[beat]}
+        <span key={RULE[beat][0]} className="intro__caption-lead">
+          <b>{RULE[beat][0]}</b>
+          <b>{RULE[beat][1]}</b>
         </span>
         <span key={OUTCOME[beat] || 'blank'} className="intro__caption-sub">
           {OUTCOME[beat] || ' '}
