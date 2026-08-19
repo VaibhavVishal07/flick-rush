@@ -87,13 +87,22 @@
   gap: 8px;
 }
 
+/* Sized to its contents, NOT flex:1. Absorbing the spare height pushed the
+   phone into the middle of a tall empty box and left the caption stranded
+   half a screen below the thing it is captioning. The slack goes to the CTA
+   block instead, which is pinned to the bottom. */
 .intro__stage {
   position: relative;
-  flex: 1;
-  min-height: 236px;
+  flex: none;
+  /* Fluid: a fixed 292px pushed the buttons off the bottom of a 540px screen.
+     The floor is the phone's own height plus a little air. */
+  height: clamp(224px, 42vh, 292px);
   display: grid;
   place-items: center;
-  margin: 10px -22px 0;
+  /* `auto` top margin pairs with the one on the CTA: the slack splits evenly
+     above and below, so the phone-caption-rule cluster sits optically centred
+     instead of leaving one large hole above the button. */
+  margin: auto -22px 0;
 }
 
 /* Same still-water treatment as the arena: soft filled discs with a slow
@@ -140,8 +149,8 @@
   display: grid;
   justify-items: center;
   gap: 3px;
-  margin: 4px 0 0;
-  min-height: 58px;
+  margin: 0;
+  min-height: 56px;
   text-align: center;
   animation: caption-in 0.32s var(--ease-back) both;
 }
@@ -228,7 +237,7 @@
 
 /* Spam drops in at the phone and is destroyed where it stops. */
 .intro__card--bad {
-  top: 4%;
+  top: 15%;
   left: 50%;
   animation: bad-in 0.42s var(--ease-back) both,
     bad-out 0.34s var(--ease-out) 1.15s forwards;
@@ -267,7 +276,7 @@
 .intro__finger {
   position: absolute;
   z-index: 6;
-  top: calc(4% + 4px);
+  top: calc(15% + 4px);
   left: calc(50% + 54px);
   line-height: 0;
   color: #fff;
@@ -305,7 +314,7 @@
 
 /* The real one travels all the way in, untouched. */
 .intro__card--good {
-  top: 4%;
+  top: 15%;
   left: 50%;
   animation: good-in 0.42s var(--ease-back) both;
 }
@@ -449,7 +458,9 @@
 .intro__cta {
   display: grid;
   gap: 10px;
-  padding-top: 22px;
+  /* Takes the slack, so everything above it stays clustered. */
+  margin-top: auto;
+  padding-top: 18px;
 }
 
 .intro__hint {
@@ -466,10 +477,6 @@
   .intro {
     padding-top: calc(10px + env(safe-area-inset-top));
     padding-bottom: calc(14px + env(safe-area-inset-bottom));
-  }
-
-  .intro__stage {
-    min-height: 180px;
   }
 
   .intro__sub {

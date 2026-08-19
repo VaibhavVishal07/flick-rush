@@ -28,11 +28,16 @@ interface Props {
  */
 type Beat = 'spam' | 'gone' | 'real' | 'through'
 
+/**
+ * Captions that teach rather than narrate. "Spam is coming / watch what
+ * happens" described the animation; these name the badge and say what it is
+ * for, which is the only thing the player has to carry into the game.
+ */
 const CAPTION: Record<Beat, { lead: string; sub: string }> = {
-  spam: { lead: 'Spam is coming', sub: 'Watch what happens.' },
+  spam: { lead: 'Bad one ✕', sub: 'Tap it before it lands.' },
   gone: { lead: 'Tapped. Gone.', sub: 'It never reached the phone.' },
-  real: { lead: 'This one is real', sub: 'Mom. Nobody touches it.' },
-  through: { lead: 'She gets through', sub: 'Real things should reach you.' },
+  real: { lead: 'Good one ✓', sub: 'Don’t tap. Let it in.' },
+  through: { lead: 'It got in', sub: 'That’s exactly what you want.' },
 }
 
 /** The loop, in milliseconds from the start of each beat. */
@@ -168,7 +173,8 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
         <button type="button" className="btn btn--primary btn--lg" onClick={onPlay}>
           {returning ? 'Play Again' : 'Play Now'}
         </button>
-        <p className="btn-sub">Takes 20 seconds</p>
+        {/* Says what the next 20 seconds will ask of them. */}
+        <p className="btn-sub">20 seconds. Sort as many as you can.</p>
       </div>
     </section>
   )
