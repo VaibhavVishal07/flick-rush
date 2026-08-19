@@ -76,6 +76,37 @@
   padding: calc(14px + env(safe-area-inset-top)) 22px calc(20px + env(safe-area-inset-bottom));
 }
 
+/* When a real call gets through, the whole screen goes green. The red ground
+   is the game's alarm state; letting it swing all the way over for two beats
+   is the loudest available way to say "this one was fine". Behind the content
+   (z-index -1 inside `.intro`'s own stacking context), so nothing on top of it
+   has to change colour. */
+.intro::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.55s var(--ease-out);
+  background: radial-gradient(
+    130% 75% at 50% 38%,
+    #16a34a 0%,
+    #0c7a37 52%,
+    #085c29 100%
+  );
+}
+
+.intro[data-tone='good']::before {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro::before {
+    transition: none;
+  }
+}
+
 .intro__top {
   display: flex;
   align-items: center;
@@ -150,9 +181,9 @@
   justify-items: center;
   gap: 3px;
   margin: 0;
-  /* Two lines' worth, always. "TAP THE BAD ONES" is one line and "LEAVE THE
-     GOOD ONES" is two, so a shrink-to-fit box jumped on every beat. */
-  min-height: 88px;
+  /* Every lead is one line now, so this only has to be tall enough to stop
+     the block breathing between beats. */
+  min-height: 70px;
   align-content: start;
   text-align: center;
   animation: caption-in 0.36s var(--ease-back) both;
@@ -163,27 +194,26 @@
    thing under the phone, because it is the instruction. */
 .intro__caption-lead {
   font-family: var(--font);
-  font-size: 33px;
+  font-size: 36px;
   letter-spacing: -0.035em;
   font-weight: 900;
   line-height: 1;
-  text-transform: uppercase;
   color: #fff;
   text-shadow: 4px 4px 0 var(--outline);
 }
 
-/* The beat's own colour, on the mark the sentence is about. */
-.intro__caption[data-tone='bad'] .intro__caption-sub b {
-  color: #ff8095;
+/* The beat's own colour, on the supporting line. */
+.intro__caption[data-tone='bad'] .intro__caption-sub {
+  color: #ffc9d2;
 }
 
-.intro__caption[data-tone='good'] .intro__caption-sub b {
-  color: #6ee79c;
+.intro__caption[data-tone='good'] .intro__caption-sub {
+  color: #a9f0c4;
 }
 
 .intro__caption-sub {
   font-family: var(--font);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 800;
   line-height: 1.25;
   color: #fff;

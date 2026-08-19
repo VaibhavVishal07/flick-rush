@@ -33,11 +33,16 @@ type Beat = 'spam' | 'gone' | 'real' | 'through'
  * happens" described the animation; these name the badge and say what it is
  * for, which is the only thing the player has to carry into the game.
  */
+/**
+ * Four words a beat, at most. The card being described is on screen while the
+ * line is read, so the line does not have to describe it — naming the colour
+ * and the mark as well was belt-and-braces, and it read as homework.
+ */
 const CAPTION: Record<Beat, { lead: string; sub: string; tone: 'bad' | 'good' }> = {
-  spam: { lead: 'Tap the bad ones', sub: 'Black card, red ✕. Spam.', tone: 'bad' },
-  gone: { lead: 'Gone.', sub: 'It never reached the phone.', tone: 'bad' },
-  real: { lead: 'Leave the good ones', sub: 'Pale card, green ✓. Real.', tone: 'good' },
-  through: { lead: 'It got in.', sub: 'That’s exactly what you want.', tone: 'good' },
+  spam: { lead: 'Bad one.', sub: 'Tap it.', tone: 'bad' },
+  gone: { lead: 'Gone.', sub: 'It never got in.', tone: 'bad' },
+  real: { lead: 'Good one.', sub: 'Leave it.', tone: 'good' },
+  through: { lead: 'It got in.', sub: 'That’s what you want.', tone: 'good' },
 }
 
 /** The loop, in milliseconds from the start of each beat. */
@@ -85,6 +90,7 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
     if (beat === 'through') after(REAL_HOLD, () => setBeat('spam'))
   }, [beat, after, smash])
 
+
   const caption = CAPTION[beat]
   // Kept mounted through `gone` so the break and the hand's retreat can
   // finish — unmounting on the tap cut both off at the frame they started.
@@ -92,7 +98,7 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
   const showGood = beat === 'real' || beat === 'through'
 
   return (
-    <section className="intro" aria-label="Shield Rush">
+    <section className="intro" data-tone={caption.tone} aria-label="Shield Rush">
       <header className="intro__top">
         <AirtelSafeMark />
         <div className="intro__tools">
@@ -151,11 +157,7 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
       {/* Under the phone, because the phone is the thing being watched. */}
       <p key={beat} className="intro__caption" data-tone={caption.tone} aria-live="polite">
         <span className="intro__caption-lead">{caption.lead}</span>
-        <span className="intro__caption-sub">
-          {caption.sub.split(/(✕|✓)/).map((bit, i) =>
-            bit === '✕' || bit === '✓' ? <b key={i}>{bit}</b> : bit,
-          )}
-        </span>
+        <span className="intro__caption-sub">{caption.sub}</span>
       </p>
 
       <div className="intro__cta">
@@ -163,7 +165,7 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
           {returning ? 'Play Again' : 'Play Now'}
         </button>
         {/* Says what the next 20 seconds will ask of them. */}
-        <p className="btn-sub">20 seconds. Sort as many as you can.</p>
+        <p className="btn-sub">Takes 20 seconds</p>
       </div>
     </section>
   )
