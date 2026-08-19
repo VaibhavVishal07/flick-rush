@@ -152,7 +152,11 @@ export const GameIntro = ({ onPlay, returning }: Props) => {
       <div className="intro__stage" ref={stage} aria-hidden="true">
         <span className="intro__spot" />
 
-        {bad ? (
+        {/* Mounted only once the loader has gone. Rendered behind it, the
+            hand's approach and the card's arrival played out at opacity 0 and
+            were over before anyone could see them — the tap hand measured a
+            flat distance from the card across its whole visible life. */}
+        {loading ? null : bad ? (
           <>
             <div ref={card} className="intro__card" data-trust="threat" data-state={beat}>
               {beat === 'badDone' ? <span className="intro__flash" /> : null}
