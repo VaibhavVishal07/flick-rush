@@ -1,4 +1,5 @@
-import { AirtelSafeMark, LinkIcon, MessageIcon, ThreatCallIcon } from '../assets/icons'
+import { AirtelSafeMark } from '../assets/icons'
+import { pixelFamilyIcon } from '../assets/PixelIcon'
 import { safetyReport } from '../game/gameConfig'
 
 /**
@@ -9,9 +10,9 @@ export const SafetyReportSheet = ({ onClose }: { onClose: () => void }) => {
   const report = safetyReport
   const rows = report
     ? [
-        { label: 'Spam calls', value: report.spamCalls, icon: <ThreatCallIcon size={17} /> },
-        { label: 'Spam messages', value: report.spamMessages, icon: <MessageIcon size={17} /> },
-        { label: 'Suspicious links', value: report.suspiciousLinks, icon: <LinkIcon size={17} /> },
+        { label: 'Spam calls', value: report.spamCalls, icon: pixelFamilyIcon('call', 'threat', 17) },
+        { label: 'Spam messages', value: report.spamMessages, icon: pixelFamilyIcon('sms', 'threat', 17) },
+        { label: 'Suspicious links', value: report.suspiciousLinks, icon: pixelFamilyIcon('link', 'threat', 17) },
       ]
     : []
 

@@ -322,53 +322,6 @@ button {
   color: rgba(13, 13, 18, 0.72);
 }
 
-/* -------------------------------------------------------- window chrome -- */
-
-/* Title bar lifted straight from the reference: a black strip with the old
-   minimise / maximise / close marks. It is the single cheapest way to make a
-   panel read as drawn rather than generated. */
-.win {
-  position: relative;
-  border: var(--line-w) solid var(--outline);
-  border-radius: var(--r);
-  background: #fff;
-  box-shadow: var(--drop);
-}
-
-.win__bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 9px;
-  border-bottom: var(--line-w) solid var(--outline);
-  background: var(--outline);
-}
-
-.win__dots {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-family: var(--display);
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1;
-  color: #fff;
-  letter-spacing: 0.18em;
-}
-
-.win__title {
-  font-family: var(--display);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #fff;
-}
-
-.win__body {
-  padding: 12px 13px 12px;
-}
-
 /* ---------------------------------------------------------------- tiles -- */
 
 /* Square icon buttons that stack into a side rail. */
@@ -572,6 +525,7 @@ button {
   border-radius: var(--r);
   border: var(--line-w) solid var(--outline);
   color: #fff;
+  --px-accent: rgba(255, 255, 255, 0.66);
   background-color: var(--rule-lo);
   background-image: var(--halftone);
   background-size: var(--halftone-size);

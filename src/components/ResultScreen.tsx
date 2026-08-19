@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { ShieldMark } from '../assets/icons'
 import { AirtelSafeLogo } from '../assets/AirtelSafeLogo'
 import { ShareCard } from './ShareCard'
 import { GAME_CONFIG, safetyReport } from '../game/gameConfig'
@@ -34,38 +33,32 @@ export const ResultScreen = ({ result, onReplay, onReport }: Props) => {
       </header>
 
       <div className="result__mid">
-        <div className="win versus">
-          <div className="win__bar">
-            <span className="win__dots" aria-hidden="true">
-              ─ ▢ ✕
-            </span>
-            <span className="win__title">The difference</span>
+        {/* No card. A panel with a title bar made this read as a report; the
+            argument is two numbers and they should hit the eye before any
+            container does. Bare on the red, arcade-scale, black keylines. */}
+        <div className="versus">
+          <div className="versus__side">
+            <p className="versus__cap">Got past you</p>
+            <p className="versus__num versus__num--you">{result.slipped}</p>
+            <p className="versus__note">in 17 seconds</p>
           </div>
 
-          <div className="versus__grid">
-            <div className="versus__col">
-              <p className="versus__cap">Got past you</p>
-              <p className="versus__num versus__num--you">{result.slipped}</p>
-              <p className="versus__note">in 17 seconds</p>
-            </div>
+          <span className="versus__vs" aria-hidden="true">
+            vs
+          </span>
 
-            <span className="versus__vs" aria-hidden="true">
-              vs
-            </span>
-
-            <div className="versus__col versus__col--safe">
-              <p className="versus__cap">
-                <ShieldMark size={13} /> Got past Airtel Safe
-              </p>
-              <p className="versus__num versus__num--safe">0</p>
-              <p className="versus__note">ever</p>
-            </div>
+          <div className="versus__side versus__side--safe">
+            <p className="versus__cap">Got past Airtel Safe</p>
+            <p className="versus__num versus__num--safe">
+              0<span className="versus__slam" aria-hidden="true" />
+            </p>
+            <p className="versus__note">ever</p>
           </div>
-
-          <p className="versus__foot">
-            <b>{multiple}× faster</b> than you managed — and it never stops.
-          </p>
         </div>
+
+        <p className="versus__foot">
+          <b>{multiple}× faster</b> than you managed — and it never stops.
+        </p>
 
         <div className="result__say">
           {/* Says what just happened in plain words. "Better automation" was a

@@ -131,77 +131,105 @@
   animation: device-bob 3.6s var(--ease-in-out) infinite;
 }
 
-/* Four stickers drifting at the phone — the whole game in one glance. */
+/* Four stickers drifting at the phone — the whole game in one glance, and
+   built from the same parts as the real thing so the intro isn't lying about
+   what the game looks like. */
 .intro__chip {
   position: absolute;
   z-index: 3;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 5px 6px 5px 6px;
-  border-radius: 999px;
-  font-family: var(--font);
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: -0.01em;
+  gap: 7px;
+  padding: 5px 8px 5px 5px;
+  border: var(--line-w) solid var(--outline);
+  border-radius: 6px;
+  background: var(--chip-bg);
+  box-shadow: var(--drop-sm);
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
   white-space: nowrap;
+  color: var(--chip-ink);
 }
 
-/* Threats: near-black tags with a hazard edge. */
 .intro__chip[data-trust='threat'] {
-  padding-left: 12px;
-  border-radius: 9px;
-  color: #fff;
-  background: linear-gradient(180deg, #1d2540, #0b1022);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5), 0 5px 0 #04060f,
-    0 11px 16px rgba(60, 4, 16, 0.34);
+  --chip-bg: #14121c;
+  --chip-ink: #ffffff;
+  --chip-plate: #241f33;
+  --chip-glyph: #ffffff;
+  --chip-accent: #ff4d6a;
+  --chip-stamp: var(--airtel);
+  --chip-stamp-ink: #ffffff;
+  background-image: var(--halftone), none;
+  background-size: 6px 6px;
 }
 
+.intro__chip[data-trust='genuine'] {
+  --chip-bg: #fffaf0;
+  --chip-ink: #14261a;
+  --chip-plate: #cdf0d6;
+  --chip-glyph: #125c30;
+  --chip-accent: #2fa457;
+  --chip-stamp: var(--good);
+  --chip-stamp-ink: #06301a;
+}
 
 .intro__chip[data-family='link'] {
-  --chip-accent: #a78bfa;
+  --chip-accent: #b18cff;
 }
-
 
 .intro__chip[data-family='sms'][data-trust='threat'] {
-  --chip-accent: #ff9f45;
+  --chip-accent: #ffb03a;
 }
 
-/* Genuine: white pills. */
-.intro__chip[data-trust='genuine'] {
-  color: #10321f;
-  background: linear-gradient(180deg, #ffffff, #eefaf1);
-  box-shadow: 0 0 0 3px #14803c, 0 5px 0 #b7d8c2, 0 11px 16px rgba(60, 4, 16, 0.3);
+.intro__chip[data-family='sms'][data-trust='genuine'] {
+  --chip-plate: #ccecf8;
+  --chip-glyph: #0a4f64;
+  --chip-stamp: #38bdf8;
+}
+
+/* The hazard foot, at intro scale. */
+.intro__chip[data-trust='threat']::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  height: 6px;
+  border: var(--line-w) solid var(--outline);
+  border-radius: 0 0 6px 6px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--chip-accent) 0 4px,
+    var(--outline) 4px 8px
+  );
 }
 
 .intro__chip-icon {
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 7px;
-  color: var(--chip-accent, #ff6b7d);
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.intro__chip[data-trust='genuine'] .intro__chip-icon {
-  border-radius: 50%;
-  color: #14803c;
-  background: #d9f5e2;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border: 2.5px solid var(--outline);
+  border-radius: 4px;
+  color: var(--chip-glyph);
+  background: var(--chip-plate);
+  --px-accent: var(--chip-accent);
 }
 
 .intro__chip-flag {
   display: grid;
   place-items: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  color: #fff;
-  background: #e8112d;
-}
-
-.intro__chip[data-trust='genuine'] .intro__chip-flag {
-  background: #16a34a;
+  flex: none;
+  width: 21px;
+  height: 21px;
+  border: 2.5px solid var(--outline);
+  border-radius: 4px;
+  color: var(--chip-stamp-ink);
+  background: var(--chip-stamp);
 }
 
 .intro__chip--a {
@@ -433,6 +461,9 @@
   display: flex;
   justify-content: center;
   padding-top: 135px;
+  /* Clear air under the mark. It was sitting straight on top of what follows
+     and reading as a label for it rather than as the brand on the screen. */
+  padding-bottom: 28px;
   line-height: 0;
 }
 
@@ -452,71 +483,98 @@
 
 /* --------------------------------------------------------------- versus -- */
 
-/* Two numbers, one of them a zero. That is the whole argument — bars and
-   rates turned it into homework. */
-.versus__grid {
+/* Two numbers, one of them a zero. No panel, no chrome, no rule between them
+   — a card turned the punchline into a table. Arcade scoreboard scale, hard
+   black keylines, straight onto the red. */
+.versus {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: stretch;
-  padding: 12px 4px 10px;
-}
-
-.versus__vs {
-  align-self: center;
-  padding: 0 4px;
-  font-family: var(--display);
-  font-size: 15px;
-  font-weight: 400;
-  color: var(--ink-4);
-}
-
-.versus__col {
-  display: grid;
-  align-content: center;
-  justify-items: center;
-  gap: 1px;
-  text-align: center;
-  padding: 0 6px;
-}
-
-.versus__cap {
-  display: flex;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: center;
   gap: 4px;
+}
+
+.versus__side {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  text-align: center;
+  min-width: 0;
+}
+
+/* Two lines tall whether or not it needs two, so a one-line caption and a
+   two-line caption still drop their numbers onto the same baseline. */
+.versus__cap {
+  display: grid;
+  align-content: end;
+  min-height: 32px;
   margin: 0;
-  min-height: 24px;
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 0.1em;
-  line-height: 1.25;
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
   text-transform: uppercase;
-  color: var(--ink-3);
+  color: #ffd8c9;
+  text-shadow: 2px 2px 0 var(--outline);
+  text-wrap: balance;
 }
 
-.versus__col--safe .versus__cap {
-  color: var(--airtel);
+.versus__side--safe .versus__cap {
+  color: var(--gold-hi);
 }
 
+/* Arcade score type: white face, hard black keyline on four sides plus an
+   offset drop, so it reads at a glance from across a room. */
 .versus__num {
+  position: relative;
   margin: 0;
   font-family: var(--num);
-  letter-spacing: -0.03em;
-  font-size: 62px;
+  font-size: 88px;
   font-weight: 900;
-  line-height: 0.92;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
   font-variant-numeric: tabular-nums;
+  color: #fff;
+  -webkit-text-stroke: 4px var(--outline);
+  paint-order: stroke fill;
+  /* The same hard offset every plate and button in the game casts. A soft
+     maroon glow under an outlined numeral just read as misregistration. */
+  text-shadow: 6px 7px 0 var(--outline);
 }
 
 .versus__num--you {
-  color: var(--ink);
   animation: num-in 0.4s var(--ease-back) 0.2s both;
 }
 
-/* The zero lands late and lands hard. */
+/* The zero lands late, lands hard, and throws a ring. */
 .versus__num--safe {
-  color: var(--good);
-  animation: zero-slam 0.5s var(--ease-back) 1s both;
+  color: #2bd968;
+  animation: zero-slam 0.5s var(--ease-back) 0.55s both;
+}
+
+.versus__slam {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 84px;
+  height: 84px;
+  margin: -42px 0 0 -42px;
+  border: 5px solid #fff;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  animation: slam-ring 0.5s var(--ease-out) 0.67s both;
+}
+
+@keyframes slam-ring {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
 }
 
 @keyframes num-in {
@@ -541,30 +599,51 @@
   }
 }
 
-.versus__note {
-  margin: 2px 0 0;
-  font-size: 11px;
+/* A stamped tile between them, tilted — the divider is an object, not a rule. */
+.versus__vs {
+  align-self: center;
+  padding: 4px 7px 5px;
+  border: var(--line-w) solid var(--outline);
+  border-radius: 5px;
+  background: var(--paper);
+  font-family: var(--display);
+  font-size: 15px;
   font-weight: 700;
-  color: var(--ink-4);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--ink);
+  box-shadow: var(--drop-sm);
+  transform: rotate(-8deg);
 }
 
-.versus__col--safe .versus__note {
-  color: var(--good-lo);
+.versus__note {
+  margin: 1px 0 0;
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffc9b6;
+  text-shadow: 2px 2px 0 var(--outline);
 }
 
+.versus__side--safe .versus__note {
+  color: #9df5bb;
+}
+
+/* The one supporting fact, on its own line under the numbers. */
 .versus__foot {
   margin: 0;
-  padding: 9px 12px 10px;
-  border-top: 3px solid var(--outline);
-  font-size: 12.5px;
-  font-weight: 600;
-  line-height: 1.42;
-  color: var(--ink-2);
+  text-align: center;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.4;
+  color: #fff;
+  text-shadow: 1px 2px 0 rgba(13, 13, 18, 0.75);
 }
 
 .versus__foot b {
   font-weight: 900;
-  color: var(--airtel);
+  color: var(--gold-hi);
 }
 
 /* ----------------------------------------------------------- the close -- */
@@ -765,15 +844,19 @@
   box-shadow: 0 4px 0 rgba(60, 4, 16, 0.2);
 }
 
+/* Same tile the pills wear: keyed square, not a gradient disc. */
 .report__icon {
   display: grid;
   place-items: center;
+  flex: none;
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  border: 2.5px solid var(--outline);
+  border-radius: 4px;
   color: #fff;
-  background: linear-gradient(180deg, var(--airtel-hi), var(--airtel));
-  box-shadow: 0 3px 0 var(--airtel-lo);
+  background: var(--airtel);
+  --px-accent: #ffd8c9;
+  box-shadow: var(--drop-sm);
 }
 
 .report__label {
@@ -822,16 +905,11 @@
   }
 
   .versus__num {
-    font-size: 52px;
-  }
-
-  .versus__grid {
-    padding: 8px 4px 7px;
+    font-size: 72px;
   }
 
   .versus__foot {
-    padding: 7px 11px 8px;
-    font-size: 11.5px;
+    font-size: 12px;
   }
 
   .result__headline {
@@ -873,7 +951,12 @@
   }
 
   .versus__num {
-    font-size: 44px;
+    font-size: 58px;
+  }
+
+  .versus__cap {
+    min-height: 28px;
+    font-size: 12px;
   }
 
   .versus__note {
@@ -910,12 +993,11 @@
     display: none;
   }
 
-  .versus__grid {
-    padding: 5px 4px 4px;
+  .versus__num {
+    font-size: 50px;
   }
 
   .versus__foot {
-    padding: 5px 10px 6px;
     font-size: 11px;
   }
 }

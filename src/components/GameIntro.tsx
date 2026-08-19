@@ -1,12 +1,5 @@
-import {
-  AirtelSafeMark,
-  CrossIcon,
-  ShieldMark,
-  SoundOffIcon,
-  SoundOnIcon,
-  TickIcon,
-  familyIcon,
-} from '../assets/icons'
+import { AirtelSafeMark, ShieldMark, SoundOffIcon, SoundOnIcon } from '../assets/icons'
+import { PixelCross, PixelTick, pixelFamilyIcon } from '../assets/PixelIcon'
 import { PhoneDevice } from '../assets/PhoneDevice'
 import type { Family, Trust } from '../game/objectTypes'
 
@@ -61,10 +54,10 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
           data-trust={p.trust}
           data-family={p.family}
         >
-          <span className="intro__chip-icon">{familyIcon(p.family, p.trust, 15)}</span>
+          <span className="intro__chip-icon">{pixelFamilyIcon(p.family, p.trust, 17)}</span>
           <span>{p.label}</span>
           <span className="intro__chip-flag">
-            {p.trust === 'threat' ? <CrossIcon size={12} /> : <TickIcon size={12} />}
+            {p.trust === 'threat' ? <PixelCross size={12} /> : <PixelTick size={12} />}
           </span>
         </div>
       ))}

@@ -1,18 +1,19 @@
-import { AirtelSafeMark, ContactIcon, ShieldMark, ThreatCallIcon } from '../assets/icons'
+import { AirtelSafeMark, ShieldMark } from '../assets/icons'
+import { pixelFamilyIcon } from '../assets/PixelIcon'
 import { GAME_CONFIG } from '../game/gameConfig'
 
 const RULES = [
   {
-    icon: <ThreatCallIcon size={19} />,
+    icon: pixelFamilyIcon('call', 'threat', 19),
     tone: 'threat' as const,
     title: 'Tap the ✕ ones away',
-    body: `Spam calls, dodgy links, fake rewards. Hard-edged, jittery, marked with a cross. One tap deals with each before it reaches your phone. +${GAME_CONFIG.BLOCK_POINTS} each.`,
+    body: `Spam calls, dodgy links, fake rewards. Black, striped and twitchy, marked with a cross. One tap deals with each before it reaches your phone. +${GAME_CONFIG.BLOCK_POINTS} each.`,
   },
   {
-    icon: <ContactIcon size={19} />,
+    icon: pixelFamilyIcon('call', 'genuine', 19),
     tone: 'good' as const,
     title: 'Leave the ✓ ones alone',
-    body: `Mom calling, a delivery update, a genuine OTP. Rounded, calm, marked with a tick. Hands off and they land safely. +${GAME_CONFIG.SAFE_POINTS} each.`,
+    body: `Mom calling, a delivery update, a genuine OTP. Pale, still, marked with a tick. Hands off and they land safely. +${GAME_CONFIG.SAFE_POINTS} each.`,
   },
   {
     icon: <ShieldMark size={19} />,

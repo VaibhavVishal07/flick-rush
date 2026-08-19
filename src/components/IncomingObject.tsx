@@ -1,5 +1,5 @@
 import { memo, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
-import { CrossIcon, TickIcon, familyIcon } from '../assets/icons'
+import { PixelCross, PixelTick, pixelFamilyIcon } from '../assets/PixelIcon'
 import { IncomingTrail } from '../assets/IncomingTrail'
 import type { LiveObject } from '../game/types'
 
@@ -18,19 +18,20 @@ interface Props {
 const IncomingObjectBase = ({ object: o, cue, register, onDown, onMove, onUp }: Props) => {
   const threat = o.def.trust === 'threat'
 
+  /**
+   * A stamped arcade tag, not an app notification: hard keyline, hard offset
+   * shadow, pixel icon on its own plate, label set in the display face. The
+   * delivery time and the soft squircle went with the notification framing.
+   */
   const body: ReactNode = (
     <div className="obj__body">
-      <span className="obj__icon">{familyIcon(o.def.family, o.def.trust, 19)}</span>
-      <span className="obj__text">
-        <span className="obj__label">{o.def.label}</span>
-        {o.def.caption ? <span className="obj__caption">{o.def.caption}</span> : null}
+      <span className="obj__plate">
+        {pixelFamilyIcon(o.def.family, o.def.trust, 22)}
+        {threat ? <span className="obj__tell" aria-hidden="true" /> : null}
       </span>
-      <span className="obj__time" aria-hidden="true">
-        now
-      </span>
-      {threat ? <span className="obj__tell" aria-hidden="true" /> : null}
-      <span className="obj__flag" aria-hidden="true">
-        {threat ? <CrossIcon size={13} /> : <TickIcon size={13} />}
+      <span className="obj__label">{o.def.label}</span>
+      <span className="obj__stamp" aria-hidden="true">
+        {threat ? <PixelCross size={14} /> : <PixelTick size={14} />}
       </span>
     </div>
   )

@@ -461,122 +461,111 @@
 
 /* Under the finger a sticker peels up off the board. */
 .obj:active .obj__body {
-  box-shadow:
-    0 0 0 3px #fff,
-    0 10px 0 var(--chip-edge),
-    0 20px 26px rgba(60, 4, 16, 0.44);
-  filter: brightness(1.08);
+  box-shadow: 0 9px 0 rgba(13, 13, 18, 0.55), 0 18px 24px rgba(60, 4, 16, 0.42);
+  filter: brightness(1.1);
 }
 
-/* Threats and genuine items differ on FIVE channels, the first of which is
-   value: threats are near-black, genuine items are white. Lightness is the
-   one difference the eye resolves in peripheral vision, before hue and long
-   before you read a label. */
+/* A stamped tag. Every other surface in this game is a hard keyline over a
+   hard offset shadow — the pills were the one thing wearing rounded corners,
+   gradient fills and soft rings, which is exactly why they read as imported
+   from somewhere else. Same 3px keyline, same drop, low-res corner. */
 .obj__body {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 9px 11px 9px 9px;
-  /* iOS notification geometry: a rounded rectangle, not a pill. */
-  border-radius: 17px;
-  background: linear-gradient(180deg, var(--chip-hi), var(--chip-lo));
-  box-shadow:
-    0 0 0 3px var(--chip-ring, #fff),
-    0 5px 0 var(--chip-edge),
-    0 11px 16px rgba(60, 4, 16, 0.34);
+  gap: 9px;
+  padding: 7px 10px 7px 7px;
+  border: var(--line-w) solid var(--outline);
+  border-radius: 6px;
+  background: var(--chip-bg);
+  box-shadow: var(--drop);
   transform: scale(var(--heft, 1));
   transform-origin: center;
 }
 
-.obj__icon {
+/* The icon gets its own plate, keyed the same way — a tile on a board. */
+.obj__plate {
+  position: relative;
   display: grid;
   place-items: center;
   flex: none;
-  width: 34px;
-  height: 34px;
-  /* App-icon squircle rather than a circle. */
-  border-radius: 9px;
-  color: var(--chip-accent);
-  background: var(--chip-icon-bg, #fff);
+  width: 36px;
+  height: 36px;
+  border: 2.5px solid var(--outline);
+  border-radius: 4px;
+  color: var(--chip-glyph);
+  background: var(--chip-plate);
+  --px-accent: var(--chip-accent);
 }
 
-.obj__text {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  line-height: 1.08;
-  white-space: nowrap;
-}
-
+/* Pixelify, not a UI face. This is the single line that decides whether a
+   pill belongs to the game or to a phone. */
 .obj__label {
-  font-family: var(--font);
-  font-size: 15px;
-  font-weight: 900;
-  letter-spacing: -0.01em;
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
   color: var(--chip-ink);
 }
 
-.obj__caption {
-  font-size: 11.5px;
-  font-weight: 700;
-  color: var(--chip-ink-2);
-}
-
-/* Trailing glyph: ✕ on anything you should remove, ✓ on anything to leave. */
-.obj__flag {
+/* Verdict stamp: a square chip, not a circular badge. */
+.obj__stamp {
   display: grid;
   place-items: center;
   flex: none;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  color: #fff;
-  background: var(--chip-flag);
+  width: 26px;
+  height: 26px;
+  margin-left: 1px;
+  border: 2.5px solid var(--outline);
+  border-radius: 4px;
+  color: var(--chip-stamp-ink);
+  background: var(--chip-stamp);
 }
 
 /* ------------------------------------------------------------- threats -- */
 
+/* Spam is machinery: black plate, hazard yellow, warning stripes. */
 .obj[data-trust='threat'] {
-  --chip-hi: #1d2540;
-  --chip-lo: #0b1022;
-  --chip-edge: #04060f;
-  --chip-ring: rgba(255, 255, 255, 0.5);
+  --chip-bg: #14121c;
   --chip-ink: #ffffff;
-  --chip-ink-2: rgba(255, 255, 255, 0.6);
-  --chip-icon-bg: rgba(255, 255, 255, 0.12);
-  --chip-accent: #ff6b7d;
-  --chip-flag: #e8112d;
-}
-
-.obj[data-trust='threat'] .obj__body {
-  border-radius: 17px;
-}
-
-/* The delivery time, where a notification always puts it. */
-.obj__time {
-  flex: none;
-  margin-left: 1px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--chip-ink-2);
-}
-
-.obj[data-trust='threat'] .obj__icon {
-  border-radius: 7px;
+  --chip-plate: #241f33;
+  --chip-glyph: #ffffff;
+  --chip-accent: #ff4d6a;
+  --chip-stamp: var(--airtel);
+  --chip-stamp-ink: #ffffff;
 }
 
 .obj[data-trust='threat'][data-family='sms'] {
-  --chip-accent: #ff9f45;
+  --chip-accent: #ffb03a;
 }
 
 .obj[data-trust='threat'][data-family='link'] {
-  --chip-accent: #a78bfa;
+  --chip-accent: #b18cff;
 }
 
 .obj[data-trust='threat'][data-family='alert'] {
-  --chip-accent: #fbbf24;
+  --chip-accent: #ffd23f;
+}
+
+/* A hazard bar along the foot, in the family's own colour — the tell you can
+   read at speed without stopping to parse an icon. */
+.obj[data-trust='threat'] .obj__body::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  height: 8px;
+  border: var(--line-w) solid var(--outline);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--chip-accent) 0 5px,
+    var(--outline) 5px 10px
+  );
 }
 
 /* Threats never sit still. */
@@ -596,32 +585,31 @@
 
 /* ------------------------------------------------------------- genuine -- */
 
+/* People and real business arrive on paper: warm, unstriped, calm. */
 .obj[data-trust='genuine'] {
-  --chip-hi: #ffffff;
-  --chip-lo: #eefaf1;
-  --chip-edge: #b7d8c2;
-  --chip-ring: #14803c;
-  --chip-ink: #10321f;
-  --chip-ink-2: rgba(16, 50, 31, 0.6);
-  --chip-icon-bg: #d9f5e2;
-  --chip-accent: #14803c;
-  --chip-flag: #16a34a;
-}
-
-.obj[data-trust='genuine'] .obj__body {
-  border-radius: 17px;
+  --chip-bg: #fffaf0;
+  --chip-ink: #14261a;
+  --chip-plate: #cdf0d6;
+  --chip-glyph: #125c30;
+  --chip-accent: #2fa457;
+  --chip-stamp: var(--good);
+  --chip-stamp-ink: #06301a;
 }
 
 .obj[data-trust='genuine'][data-family='sms'],
 .obj[data-trust='genuine'][data-family='otp'] {
-  --chip-ring: #0b5f7a;
-  --chip-ink: #06303d;
-  --chip-ink-2: rgba(6, 48, 61, 0.6);
-  --chip-icon-bg: #d3f1fb;
-  --chip-accent: #0b6a80;
-  --chip-flag: #0891b2;
-  --chip-lo: #edf9fd;
-  --chip-edge: #a9d5e2;
+  --chip-plate: #ccecf8;
+  --chip-glyph: #0a4f64;
+  --chip-accent: #0f7f9c;
+  --chip-stamp: #38bdf8;
+}
+
+.obj[data-trust='genuine'][data-family='delivery'],
+.obj[data-trust='genuine'][data-family='calendar'] {
+  --chip-plate: #ffe6b8;
+  --chip-glyph: #6b4300;
+  --chip-accent: #d98a00;
+  --chip-stamp: var(--gold);
 }
 
 /* Genuine things arrive with a friendly halo so they read as welcome. */
@@ -988,16 +976,10 @@
 @keyframes leave-glow {
   0%,
   100% {
-    box-shadow:
-      0 0 0 3px #fff,
-      0 5px 0 var(--chip-edge),
-      0 11px 16px rgba(60, 4, 16, 0.34);
+    box-shadow: var(--drop);
   }
   50% {
-    box-shadow:
-      0 0 0 5px rgba(255, 255, 255, 0.95),
-      0 5px 0 var(--chip-edge),
-      0 0 26px 6px rgba(34, 197, 94, 0.6);
+    box-shadow: var(--drop), 0 0 26px 7px rgba(34, 197, 94, 0.65);
   }
 }
 
@@ -1292,36 +1274,26 @@
    swapped accent colour is what made these feel machine-made; a phone that
    rings, a message that pings and a link that glitches do not. */
 
-/* Faint hazard weave under the fill — spam has texture, contacts don't. */
+/* Halftone under the spam fill — the same dot texture the buttons use. */
 .obj[data-trust='threat'] .obj__body {
-  background-image:
-    repeating-linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.05) 0 5px,
-      transparent 5px 11px
-    ),
-    linear-gradient(180deg, var(--chip-hi), var(--chip-lo));
-}
-
-.obj__tell {
-  position: absolute;
-  left: 8px;
-  top: 50%;
-  width: 34px;
-  height: 34px;
-  margin-top: -17px;
-  border-radius: 50%;
-  pointer-events: none;
+  background-image: var(--halftone), none;
+  background-size: 6px 6px;
 }
 
 /* --- calls ring ---------------------------------------------------------- */
+.obj__tell {
+  position: absolute;
+  inset: -4px;
+  pointer-events: none;
+}
+
 .obj[data-family='call'] .obj__tell::before,
 .obj[data-family='call'] .obj__tell::after {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 50%;
-  border: 2px solid var(--chip-accent);
+  border: 2.5px solid var(--chip-accent);
+  border-radius: 4px;
   animation: ring-out 1.1s var(--ease-out) infinite;
 }
 
@@ -1331,17 +1303,17 @@
 
 @keyframes ring-out {
   0% {
-    transform: scale(0.72);
-    opacity: 0.85;
+    transform: scale(0.78);
+    opacity: 0.9;
   }
   100% {
-    transform: scale(1.9);
+    transform: scale(1.7);
     opacity: 0;
   }
 }
 
 /* Handset shakes in its cradle. */
-.obj[data-trust='threat'][data-family='call'] .obj__icon {
+.obj[data-trust='threat'][data-family='call'] .obj__plate svg {
   animation: handset-shake 0.9s steps(4, end) infinite;
 }
 
@@ -1366,13 +1338,12 @@
 .obj[data-trust='threat'][data-family='sms'] .obj__tell::before {
   content: '';
   position: absolute;
-  right: -3px;
-  top: -3px;
+  right: -2px;
+  top: -2px;
   width: 12px;
   height: 12px;
-  border-radius: 50%;
+  border: 2.5px solid var(--outline);
   background: #ff3b5c;
-  box-shadow: 0 0 0 2.5px rgba(0, 0, 0, 0.35);
   animation: unread-blink 0.9s steps(2, end) infinite;
 }
 
@@ -1382,7 +1353,7 @@
     transform: scale(1);
   }
   50% {
-    transform: scale(1.28);
+    transform: scale(1.3);
   }
 }
 
@@ -1408,37 +1379,40 @@
   }
 }
 
+/* Scanlines — a broken screen, on a grid, at the pixel size the icons use. */
 .obj[data-trust='threat'][data-family='link'] .obj__body::after {
   content: '';
   position: absolute;
-  inset: 3px;
-  border-radius: inherit;
+  inset: 0;
+  border-radius: 3px;
   pointer-events: none;
   background: repeating-linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.07) 0 1px,
-    transparent 1px 3px
+    rgba(255, 255, 255, 0.09) 0 2px,
+    transparent 2px 4px
   );
 }
 
 /* --- fake rewards glint -------------------------------------------------- */
 .obj[data-trust='threat'][data-family='alert'] .obj__tell::before,
 .obj[data-trust='threat'][data-family='alert'] .obj__tell::after {
-  content: '✦';
+  content: '';
   position: absolute;
-  font-size: 11px;
-  color: var(--chip-accent);
+  width: 5px;
+  height: 5px;
+  background: var(--chip-accent);
+  box-shadow: 0 0 0 2px var(--outline);
   animation: glint 1.4s steps(3, end) infinite;
 }
 
 .obj[data-trust='threat'][data-family='alert'] .obj__tell::before {
-  right: -6px;
-  top: -6px;
+  right: -3px;
+  top: -3px;
 }
 
 .obj[data-trust='threat'][data-family='alert'] .obj__tell::after {
-  left: -7px;
-  bottom: -4px;
+  left: -4px;
+  bottom: -1px;
   animation-delay: 0.6s;
 }
 
@@ -1447,11 +1421,11 @@
   60%,
   100% {
     opacity: 0;
-    transform: scale(0.5);
+    transform: scale(0.4);
   }
   20% {
     opacity: 1;
-    transform: scale(1.1);
+    transform: scale(1.2);
   }
 }
 
@@ -1493,11 +1467,7 @@
 }
 
 /* --- genuine items are people, and look like it -------------------------- */
-.obj[data-trust='genuine'] .obj__icon {
-  box-shadow: 0 0 0 2px var(--chip-icon-bg), 0 0 0 3.5px var(--chip-accent);
-}
-
-.obj[data-trust='genuine']:not(.is-broken):not(.is-absorbing) .obj__icon {
+.obj[data-trust='genuine']:not(.is-broken):not(.is-absorbing) .obj__plate {
   animation: contact-breathe 2.6s var(--ease-in-out) infinite;
 }
 
@@ -1514,9 +1484,9 @@
 @media (prefers-reduced-motion: reduce) {
   .obj__tell::before,
   .obj__tell::after,
-  .obj[data-trust='threat'] .obj__icon,
+  .obj[data-trust='threat'] .obj__plate svg,
   .obj[data-trust='threat'] .obj__label,
-  .obj[data-trust='genuine'] .obj__icon {
+  .obj[data-trust='genuine'] .obj__plate {
     animation: none;
   }
 }
