@@ -76,6 +76,43 @@
   padding: calc(14px + env(safe-area-inset-top)) 22px calc(20px + env(safe-area-inset-bottom));
 }
 
+/* The one control on this screen, and it only appears once the loop is
+   actually running — a mute button next to silence is just clutter. Small on
+   purpose; the 44px tap target comes from the padding, not the icon. */
+.intro__mute {
+  position: absolute;
+  z-index: 4;
+  top: calc(6px + env(safe-area-inset-top));
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(13, 13, 18, 0.24);
+  color: rgba(255, 255, 255, 0.86);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  animation: mute-in 0.4s var(--ease-out) both;
+}
+
+.intro__mute:active {
+  transform: scale(0.92);
+}
+
+.intro__mute:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+@keyframes mute-in {
+  from {
+    opacity: 0;
+  }
+}
+
 .intro__top {
   display: flex;
   align-items: center;
@@ -381,6 +418,7 @@
 /* Everything except the wordmark and the drifting field is already laid out;
    it just has not arrived yet. Fading rather than mounting is what keeps the
    handover free of reflow. */
+.intro__mute,
 .intro__top,
 .intro__stage,
 .intro__caption,
@@ -388,6 +426,7 @@
   transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
 }
 
+.intro.is-loading .intro__mute,
 .intro.is-loading .intro__top,
 .intro.is-loading .intro__stage,
 .intro.is-loading .intro__caption,
@@ -395,6 +434,12 @@
   opacity: 0;
   transform: translateY(10px);
   pointer-events: none;
+}
+
+/* Its own fade-in would otherwise win over the opacity above — an animation
+   beats a plain declaration — and park a button on top of the loader. */
+.intro.is-loading .intro__mute {
+  animation: none;
 }
 
 /* Arriving in reading order. */
@@ -532,7 +577,7 @@
   border-radius: 10px;
   background: linear-gradient(180deg, #261a2c 0%, #100a15 62%, #0a060e 100%);
   box-shadow:
-    inset 0 0 0 2px rgba(255, 64, 96, 0.42),
+    inset 0 0 0 2px rgba(255, 64, 96, 0.52),
     inset 0 2px 0 rgba(255, 255, 255, 0.1),
     inset 0 -3px 0 rgba(0, 0, 0, 0.35),
     0 5px 0 #050308,
@@ -544,11 +589,11 @@
   0%,
   100% {
     transform: rotate(-0.75deg);
-    filter: drop-shadow(0 0 9px rgba(255, 40, 76, 0.34));
+    filter: drop-shadow(0 0 10px rgba(255, 40, 76, 0.42));
   }
   50% {
     transform: rotate(0.75deg);
-    filter: drop-shadow(0 0 19px rgba(255, 40, 76, 0.62));
+    filter: drop-shadow(0 0 22px rgba(255, 40, 76, 0.78));
   }
 }
 

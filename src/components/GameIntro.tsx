@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { PixelCross, PixelHand, PixelTick, pixelFamilyIcon } from '../assets/PixelIcon'
+import { SoundOffIcon, SoundOnIcon } from '../assets/icons'
 import { ParticleBurst } from '../assets/ParticleBurst'
 import { audio } from '../game/audio'
 import type { Burst } from '../game/types'
@@ -7,6 +8,8 @@ import type { Burst } from '../game/types'
 interface Props {
   onPlay: () => void
   returning: boolean
+  soundOn: boolean
+  onToggleSound: () => void
 }
 
 /**
@@ -60,7 +63,7 @@ const BAD_HOLD = 1250
 const GOOD_HOLD = 1900
 const GOOD_END = 1350
 
-export const GameIntro = ({ onPlay, returning }: Props) => {
+export const GameIntro = ({ onPlay, returning, soundOn, onToggleSound }: Props) => {
   /**
    * A 1.5s hold on the wordmark before the rest arrives.
    *
@@ -71,6 +74,8 @@ export const GameIntro = ({ onPlay, returning }: Props) => {
    * the rest arrives, and not a pixel of what was already on screen shifts.
    */
   const [loading, setLoading] = useState(true)
+  /** Drives the mute control, which only exists once there is something to mute. */
+  const [audible, setAudible] = useState(false)
   const [beat, setBeat] = useState<Beat>('bad')
   /** Set once the loop has shown both rules; drives the button's shimmer. */
   const seen = useRef(false)
@@ -89,6 +94,43 @@ export const GameIntro = ({ onPlay, returning }: Props) => {
   useEffect(() => {
     const id = window.setTimeout(() => setLoading(false), 1500)
     return () => clearTimeout(id)
+  }, [])
+
+  /**
+   * The onboarding loop.
+   *
+   * A browser will not let any page make a sound before it has been touched,
+   * and we would not want it to: the rule is that nothing plays until the
+   * user has acted. So on a first visit the loop is armed rather than started
+   * — the first tap, click or key anywhere on the page builds the audio graph
+   * and brings the music in. Coming back from a round the graph already
+   * exists, so it starts on mount.
+   */
+  const sound = useRef(soundOn)
+  sound.current = soundOn
+  useEffect(() => {
+    let live = true
+    const begin = () => {
+      if (!live) return
+      audio.unlock()
+      audio.setEnabled(sound.current)
+      audio.startMusic()
+      setAudible(true)
+    }
+    const arm = ['pointerdown', 'keydown', 'touchstart'] as const
+    const once = () => {
+      begin()
+      arm.forEach((e) => window.removeEventListener(e, once))
+    }
+    if (audio.ready) begin()
+    else arm.forEach((e) => window.addEventListener(e, once, { passive: true }))
+    return () => {
+      live = false
+      arm.forEach((e) => window.removeEventListener(e, once))
+      // Gameplay runs dry: seventeen seconds of timing cues should not have a
+      // loop underneath them.
+      audio.stopMusic()
+    }
   }, [])
 
   const smash = useCallback(() => {
@@ -148,6 +190,18 @@ export const GameIntro = ({ onPlay, returning }: Props) => {
           <span className="intro__loader-bar" />
         </span>
       </div>
+
+      {audible ? (
+        <button
+          type="button"
+          className="intro__mute"
+          onClick={onToggleSound}
+          aria-pressed={soundOn}
+          aria-label={soundOn ? 'Turn sound off' : 'Turn sound on'}
+        >
+          {soundOn ? <SoundOnIcon size={17} /> : <SoundOffIcon size={17} />}
+        </button>
+      ) : null}
 
       <div className="intro__stage" ref={stage} aria-hidden="true">
         <span className="intro__spot" />

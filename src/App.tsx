@@ -82,7 +82,12 @@ export default function App() {
               A friend handled <b>{challenge.correct}/{challenge.total}</b>. Your turn.
             </div>
           ) : null}
-          <GameIntro onPlay={play} returning={round > 0} />
+          <GameIntro
+            onPlay={play}
+            returning={round > 0}
+            soundOn={soundOn}
+            onToggleSound={() => setSoundOn((v) => !v)}
+          />
         </>
       ) : null}
 

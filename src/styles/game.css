@@ -598,7 +598,9 @@
   --chip-edge: #050308;
   --chip-gloss: rgba(255, 255, 255, 0.16);
   --chip-ink: #ffffff;
-  --chip-shade: rgba(255, 255, 255, 0.5);
+  /* Red, not grey. On a black card the family mark is a warning light, not a
+     disabled control — and it is the fastest read on the card after value. */
+  --chip-shade: #ff4d68;
   --chip-mark: #ff5470;
 }
 
@@ -609,6 +611,64 @@
   --chip-ink: #0f5c2e;
   --chip-shade: rgba(15, 92, 46, 0.45);
   --chip-mark: #12994a;
+}
+
+/* ------------------------------------------------------------- menace -- */
+
+/* A spam card should not read as the good one in a different colour. It gets
+ * a different SILHOUETTE first — hard 10px corners against the genuine card's
+ * soft 16px — because shape registers before hue does. Then a cold plum-black
+ * gradient instead of flat ink, and a red rim that breathes.
+ *
+ * The rim and the glow live on a pseudo-element rather than on the body's own
+ * box-shadow, because `:active` rewrites that shadow to press the card down
+ * and would drop the rim at exactly the moment the player is looking at it.
+ */
+.obj[data-trust='threat'] .obj__body {
+  border-radius: 10px;
+  background: linear-gradient(180deg, #261a2c 0%, #100a15 62%, #0a060e 100%);
+}
+
+.obj[data-trust='threat'] .obj__body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 64, 96, 0.68),
+    0 0 17px rgba(255, 40, 76, 0.55);
+  /* Opacity, not the shadow itself. Animating box-shadow repaints the card
+     every frame, and there can be six of these on screen at once while the
+     loop is already writing transforms to all of them. */
+  animation: obj-menace 2.1s var(--ease-in-out) infinite;
+}
+
+@keyframes obj-menace {
+  0%,
+  100% {
+    opacity: 0.46;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Lit from inside. Faint enough that the label is still the fastest thing to
+   read on the card, which is the one thing menace must not cost. */
+.obj[data-trust='threat'] .obj__label {
+  text-shadow: 0 0 9px rgba(255, 64, 96, 0.5);
+}
+
+.obj[data-trust='threat'] .obj__mark {
+  filter: drop-shadow(0 0 6px rgba(255, 64, 96, 0.8));
+}
+
+/* The rim has nothing to hug once the card is in pieces. */
+.obj.is-broken .obj__body::before,
+.obj.is-absorbing .obj__body::before {
+  animation: none;
+  opacity: 0;
 }
 
 /* One motion rule. Threats twitch, genuine items don't. */
@@ -629,6 +689,12 @@
 @media (prefers-reduced-motion: reduce) {
   .obj[data-trust='threat'] .obj__body {
     animation: none;
+  }
+
+  /* The rim stays — it is colour, not movement — but it stops pulsing. */
+  .obj[data-trust='threat'] .obj__body::before {
+    animation: none;
+    opacity: 0.72;
   }
 }
 
