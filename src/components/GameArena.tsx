@@ -51,7 +51,7 @@ export const GameArena = ({
         storm ? ' is-storm' : ''
       }${g.phase === 'auto' ? ' is-auto' : ''}`}
       style={{ ['--panic' as string]: g.panic }}
-      aria-label="Shield Rush game"
+      aria-label="Spam Smash game"
     >
       <ScoreHUD
         secondsLeft={g.secondsLeft}

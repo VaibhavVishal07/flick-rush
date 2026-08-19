@@ -28,11 +28,21 @@ interface Props {
 type Beat = 'bad' | 'badDone' | 'good' | 'goodDone'
 
 const RULE: Record<Beat, string> = {
-  bad: 'Tap the bad ones',
-  badDone: 'Tap the bad ones',
+  bad: 'Tap to destroy the bad ones',
+  badDone: 'Tap to destroy the bad ones',
   good: 'Don’t tap the good ones',
   goodDone: 'Don’t tap the good ones',
 }
+
+/** Drifting behind everything, at 20%: the world the game is set in. */
+const FIELD: Array<{ label: string; trust: 'threat' | 'genuine'; lane: string }> = [
+  { label: 'Unknown Caller', trust: 'threat', lane: 'a' },
+  { label: 'Delivery Update', trust: 'genuine', lane: 'b' },
+  { label: 'Fake Reward', trust: 'threat', lane: 'c' },
+  { label: 'Genuine OTP', trust: 'genuine', lane: 'd' },
+  { label: 'Suspicious Link', trust: 'threat', lane: 'e' },
+  { label: 'Spam SMS', trust: 'threat', lane: 'f' },
+]
 
 const OUTCOME: Record<Beat, string> = {
   bad: '',
@@ -48,6 +58,8 @@ const GOOD_END = 1350
 
 export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }: Props) => {
   const [beat, setBeat] = useState<Beat>('bad')
+  /** Set once the loop has shown both rules; drives the button's shimmer. */
+  const seen = useRef(false)
   const [bursts, setBursts] = useState<Burst[]>([])
   const uid = useRef(0)
   const stage = useRef<HTMLDivElement>(null)
@@ -81,13 +93,26 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
     if (beat === 'bad') after(BAD_TAP, smash)
     if (beat === 'badDone') after(BAD_HOLD, () => setBeat('good'))
     if (beat === 'good') after(GOOD_HOLD, () => setBeat('goodDone'))
-    if (beat === 'goodDone') after(GOOD_END, () => setBeat('bad'))
+    if (beat === 'goodDone') {
+      seen.current = true
+      after(GOOD_END, () => setBeat('bad'))
+    }
   }, [beat, after, smash])
 
   const bad = beat === 'bad' || beat === 'badDone'
+  // The button starts asking for attention once both rules have been shown.
+  const taught = seen.current
 
   return (
-    <section className="intro" aria-label="Shield Rush">
+    <section className="intro" aria-label="Spam Smash">
+      <div className="intro__field" aria-hidden="true">
+        {FIELD.map((c) => (
+          <span key={c.lane} className={`intro__ghost intro__ghost--${c.lane}`} data-trust={c.trust}>
+            {c.label}
+          </span>
+        ))}
+      </div>
+
       <header className="intro__top">
         <AirtelSafeMark />
         <div className="intro__tools">
@@ -105,6 +130,13 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
           </button>
         </div>
       </header>
+
+      <div className="intro__ident">
+        <h1 className="intro__name">
+          Spam<span>Smash</span>
+        </h1>
+        <p className="intro__premise">Spam is coming for your phone.</p>
+      </div>
 
       <div className="intro__stage" ref={stage} aria-hidden="true">
         <span className="intro__spot" />
@@ -157,7 +189,11 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
       </p>
 
       <div className="intro__cta">
-        <button type="button" className="btn btn--primary btn--lg" onClick={onPlay}>
+        <button
+          type="button"
+          className={`btn btn--primary btn--lg${taught ? ' is-shimmer' : ''}`}
+          onClick={onPlay}
+        >
           {returning ? 'Play Again' : 'Play Now'}
         </button>
         <p className="btn-sub">Takes 20 seconds</p>

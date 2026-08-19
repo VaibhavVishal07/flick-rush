@@ -1,5 +1,5 @@
 /**
- * Every tuning value for Shield Rush lives here.
+ * Every tuning value for Spam Smash lives here.
  * Nothing in /components should hard-code a number that belongs in this file.
  */
 

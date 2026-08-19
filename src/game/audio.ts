@@ -1,5 +1,5 @@
 /**
- * Every sound in Shield Rush is synthesised at runtime with the Web Audio API.
+ * Every sound in Spam Smash is synthesised at runtime with the Web Audio API.
  * No audio files, no network requests, nothing to autoplay before a tap.
  */
 

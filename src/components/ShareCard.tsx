@@ -137,7 +137,7 @@ export const ShareCard = ({ correct, total, bestStreak, onClose }: Props) => {
     // Footer
     ctx.fillStyle = 'rgba(255,255,255,0.85)'
     ctx.font = `700 32px ${UI}`
-    ctx.fillText('Play Shield Rush on Airtel', CARD_W / 2, 1206)
+    ctx.fillText('Play Spam Smash on Airtel', CARD_W / 2, 1206)
 
     return canvas
   }, [bestStreak, correct, total])
@@ -158,18 +158,18 @@ export const ShareCard = ({ correct, total, bestStreak, onClose }: Props) => {
   }
 
   const onShare = useCallback(async () => {
-    const text = `I handled ${correct}/${total} in Shield Rush. Think you can beat me?`
+    const text = `I handled ${correct}/${total} in Spam Smash. Think you can beat me?`
     try {
       const blob = await toBlob()
       if (blob && typeof navigator.canShare === 'function') {
         const file = new File([blob], 'shield-rush.png', { type: 'image/png' })
         if (navigator.canShare({ files: [file] })) {
-          await navigator.share({ files: [file], text, title: 'Shield Rush' })
+          await navigator.share({ files: [file], text, title: 'Spam Smash' })
           return
         }
       }
       if (typeof navigator.share === 'function') {
-        await navigator.share({ title: 'Shield Rush', text, url: challengeUrl })
+        await navigator.share({ title: 'Spam Smash', text, url: challengeUrl })
         return
       }
       await navigator.clipboard.writeText(`${text} ${challengeUrl}`)
@@ -219,7 +219,7 @@ export const ShareCard = ({ correct, total, bestStreak, onClose }: Props) => {
 
           <p className="share-card__challenge">Think you can beat me?</p>
           <p className="share-card__foot">
-            <AirtelShield size={15} /> Play Shield Rush on Airtel
+            <AirtelShield size={15} /> Play Spam Smash on Airtel
           </p>
         </div>
 
