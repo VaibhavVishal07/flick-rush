@@ -24,9 +24,9 @@ interface Props {
  * from two examples.
  */
 const TUTORIAL_COPY: Record<string, { lead: string; sub: string }> = {
-  'tutorial-threat': { lead: 'Spam!', sub: 'Tap it before it reaches your phone' },
-  'tutorial-genuine': { lead: "That's Mom", sub: "Don't tap. Let it through." },
-  'tutorial-done': { lead: "That's the game", sub: 'Block the bad. Let the good through.' },
+  'tutorial-threat': { lead: 'Red ✕ — spam!', sub: 'Tap it before it reaches your phone' },
+  'tutorial-genuine': { lead: 'Green ✓ — that’s Mom', sub: "Don't tap. Let it through." },
+  'tutorial-done': { lead: "That's the game", sub: 'Red ✕ = tap it. Green ✓ = leave it.' },
 }
 
 export const GameArena = ({
