@@ -697,8 +697,8 @@
 .intro__hand {
   position: absolute;
   z-index: 6;
-  left: calc(50% + 34px);
-  top: calc(50% + 16px);
+  left: calc(50% + 58px);
+  top: calc(50% + 22px);
   line-height: 0;
   color: #fff;
   --px-accent: #fff;
@@ -711,14 +711,14 @@
    coming for the press to read as a decision rather than an appearance. */
 @keyframes hand-tap {
   0% {
-    transform: translate(86px, 78px) rotate(15deg) scale(0.72);
+    transform: translate(30px, 100px) rotate(15deg) scale(0.72);
     opacity: 0;
   }
   16% {
     opacity: 1;
   }
   56% {
-    transform: translate(16px, 14px) rotate(4deg) scale(0.94);
+    transform: translate(8px, 26px) rotate(4deg) scale(0.94);
     opacity: 1;
   }
   78% {
@@ -739,12 +739,12 @@
 .intro__nohand {
   position: absolute;
   z-index: 6;
-  left: calc(50% + 34px);
-  top: calc(50% + 16px);
+  left: calc(50% + 58px);
+  top: calc(50% + 22px);
   line-height: 0;
-  color: rgba(255, 255, 255, 0.62);
-  --px-accent: rgba(255, 255, 255, 0.62);
-  filter: drop-shadow(4px 5px 0 rgba(13, 13, 18, 0.45));
+  color: #fff;
+  --px-accent: #fff;
+  filter: drop-shadow(4px 5px 0 rgba(13, 13, 18, 0.55));
   animation: hand-no 1.9s var(--ease-out) both;
 }
 
@@ -752,14 +752,14 @@
    the gesture, not a symbol sitting next to a static hand. */
 @keyframes hand-no {
   0% {
-    transform: translate(84px, 74px) rotate(14deg) scale(0.74);
+    transform: translate(28px, 96px) rotate(14deg) scale(0.74);
     opacity: 0;
   }
   14% {
     opacity: 1;
   }
   30% {
-    transform: translate(10px, 8px) rotate(3deg) scale(0.97);
+    transform: translate(6px, 18px) rotate(3deg) scale(0.97);
     opacity: 1;
   }
   40% {
