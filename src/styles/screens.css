@@ -131,89 +131,63 @@
   animation: device-bob 3.6s var(--ease-in-out) infinite;
 }
 
-/* Four stickers drifting at the phone — the whole game in one glance, and
-   built from the same parts as the real thing so the intro isn't lying about
-   what the game looks like. */
+/* Four stickers drifting at the phone — the whole game in one glance, built
+   from the same parts as the real thing so the intro isn't lying about what
+   the game looks like. */
 .intro__chip {
   position: absolute;
   z-index: 3;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 5px 8px 5px 5px;
-  border: var(--line-w) solid var(--chip-line, var(--outline));
-  border-radius: 6px;
+  gap: 8px;
+  padding: 9px 15px 10px;
+  border-radius: 15px;
   background: var(--chip-bg);
-  box-shadow: var(--drop-sm);
+  box-shadow:
+    inset 0 2px 0 var(--chip-gloss),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.1),
+    0 4px 0 var(--chip-edge),
+    0 10px 16px rgba(60, 4, 16, 0.32);
   font-family: var(--display);
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 700;
-  letter-spacing: 0.01em;
-  line-height: 1.05;
+  letter-spacing: 0.005em;
+  line-height: 1.02;
   white-space: nowrap;
   color: var(--chip-ink);
 }
 
 .intro__chip[data-trust='threat'] {
-  --chip-line: #fff;
-  --chip-bg: #14121c;
+  --chip-bg: #17131f;
+  --chip-edge: #050308;
+  --chip-gloss: rgba(255, 255, 255, 0.16);
   --chip-ink: #ffffff;
-  --chip-plate: #241f33;
-  --chip-glyph: #ffffff;
-  --chip-accent: #ff4d6a;
-  --chip-stamp: var(--airtel);
-  --chip-stamp-ink: #ffffff;
-  background-image: var(--halftone), none;
-  background-size: 6px 6px;
+  --chip-shade: rgba(255, 255, 255, 0.5);
+  --chip-mark: #ff5470;
 }
 
 .intro__chip[data-trust='genuine'] {
-  --chip-bg: #fffaf0;
-  --chip-ink: #14261a;
-  --chip-plate: #cdf0d6;
-  --chip-glyph: #125c30;
-  --chip-accent: #2fa457;
-  --chip-stamp: var(--good);
-  --chip-stamp-ink: #06301a;
-}
-
-.intro__chip[data-family='link'] {
-  --chip-accent: #b18cff;
-}
-
-.intro__chip[data-family='sms'][data-trust='threat'] {
-  --chip-accent: #ffb03a;
-}
-
-.intro__chip[data-family='sms'][data-trust='genuine'] {
-  --chip-plate: #ccecf8;
-  --chip-glyph: #0a4f64;
-  --chip-stamp: #38bdf8;
+  --chip-bg: #eafaef;
+  --chip-edge: #a4cdb4;
+  --chip-gloss: rgba(255, 255, 255, 0.9);
+  --chip-ink: #0f5c2e;
+  --chip-shade: rgba(15, 92, 46, 0.45);
+  --chip-mark: #12994a;
 }
 
 .intro__chip-icon {
   display: grid;
   place-items: center;
   flex: none;
-  width: 28px;
-  height: 28px;
-  border: 2.5px solid var(--chip-line, var(--outline));
-  border-radius: 4px;
-  color: var(--chip-glyph);
-  background: var(--chip-plate);
-  --px-accent: var(--chip-accent);
+  color: var(--chip-shade);
+  --px-accent: var(--chip-shade);
 }
 
 .intro__chip-flag {
   display: grid;
   place-items: center;
   flex: none;
-  width: 21px;
-  height: 21px;
-  border: 2.5px solid var(--chip-line, var(--outline));
-  border-radius: 4px;
-  color: var(--chip-stamp-ink);
-  background: var(--chip-stamp);
+  color: var(--chip-mark);
 }
 
 .intro__chip--a {

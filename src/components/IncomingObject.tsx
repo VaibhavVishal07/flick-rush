@@ -19,19 +19,16 @@ const IncomingObjectBase = ({ object: o, cue, register, onDown, onMove, onUp }: 
   const threat = o.def.trust === 'threat'
 
   /**
-   * A stamped arcade tag, not an app notification: hard keyline, hard offset
-   * shadow, pixel icon on its own plate, label set in the display face. The
-   * delivery time and the soft squircle went with the notification framing.
+   * Glyph, label, mark. One plate, one keyline, nothing nested. A card the
+   * player has under a second to judge cannot afford a second border, let
+   * alone a texture on top of it.
    */
   const body: ReactNode = (
     <div className="obj__body">
-      <span className="obj__plate">
-        {pixelFamilyIcon(o.def.family, o.def.trust, 18)}
-        {threat ? <span className="obj__tell" aria-hidden="true" /> : null}
-      </span>
+      <span className="obj__glyph">{pixelFamilyIcon(o.def.family, o.def.trust, 15)}</span>
       <span className="obj__label">{o.def.label}</span>
-      <span className="obj__stamp" aria-hidden="true">
-        {threat ? <PixelCross size={11} /> : <PixelTick size={11} />}
+      <span className="obj__mark" aria-hidden="true">
+        {threat ? <PixelCross size={14} /> : <PixelTick size={14} />}
       </span>
     </div>
   )
@@ -81,7 +78,7 @@ const IncomingObjectBase = ({ object: o, cue, register, onDown, onMove, onUp }: 
                   <span className="cue__finger" />
                 </>
               ) : null}
-              <span className="cue__word">{cue === 'tap' ? 'TAP!' : 'LEAVE IT'}</span>
+              <span className="cue__word">{cue === 'tap' ? 'TAP!' : "DON'T TAP"}</span>
             </span>
           ) : null}
           {body}

@@ -51,6 +51,17 @@ const TUTORIAL_SPEED = 0.85
 /** The tutorial starts objects closer in so the first beat lands fast. */
 const TUTORIAL_REACH = 0.72
 const TUTORIAL_GAP = 300
+/**
+ * The first spam card parks this far outside the phone and waits to be
+ * tapped. The lesson used to slide straight past anyone who hesitated — the
+ * card reached the phone, nothing happened, and the script moved on having
+ * taught nothing. Now it hovers with the TAP cue on it until the player acts,
+ * and gives up after a beat so nobody can get stuck. The gap is small on
+ * purpose: a card is wide, and parking it further out pushes half the label
+ * off the side of a 390px screen.
+ */
+const TUTORIAL_HOLD_GAP = 30
+const TUTORIAL_HOLD_MAX = 2000
 
 export interface StreakBadgeState {
   key: number
@@ -80,6 +91,8 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
   const autoElapsed = useRef(0)
   const spawnClock = useRef(0)
   const gateAt = useRef<number | null>(null)
+  /** When the tutorial's spam card started waiting to be tapped. */
+  const holdSince = useRef<number | null>(null)
   const pausedRef = useRef(false)
   const rafRef = useRef(0)
   const lastFrame = useRef(0)
@@ -435,6 +448,14 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
         }
         if (frozen) continue
 
+        // Hold the teaching card in place until it is dealt with.
+        if (p === 'tutorial-threat' && o.def.trust === 'threat') {
+          if (dist(o.x, o.y, cx, cy) <= phoneR + TUTORIAL_HOLD_GAP) {
+            if (holdSince.current === null) holdSince.current = now
+            if (now - holdSince.current < TUTORIAL_HOLD_MAX) continue
+          }
+        }
+
         stepIncoming(o, cx, cy, dt, now, reducedMotion)
         const d = dist(o.x, o.y, cx, cy)
 
@@ -480,7 +501,9 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
             goPhase('tutorial-done')
             gateAt.current = now + 950
           } else if (p === 'tutorial-threat') {
-            // No punishment while learning — just move the script along.
+            // It waited, nobody tapped. No punishment while learning — just
+            // move the script along.
+            holdSince.current = null
             goPhase('tutorial-genuine')
           }
         }
@@ -641,6 +664,7 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
       if (p === 'play') {
         resolve(o, o.def.trust === 'threat' ? 'blocked' : 'oops')
       } else if (p === 'tutorial-threat') {
+        holdSince.current = null
         pushFeedback({ kind: 'blocked', x: o.x, y: o.y, label: 'BLOCKED', points: 10 })
         pushBurst(o.x, o.y, 'threat')
         audio.play('block')

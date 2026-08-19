@@ -17,14 +17,16 @@ interface Props {
 }
 
 /**
- * Two beats, and each one names the thing on screen before it asks for
- * anything. "Tap the ✕ ones" assumed the player had already worked out what
- * the badge meant and what the phone in the middle was for; this says both.
+ * Three beats: name the thing, say what to do, then say the rule out loud.
+ * Each object in the tutorial is a fixed one, so the copy can name it — "Mom
+ * is calling" teaches far more than "this one is real", and the last beat
+ * states the whole game in one line rather than leaving it to be inferred
+ * from two examples.
  */
 const TUTORIAL_COPY: Record<string, { lead: string; sub: string }> = {
-  'tutorial-threat': { lead: 'This one is spam', sub: 'Tap it to block it' },
-  'tutorial-genuine': { lead: 'This one is real', sub: 'Let it reach your phone' },
-  'tutorial-done': { lead: "That's the game", sub: 'Now they come in fast' },
+  'tutorial-threat': { lead: 'Spam!', sub: 'Tap it before it reaches your phone' },
+  'tutorial-genuine': { lead: "That's Mom", sub: "Don't tap. Let it through." },
+  'tutorial-done': { lead: "That's the game", sub: 'Block the bad. Let the good through.' },
 }
 
 export const GameArena = ({

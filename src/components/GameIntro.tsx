@@ -54,10 +54,10 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
           data-trust={p.trust}
           data-family={p.family}
         >
-          <span className="intro__chip-icon">{pixelFamilyIcon(p.family, p.trust, 17)}</span>
+          <span className="intro__chip-icon">{pixelFamilyIcon(p.family, p.trust, 14)}</span>
           <span>{p.label}</span>
           <span className="intro__chip-flag">
-            {p.trust === 'threat' ? <PixelCross size={12} /> : <PixelTick size={12} />}
+            {p.trust === 'threat' ? <PixelCross size={13} /> : <PixelTick size={13} />}
           </span>
         </div>
       ))}
@@ -67,10 +67,13 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
       <h1 className="intro__title">
         Shield<span>Rush</span>
       </h1>
+      {/* Both halves of the rule, on the one screen that isn't on a timer.
+          "Tap it away" only ever described half the game, which left the
+          tutorial to teach the other half from scratch. */}
       <p className="intro__lede">
-        Incoming nonsense.
+        It's all heading for your phone.
         <br />
-        Tap it away.
+        Tap the bad. Let the good through.
       </p>
     </div>
 
