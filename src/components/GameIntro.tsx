@@ -33,11 +33,11 @@ type Beat = 'spam' | 'gone' | 'real' | 'through'
  * happens" described the animation; these name the badge and say what it is
  * for, which is the only thing the player has to carry into the game.
  */
-const CAPTION: Record<Beat, { lead: string; sub: string }> = {
-  spam: { lead: 'Bad one ✕', sub: 'Tap it before it lands.' },
-  gone: { lead: 'Tapped. Gone.', sub: 'It never reached the phone.' },
-  real: { lead: 'Good one ✓', sub: 'Don’t tap. Let it in.' },
-  through: { lead: 'It got in', sub: 'That’s exactly what you want.' },
+const CAPTION: Record<Beat, { lead: string; sub: string; tone: 'bad' | 'good' }> = {
+  spam: { lead: 'Tap the bad ones', sub: 'Black card, red ✕. Spam.', tone: 'bad' },
+  gone: { lead: 'Gone.', sub: 'It never reached the phone.', tone: 'bad' },
+  real: { lead: 'Leave the good ones', sub: 'Pale card, green ✓. Real.', tone: 'good' },
+  through: { lead: 'It got in.', sub: 'That’s exactly what you want.', tone: 'good' },
 }
 
 /** The loop, in milliseconds from the start of each beat. */
@@ -111,7 +111,7 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
         </div>
       </header>
 
-      <div className="intro__stage" ref={stage} aria-hidden="true">
+      <div className={`intro__stage${beat === 'gone' ? ' is-hit' : ''}`} ref={stage} aria-hidden="true">
         <div className="intro__glow" />
 
         <div className={`intro__device${beat === 'through' ? ' is-welcoming' : ''}`}>
@@ -128,7 +128,7 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
               </span>
             </div>
             <span className="intro__finger">
-              <PixelHand size={46} />
+              <PixelHand size={70} />
             </span>
           </>
         ) : null}
@@ -149,9 +149,13 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
       </div>
 
       {/* Under the phone, because the phone is the thing being watched. */}
-      <p key={beat} className="intro__caption" aria-live="polite">
+      <p key={beat} className="intro__caption" data-tone={caption.tone} aria-live="polite">
         <span className="intro__caption-lead">{caption.lead}</span>
-        <span className="intro__caption-sub">{caption.sub}</span>
+        <span className="intro__caption-sub">
+          {caption.sub.split(/(✕|✓)/).map((bit, i) =>
+            bit === '✕' || bit === '✓' ? <b key={i}>{bit}</b> : bit,
+          )}
+        </span>
       </p>
 
       <div className="intro__cta">

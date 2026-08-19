@@ -150,26 +150,40 @@
   justify-items: center;
   gap: 3px;
   margin: 0;
-  min-height: 56px;
+  /* Two lines' worth, always. "TAP THE BAD ONES" is one line and "LEAVE THE
+     GOOD ONES" is two, so a shrink-to-fit box jumped on every beat. */
+  min-height: 88px;
+  align-content: start;
   text-align: center;
-  animation: caption-in 0.32s var(--ease-back) both;
+  animation: caption-in 0.36s var(--ease-back) both;
 }
 
 /* Inter, not the display face. This is the line that has to be read and
-   understood, not the one that has to look like a game. */
+   understood, not the one that has to look like a game — and it is the loudest
+   thing under the phone, because it is the instruction. */
 .intro__caption-lead {
   font-family: var(--font);
-  font-size: 25px;
-  letter-spacing: -0.02em;
+  font-size: 33px;
+  letter-spacing: -0.035em;
   font-weight: 900;
-  line-height: 1.05;
+  line-height: 1;
+  text-transform: uppercase;
   color: #fff;
-  text-shadow: 3px 3px 0 var(--outline);
+  text-shadow: 4px 4px 0 var(--outline);
+}
+
+/* The beat's own colour, on the mark the sentence is about. */
+.intro__caption[data-tone='bad'] .intro__caption-sub b {
+  color: #ff8095;
+}
+
+.intro__caption[data-tone='good'] .intro__caption-sub b {
+  color: #6ee79c;
 }
 
 .intro__caption-sub {
   font-family: var(--font);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 800;
   line-height: 1.25;
   color: #fff;
@@ -177,9 +191,17 @@
 }
 
 @keyframes caption-in {
-  from {
-    transform: translateY(8px) scale(0.94);
+  0% {
+    transform: translateY(10px) scale(0.82);
     opacity: 0;
+  }
+  55% {
+    transform: translateY(0) scale(1.06);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
   }
 }
 
@@ -199,8 +221,8 @@
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  padding: 10px 16px 11px;
-  border-radius: 16px;
+  padding: 12px 20px 13px;
+  border-radius: 18px;
   background: var(--chip-bg);
   box-shadow:
     inset 0 2px 0 var(--chip-gloss),
@@ -208,7 +230,7 @@
     0 4px 0 var(--chip-edge),
     0 10px 16px rgba(60, 4, 16, 0.32);
   font-family: var(--display);
-  font-size: 21px;
+  font-size: 25px;
   font-weight: 700;
   line-height: 1.02;
   white-space: nowrap;
@@ -289,8 +311,8 @@
 .intro__finger {
   position: absolute;
   z-index: 6;
-  top: calc(15% + 4px);
-  left: calc(50% + 54px);
+  top: calc(15% - 4px);
+  left: calc(50% + 66px);
   line-height: 0;
   color: #fff;
   --px-accent: #fff;
@@ -359,6 +381,27 @@
   100% {
     transform: translate(-50%, 132px) scale(0.26);
     opacity: 0;
+  }
+}
+
+/* The whole stage takes the hit. */
+.intro__stage.is-hit {
+  animation: stage-hit 0.32s var(--ease-out);
+}
+
+@keyframes stage-hit {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  22% {
+    transform: translate3d(-7px, 4px, 0) rotate(-0.6deg);
+  }
+  48% {
+    transform: translate3d(6px, -3px, 0) rotate(0.5deg);
+  }
+  74% {
+    transform: translate3d(-3px, 2px, 0);
   }
 }
 
