@@ -70,11 +70,7 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
       {/* Both halves of the rule, on the one screen that isn't on a timer.
           "Tap it away" only ever described half the game, which left the
           tutorial to teach the other half from scratch. */}
-      <p className="intro__lede">
-        It's all heading for your phone.
-        <br />
-        Tap the bad. Let the good through.
-      </p>
+      <p className="intro__lede">Tap the bad. Let the good through.</p>
     </div>
 
     <div className="intro__cta">

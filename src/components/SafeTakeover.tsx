@@ -34,7 +34,6 @@ export const SafeTakeover = ({ phase, revealStep }: Props) => {
     >
       {marked ? (
         <div className="auto-hero">
-          <span className="auto-hero__wash" aria-hidden="true" />
           <AirtelSafeLogo width={214} mono />
           {auto ? (
             <p className="auto-hero__line">

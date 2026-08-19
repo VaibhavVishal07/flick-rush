@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import type { Burst } from '../game/types'
 
-const COUNT = 16
+const COUNT = 24
 
 /** Confetti palettes — a block should feel like a party popper, not an alert. */
 const PALETTE: Record<Burst['tone'], string[]> = {
@@ -20,7 +20,7 @@ export const ParticleBurst = ({ burst }: { burst: Burst }) => {
     () =>
       Array.from({ length: COUNT }, (_, i) => {
         const angle = (i / COUNT) * Math.PI * 2 + Math.random() * 0.45
-        const reach = 44 + Math.random() * 46
+        const reach = 58 + Math.random() * 74
         const bar = i % 3 === 0
         const dx = Math.cos(angle) * reach
         const dy = Math.sin(angle) * reach
@@ -32,8 +32,8 @@ export const ParticleBurst = ({ burst }: { burst: Burst }) => {
           my: dy * 0.62 - 12,
           delay: Math.random() * 50,
           spin: `${Math.round((Math.random() - 0.5) * 640)}deg`,
-          w: bar ? 4 : 5 + Math.random() * 5,
-          h: bar ? 13 : 5 + Math.random() * 5,
+          w: bar ? 5 : 6 + Math.random() * 6,
+          h: bar ? 17 : 6 + Math.random() * 6,
           shape: bar ? 'bar' : 'dot',
           colour: colours[i % colours.length],
         }

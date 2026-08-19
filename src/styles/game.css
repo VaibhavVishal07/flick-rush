@@ -459,6 +459,93 @@
   cursor: grabbing;
 }
 
+/* ------------------------------------------------------------ breaking -- */
+
+/*
+ * The break. `.obj__half` and `.obj__crack` have been in the markup since the
+ * first build with NO styles behind them anywhere, so a struck card was
+ * rendering as two identical copies of itself stacked in normal flow and then
+ * fading — which is why it read as a card politely leaving rather than a card
+ * being destroyed.
+ *
+ * Half A stays in flow so `.obj` keeps its size; half B lies exactly on top of
+ * it. Each is clipped to one side of a diagonal and thrown the opposite way,
+ * so the card genuinely comes apart.
+ */
+.obj.is-broken {
+  position: absolute;
+  cursor: default;
+}
+
+.obj__half {
+  transform-origin: center;
+}
+
+.obj__half--a {
+  position: relative;
+  clip-path: polygon(0 0, 100% 0, 100% 26%, 0 74%);
+  animation: half-a 0.42s cubic-bezier(0.16, 0.9, 0.4, 1) forwards;
+}
+
+.obj__half--b {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(0 74%, 100% 26%, 100% 100%, 0 100%);
+  animation: half-b 0.42s cubic-bezier(0.16, 0.9, 0.4, 1) forwards;
+}
+
+@keyframes half-a {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate(-13px, -19px) rotate(-13deg);
+  }
+}
+
+@keyframes half-b {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate(13px, 20px) rotate(12deg);
+  }
+}
+
+/* The hit flash. Two frames of white over the whole card at the instant of
+   contact — the oldest trick there is for making a hit land, and it does more
+   than any amount of debris. */
+.obj__crack {
+  position: absolute;
+  inset: -5px;
+  z-index: 6;
+  border-radius: 19px;
+  background: #fff;
+  pointer-events: none;
+  animation: break-flash 0.14s steps(2, end) forwards;
+}
+
+@keyframes break-flash {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .obj__half--a,
+  .obj__half--b,
+  .obj__crack {
+    animation: none;
+  }
+
+  .obj__crack {
+    display: none;
+  }
+}
+
 /* Under the finger a sticker peels up off the board. */
 .obj:active .obj__body {
   box-shadow:
@@ -695,11 +782,11 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 60px;
-  height: 60px;
-  margin: -30px 0 0 -30px;
+  width: 76px;
+  height: 76px;
+  margin: -38px 0 0 -38px;
   border-radius: 50%;
-  border: 5px solid #fff;
+  border: 6px solid #fff;
   animation: burst-ring 0.42s var(--ease-out) forwards;
 }
 
@@ -709,9 +796,9 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 96px;
-  height: 96px;
-  margin: -48px 0 0 -48px;
+  width: 132px;
+  height: 132px;
+  margin: -66px 0 0 -66px;
   border-radius: 50%;
   background: radial-gradient(circle, #fff 42%, rgba(255, 255, 255, 0) 62%);
   animation: burst-shock 0.3s steps(4, end) forwards;
@@ -723,7 +810,7 @@
     opacity: 0.9;
   }
   to {
-    transform: scale(1.5);
+    transform: scale(1.9);
     opacity: 0;
   }
 }
@@ -747,11 +834,11 @@
 
 @keyframes burst-ring {
   from {
-    transform: scale(0.35);
-    opacity: 0.95;
+    transform: scale(0.3);
+    opacity: 1;
   }
   to {
-    transform: scale(1.7);
+    transform: scale(2.2);
     opacity: 0;
   }
 }
@@ -1128,6 +1215,9 @@
 
 .auto-hero > svg {
   position: relative;
+  /* Hard offset, no blur — enough to lift the mark off a card passing under
+     it without reintroducing a soft red smear. */
+  filter: drop-shadow(3px 4px 0 rgba(13, 13, 18, 0.5));
 }
 
 /* Very short viewports: the mark moves up, and the result screen's mark moves
@@ -1148,26 +1238,9 @@
   }
 }
 
-/* Not a card — a wash, so the mark and the line stay legible while stickers
-   keep flying through behind them. */
-.auto-hero__wash {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: -86px;
-  bottom: -40px;
-  z-index: -1;
-  /* Transparent at both ends. Starting the gradient at full strength drew a
-     hard horizontal line across the screen that read as a rendering seam. */
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgba(70, 4, 16, 0.68) 36%,
-    rgba(70, 4, 16, 0.52) 74%,
-    transparent 100%
-  );
-}
-
+/* Outlined rather than panelled. With the wash gone, cards drift straight
+   behind this line, and white-on-black-card was mush; a stroke holds the copy
+   against anything without putting a blurred slab back on the screen. */
 .auto-hero__line {
   position: relative;
   margin: 0;
@@ -1176,7 +1249,9 @@
   line-height: 1.34;
   letter-spacing: -0.015em;
   color: #fff;
-  text-shadow: 2px 2px 0 var(--outline);
+  -webkit-text-stroke: 4px var(--outline);
+  paint-order: stroke fill;
+  text-shadow: 2px 3px 0 rgba(13, 13, 18, 0.5);
 }
 
 /* ----------------------------------------------------------------- panic -- */

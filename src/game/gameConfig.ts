@@ -75,9 +75,9 @@ export const GAME_CONFIG = {
   /** Downward pull on anything airborne, px/ms². Makes throws arc. */
   FLICK_GRAVITY: 0.0016,
   /** How fast a broken object fades out, opacity per ms. */
-  BREAK_FADE: 0.0027,
+  BREAK_FADE: 0.0020,
   /** How fast a broken object shrinks. */
-  BREAK_SHRINK: 0.0011,
+  BREAK_SHRINK: 0.0005,
   /** Scale a sticker jumps to while held. */
   GRAB_SCALE: 1.14,
   /**
