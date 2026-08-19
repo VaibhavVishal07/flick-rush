@@ -105,7 +105,13 @@ export default function App() {
       ) : null}
 
       {screen === 'result' && result ? (
-        <ResultScreen result={result} onReplay={play} onReport={() => setShowReport(true)} />
+        <ResultScreen
+          result={result}
+          onReplay={play}
+          onReport={() => setShowReport(true)}
+          soundOn={soundOn}
+          onToggleSound={() => setSoundOn((v) => !v)}
+        />
       ) : null}
 
       {showReport ? <SafetyReportSheet onClose={() => setShowReport(false)} /> : null}

@@ -1262,11 +1262,13 @@
 .panic-vignette {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  /* Over the field, under the HUD and the footer, which both sit at 2. The
+     clock is the thing the closing dark is meant to make you look at. */
+  z-index: 1;
   pointer-events: none;
   opacity: var(--panic, 0);
   background:
-    radial-gradient(120% 70% at 50% 50%, transparent 46%, rgba(90, 0, 12, 0.85) 100%);
+    radial-gradient(120% 70% at 50% 50%, transparent 46%, rgba(46, 0, 8, 0.88) 100%);
   transition: opacity 0.5s linear;
 }
 
@@ -1301,6 +1303,93 @@
   }
   50% {
     transform: scale(calc(1 + var(--panic, 0) * 0.07));
+  }
+}
+
+/* ------------------------------------------------------------- meltdown -- */
+
+/* The last three seconds. Panic was the arena losing its composure; this is
+ * it giving up. The point is not difficulty — nobody is expected to clear a
+ * meltdown — it is that the player should want out before the takeover offers
+ * them a way out.
+ */
+
+/* A translate-only shake, on the field rather than the shell. Translating the
+   arena moves its bounding box and the cards inside it by the same amount, so
+   pointer coordinates — which are measured against that box — stay correct;
+   a scale or rotate here would put taps out of register with what is drawn. */
+.is-meltdown .arena {
+  animation: meltdown-shake 0.34s steps(3, end) infinite;
+}
+
+@keyframes meltdown-shake {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-3px, 2px);
+  }
+  50% {
+    transform: translate(2px, -3px);
+  }
+  75% {
+    transform: translate(3px, 1px);
+  }
+  100% {
+    transform: translate(-2px, -1px);
+  }
+}
+
+/* The vignette stops being a rim and starts closing in.
+ *
+ * Near-black, not dark red: a red vignette over a red field is a shape nobody
+ * can see. And it closes by SCALING rather than by animating the gradient —
+ * the gradient version was a repaint of the whole screen every frame, and
+ * scale never drops below 1 so the frame stays covered. */
+.is-meltdown .panic-vignette {
+  opacity: 1;
+  background:
+    radial-gradient(
+      86% 50% at 50% 50%,
+      transparent 4%,
+      rgba(26, 0, 6, 0.86) 66%,
+      rgba(8, 0, 2, 0.97) 100%
+    );
+  animation: meltdown-close 0.8s var(--ease-in-out) infinite alternate;
+}
+
+@keyframes meltdown-close {
+  from {
+    transform: scale(1.3);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* And the clock runs out of patience. */
+.is-meltdown .hud__clock {
+  color: #fff;
+  background: #c8102e;
+  animation: clock-meltdown 0.3s steps(2, end) infinite;
+}
+
+@keyframes clock-meltdown {
+  0%,
+  100% {
+    transform: scale(1.06) rotate(-1.5deg);
+  }
+  50% {
+    transform: scale(1.14) rotate(1.5deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The colour stays — it is the warning. The shaking goes. */
+  .is-meltdown .arena,
+  .is-meltdown .panic-vignette,
+  .is-meltdown .hud__clock {
+    animation: none;
   }
 }
 

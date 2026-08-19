@@ -6,7 +6,7 @@ import {
   useState,
   type PointerEvent as ReactPointerEvent,
 } from 'react'
-import { GAME_CONFIG, PANIC_FROM } from './gameConfig'
+import { GAME_CONFIG, MELTDOWN_FROM, PANIC_FROM } from './gameConfig'
 import { getDef } from './objectTypes'
 import { LaneRotator, makeObject, pickForStage, stageAt } from './spawnEngine'
 import {
@@ -44,8 +44,8 @@ import type {
 
 const FEEDBACK_LIFE = 900
 const BURST_LIFE = 640
-const AUTO_SPAWN_INTERVAL = 185
-const AUTO_MAX_ALIVE = 9
+const AUTO_SPAWN_INTERVAL = 120
+const AUTO_MAX_ALIVE = 15
 const AUTO_SPEED = 2.5
 const TUTORIAL_SPEED = 0.85
 /** The tutorial starts objects closer in so the first beat lands fast. */
@@ -120,6 +120,9 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
   const [pop, setPop] = useState(0)
   /** 0 → 1 across the final stages; drives how frantic the arena looks. */
   const [panic, setPanic] = useState(0)
+  /** Latches the one-time switch into the panic loop. */
+  const panicked = useRef(false)
+  const [meltdown, setMeltdown] = useState(false)
   const [settled, setSettled] = useState(false)
   const [flash, setFlash] = useState(0)
   const emptyAuto: AutoTally = { calls: 0, messages: 0, links: 0, allowed: 0 }
@@ -249,6 +252,7 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
       }
       setCountdown(0)
       haptics.go()
+      audio.setMood('play')
       elapsed.current = 0
       spawnClock.current = 0
       lastFrame.current = performance.now()
@@ -363,8 +367,20 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
               )
         const stepped = Math.round(p01 * 5) / 5
         setPanic((prev) => (prev === stepped ? prev : stepped))
+        // The music goes with the field, not after it.
+        if (p01 > 0 && !panicked.current) {
+          panicked.current = true
+          audio.setMood('panic')
+        }
+        const melt = elapsed.current >= MELTDOWN_FROM
+        setMeltdown((prev) => (prev === melt ? prev : melt))
         if (elapsed.current >= GAME_CONFIG.TAKEOVER_TIME) {
           setPanic(0)
+          setMeltdown(false)
+          // Cut. After thirteen seconds of escalation the loudest thing
+          // available is nothing at all, and it is what makes the takeover
+          // land as an arrival rather than as one more layer.
+          audio.setMood(null)
           releaseHeld()
           setStreakBadge(null)
           goPhase('freeze')
@@ -385,6 +401,7 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
             gateAt.current = now + GAME_CONFIG.TAKEOVER_ARM
           } else {
             goReveal(3)
+            audio.setMood('calm')
             goPhase('auto')
             gateAt.current = null
             spawnClock.current = 0
@@ -766,6 +783,7 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
     pop,
     flash,
     panic,
+    meltdown,
     settled,
     autoTally,
     cue:
