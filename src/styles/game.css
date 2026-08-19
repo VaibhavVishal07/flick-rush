@@ -840,49 +840,6 @@
 
 /* ----------------------------------------------------- coaching / cues --- */
 
-/* Sits at the top, where the sticker enters and the eye already is — at the
-   bottom it was read after the beat it was meant to set up. Two lines: what
-   the thing on screen is, then what to do about it. */
-.coach {
-  position: absolute;
-  left: 50%;
-  top: 12px;
-  transform: translateX(-50%);
-  margin: 0;
-  max-width: min(348px, calc(100% - 24px));
-  padding: 10px 20px 12px;
-  border-radius: 18px;
-  background: var(--paper);
-  text-align: center;
-  box-shadow: 0 0 0 3px rgba(60, 4, 16, 0.18), 0 5px 0 rgba(60, 4, 16, 0.24);
-  animation: coach-in 0.42s var(--ease-back) both;
-  pointer-events: none;
-  z-index: 19;
-}
-
-.coach__lead {
-  margin: 0;
-  font-family: var(--display);
-  font-size: 23px;
-  font-weight: 700;
-  line-height: 1.12;
-  color: var(--ink);
-  white-space: nowrap;
-}
-
-.coach__sub {
-  margin: 4px 0 0;
-  font-family: var(--font);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.25;
-  color: var(--ink-3);
-  /* Kept to one line on purpose — `text-wrap: balance` was splitting these in
-     half even with room to spare, and a two-line hint reads as a paragraph. */
-  white-space: nowrap;
-}
-
 @keyframes coach-in {
   from {
     transform: translateX(-50%) translateY(-16px) scale(0.9);
