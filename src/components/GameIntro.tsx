@@ -21,21 +21,14 @@ interface Props {
  * card, a hand with a line through it, and nothing happens to the card. That
  * is the whole game.
  */
-/**
- * Two story beats set the scene, then the two rules are demonstrated. The
- * story runs once; the loop afterwards returns to the rules, because the
- * premise only needs saying once and the rules bear repeating.
- */
-type Beat = 'story1' | 'story2' | 'bad' | 'badDone' | 'good' | 'goodDone'
+type Beat = 'bad' | 'badDone' | 'good' | 'goodDone'
 
 /** Broken where the sense breaks, not where the box happens to run out. */
 const RULE: Record<Beat, [string, string]> = {
-  story1: ['They never', 'stop coming'],
-  story2: ['Some are real', 'Most are not'],
   bad: ['Tap to destroy', 'the bad ones'],
   badDone: ['Tap to destroy', 'the bad ones'],
-  good: ['Don’t tap', 'the good ones'],
-  goodDone: ['Don’t tap', 'the good ones'],
+  good: ['Hands off', 'the good ones'],
+  goodDone: ['Hands off', 'the good ones'],
 }
 
 /** Pixel glints scattered over the ground, so it is a place and not a fill. */
@@ -56,28 +49,12 @@ const FIELD: Array<{ label: string; trust: 'threat' | 'genuine'; lane: string }>
 ]
 
 const OUTCOME: Record<Beat, string> = {
-  story1: 'Calls, texts, links. All day.',
-  // Matches what the beat actually shows — five cards, two of them still lit.
-  // "They look the same at a glance" contradicted a picture that had just
-  // pulled them apart.
-  story2: 'Two of these five are worth keeping.',
   bad: '',
   badDone: 'Gone.',
   good: '',
-  goodDone: 'Still here.',
+  goodDone: 'It gets through. Good.',
 }
 
-/** The swarm that opens the story: what a day actually looks like. */
-const SWARM: Array<{ label: string; trust: 'threat' | 'genuine'; lane: string }> = [
-  { label: 'Spam Call', trust: 'threat', lane: 'a' },
-  { label: 'Mom Calling', trust: 'genuine', lane: 'b' },
-  { label: 'Fake Reward', trust: 'threat', lane: 'c' },
-  { label: 'Suspicious Link', trust: 'threat', lane: 'd' },
-  { label: 'Genuine OTP', trust: 'genuine', lane: 'e' },
-]
-
-const STORY_1 = 2100
-const STORY_2 = 2300
 const BAD_TAP = 1450
 const BAD_HOLD = 1250
 const GOOD_HOLD = 1900
@@ -94,7 +71,7 @@ export const GameIntro = ({ onPlay, returning }: Props) => {
    * the rest arrives, and not a pixel of what was already on screen shifts.
    */
   const [loading, setLoading] = useState(true)
-  const [beat, setBeat] = useState<Beat>('story1')
+  const [beat, setBeat] = useState<Beat>('bad')
   /** Set once the loop has shown both rules; drives the button's shimmer. */
   const seen = useRef(false)
   const [bursts, setBursts] = useState<Burst[]>([])
@@ -133,8 +110,6 @@ export const GameIntro = ({ onPlay, returning }: Props) => {
 
   useEffect(() => {
     if (loading) return
-    if (beat === 'story1') after(STORY_1, () => setBeat('story2'))
-    if (beat === 'story2') after(STORY_2, () => setBeat('bad'))
     if (beat === 'bad') after(BAD_TAP, smash)
     if (beat === 'badDone') after(BAD_HOLD, () => setBeat('good'))
     if (beat === 'good') after(GOOD_HOLD, () => setBeat('goodDone'))
@@ -147,15 +122,10 @@ export const GameIntro = ({ onPlay, returning }: Props) => {
   // The button starts asking for attention once both rules have been shown.
   const taught = seen.current
 
-  const story = beat === 'story1' || beat === 'story2'
   const bad = beat === 'bad' || beat === 'badDone'
 
   return (
-    <section
-      className={`intro${loading ? ' is-loading' : ''}`}
-      data-phase={story ? 'story' : 'rules'}
-      aria-label="Spam Smash"
-    >
+    <section className={`intro${loading ? ' is-loading' : ''}`} aria-label="Spam Smash">
       <div className="intro__field" aria-hidden="true">
         <span className="intro__grain" />
         {SPARKS.map((sp) => (
@@ -182,20 +152,6 @@ export const GameIntro = ({ onPlay, returning }: Props) => {
       <div className="intro__stage" ref={stage} aria-hidden="true">
         <span className="intro__spot" />
 
-        {story ? (
-          <div className={`intro__swarm${beat === 'story2' ? ' is-sorting' : ''}`}>
-            {SWARM.map((c) => (
-              <span key={c.lane} className={`intro__swarm-card intro__swarm-card--${c.lane}`} data-trust={c.trust}>
-                <span className="intro__card-icon">{pixelFamilyIcon('call', c.trust, 15)}</span>
-                <span>{c.label}</span>
-                <span className="intro__card-flag">
-                  {c.trust === 'threat' ? <PixelCross size={17} /> : <PixelTick size={17} />}
-                </span>
-              </span>
-            ))}
-          </div>
-        ) : null}
-
         {bad ? (
           <>
             <div ref={card} className="intro__card" data-trust="threat" data-state={beat}>
@@ -214,7 +170,7 @@ export const GameIntro = ({ onPlay, returning }: Props) => {
               </span>
             ) : null}
           </>
-        ) : story ? null : (
+        ) : (
           <>
             <div className="intro__card" data-trust="genuine" data-state={beat}>
               <span className="intro__face intro__face--a">
@@ -237,6 +193,9 @@ export const GameIntro = ({ onPlay, returning }: Props) => {
         )}
 
         {beat === 'badDone' ? <span className="intro__stamp">Blocked</span> : null}
+        {beat === 'goodDone' ? (
+          <span className="intro__stamp intro__stamp--safe">Let through</span>
+        ) : null}
 
         {bursts.map((b) => (
           <ParticleBurst key={b.id} burst={b} />

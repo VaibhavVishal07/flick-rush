@@ -97,15 +97,8 @@
   display: grid;
   place-items: center;
   margin: auto -22px 0;
-  transition: height 0.4s var(--ease-out);
 }
 
-/* The story beat puts five cards on the field at once, so it needs more of
-   the screen than the single-card demo does. The slack comes out of the auto
-   margins, which is why nothing below has to move. */
-.intro[data-phase='story'] .intro__stage {
-  height: clamp(196px, 33vh, 272px);
-}
 
 /* ---------------------------------------------------- the field behind -- */
 
@@ -471,124 +464,6 @@
   );
 }
 
-/* ------------------------------------------------------------- the story -- */
-
-/* A day's worth of it, arriving at once. Five cards scattered and tilted so
-   the scene reads as a pile-up rather than a list — this is the "they never
-   stop coming" beat, and it has to feel like too much. */
-.intro__swarm {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  pointer-events: none;
-}
-
-.intro__swarm-card {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 15px 10px;
-  border-radius: 15px;
-  background: var(--chip-bg);
-  box-shadow:
-    inset 0 2px 0 var(--chip-gloss),
-    0 3px 0 var(--chip-edge),
-    0 8px 14px rgba(60, 4, 16, 0.3);
-  font-family: var(--display);
-  font-size: 19px;
-  font-weight: 700;
-  line-height: 1;
-  white-space: nowrap;
-  color: var(--chip-ink);
-  animation: swarm-in 0.55s var(--ease-back) both;
-}
-
-.intro__swarm-card[data-trust='threat'] {
-  --chip-bg: #17131f;
-  --chip-edge: #050308;
-  --chip-gloss: rgba(255, 255, 255, 0.16);
-  --chip-ink: #ffffff;
-  --chip-shade: #ff4d68;
-  --chip-mark: #ff5470;
-}
-
-.intro__swarm-card[data-trust='genuine'] {
-  --chip-bg: #eafaef;
-  --chip-edge: #a4cdb4;
-  --chip-gloss: rgba(255, 255, 255, 0.9);
-  --chip-ink: #0f5c2e;
-  --chip-shade: rgba(15, 92, 46, 0.45);
-  --chip-mark: #12994a;
-}
-
-.intro__swarm-card--a {
-  left: 1%;
-  top: 2%;
-  transform: rotate(-7deg);
-}
-
-.intro__swarm-card--b {
-  right: 0%;
-  top: 24%;
-  transform: rotate(5deg);
-}
-
-.intro__swarm-card--c {
-  left: 6%;
-  top: 46%;
-  transform: rotate(3deg);
-  animation-delay: 0.08s;
-}
-
-.intro__swarm-card--d {
-  right: 2%;
-  bottom: 12%;
-  transform: rotate(-4deg);
-  animation-delay: 0.16s;
-}
-
-.intro__swarm-card--e {
-  left: 12%;
-  bottom: -4%;
-  transform: rotate(6deg);
-  animation-delay: 0.24s;
-}
-
-@keyframes swarm-in {
-  from {
-    opacity: 0;
-    filter: blur(2px);
-  }
-}
-
-/* Beat two — "some are real, most are not" — lets the spam fall back so the
-   two genuine cards are the only things still lit. The sentence gets a
-   picture under it instead of standing on its own. */
-.intro__swarm.is-sorting .intro__swarm-card[data-trust='genuine'] {
-  z-index: 2;
-  animation: swarm-lift 0.55s var(--ease-out) forwards;
-}
-
-.intro__swarm.is-sorting .intro__swarm-card[data-trust='threat'] {
-  animation: swarm-sink 0.55s var(--ease-out) forwards;
-}
-
-@keyframes swarm-lift {
-  to {
-    filter: none;
-    opacity: 1;
-  }
-}
-
-@keyframes swarm-sink {
-  to {
-    filter: grayscale(0.5) brightness(0.65);
-    opacity: 0.45;
-  }
-}
-
 /* ONE card, centred, alone. Same construction as the game's, sized up because
    nothing is competing with it. */
 .intro__card {
@@ -707,6 +582,10 @@
   animation: stamp-down 0.9s var(--ease-out) forwards;
 }
 
+.intro__stamp--safe {
+  color: #0f7a3a;
+}
+
 @keyframes stamp-down {
   0% {
     transform: rotate(-7deg) scale(1.8);
@@ -749,19 +628,23 @@
   }
 }
 
-/* Untouched, and it simply carries on. */
+/* Untouched — and it STAYS. Drifting off screen gave doing nothing no
+   consequence at all, which is exactly why the rule would not land: the tap
+   beat pays out with a stamp and confetti, and this one paid out with
+   nothing to look at. */
 .intro__card[data-state='goodDone'] {
-  animation: card-pass 1.1s var(--ease-in-out) forwards;
+  animation: card-kept 0.7s var(--ease-back) forwards;
 }
 
-@keyframes card-pass {
+@keyframes card-kept {
   0% {
-    transform: translateY(0);
-    opacity: 1;
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.07);
   }
   100% {
-    transform: translateY(74px) scale(0.94);
-    opacity: 0;
+    transform: scale(1);
   }
 }
 
@@ -967,7 +850,6 @@
   .intro__ghost,
   .intro__spark,
   .intro__stamp,
-  .intro__swarm-card,
   .btn--primary.is-shimmer,
   .btn--primary.is-shimmer::after {
     animation: none;
