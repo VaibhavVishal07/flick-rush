@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { AirtelSafeMark, ShieldMark, SoundOffIcon, SoundOnIcon } from '../assets/icons'
 import { PixelCross, PixelHand, PixelTick, pixelFamilyIcon } from '../assets/PixelIcon'
 import { ParticleBurst } from '../assets/ParticleBurst'
 import { audio } from '../game/audio'
@@ -7,9 +6,6 @@ import type { Burst } from '../game/types'
 
 interface Props {
   onPlay: () => void
-  soundOn: boolean
-  onToggleSound: () => void
-  onRules: () => void
   returning: boolean
 }
 
@@ -46,6 +42,10 @@ const FIELD: Array<{ label: string; trust: 'threat' | 'genuine'; lane: string }>
   { label: 'Genuine OTP', trust: 'genuine', lane: 'd' },
   { label: 'Suspicious Link', trust: 'threat', lane: 'e' },
   { label: 'Spam SMS', trust: 'threat', lane: 'f' },
+  { label: 'Risky Message', trust: 'threat', lane: 'g' },
+  { label: 'Friend’s Message', trust: 'genuine', lane: 'h' },
+  { label: 'Fake Reward', trust: 'threat', lane: 'i' },
+  { label: 'Calendar Reminder', trust: 'genuine', lane: 'j' },
 ]
 
 const OUTCOME: Record<Beat, string> = {
@@ -60,7 +60,7 @@ const BAD_HOLD = 1250
 const GOOD_HOLD = 1900
 const GOOD_END = 1350
 
-export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }: Props) => {
+export const GameIntro = ({ onPlay, returning }: Props) => {
   /**
    * A 1.5s hold on the wordmark before the rest arrives.
    *
@@ -137,23 +137,6 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
         ))}
       </div>
 
-      <header className="intro__top">
-        <AirtelSafeMark />
-        <div className="intro__tools">
-          <button type="button" className="hud__btn" onClick={onRules} aria-label="How to play">
-            <ShieldMark size={17} />
-          </button>
-          <button
-            type="button"
-            className="hud__btn"
-            onClick={onToggleSound}
-            aria-pressed={soundOn}
-            aria-label={soundOn ? 'Turn sound off' : 'Turn sound on'}
-          >
-            {soundOn ? <SoundOnIcon size={17} /> : <SoundOffIcon size={17} />}
-          </button>
-        </div>
-      </header>
 
       <div className="intro__ident">
         <h1 className="intro__name">
@@ -171,18 +154,8 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
         {bad ? (
           <>
             <div ref={card} className="intro__card" data-trust="threat" data-state={beat}>
-              {/* Two clipped copies of the same face, thrown opposite ways, so
-                  the card comes apart along a diagonal instead of shrinking
-                  politely out of existence. */}
               {beat === 'badDone' ? <span className="intro__flash" /> : null}
               <span className="intro__face intro__face--a">
-                <span className="intro__card-icon">{pixelFamilyIcon('call', 'threat', 20)}</span>
-                <span>Spam Call</span>
-                <span className="intro__card-flag">
-                  <PixelCross size={26} />
-                </span>
-              </span>
-              <span className="intro__face intro__face--b" aria-hidden="true">
                 <span className="intro__card-icon">{pixelFamilyIcon('call', 'threat', 20)}</span>
                 <span>Spam Call</span>
                 <span className="intro__card-flag">
@@ -217,6 +190,8 @@ export const GameIntro = ({ onPlay, soundOn, onToggleSound, onRules, returning }
             ) : null}
           </>
         )}
+
+        {beat === 'badDone' ? <span className="intro__stamp">Blocked</span> : null}
 
         {bursts.map((b) => (
           <ParticleBurst key={b.id} burst={b} />
