@@ -144,6 +144,22 @@ const OTP: Map = [
   '############',
 ]
 
+/* A pointing hand, for the intro's demonstration tap. */
+const HAND: Map = [
+  '....##......',
+  '....##......',
+  '....##......',
+  '....##......',
+  '....##......',
+  '....##.##...',
+  '....##.##.#.',
+  '.##.##.##.#.',
+  '.###########',
+  '.###########',
+  '..#########.',
+  '...#######..',
+]
+
 const CROSS: Map = [
   '............',
   '.##......##.',
@@ -218,6 +234,7 @@ const Grid = ({ map, size }: { map: Map; size: number }) => (
 
 export const PixelCross = ({ size = 13 }: { size?: number }) => <Grid map={CROSS} size={size} />
 export const PixelTick = ({ size = 13 }: { size?: number }) => <Grid map={TICK} size={size} />
+export const PixelHand = ({ size = 44 }: { size?: number }) => <Grid map={HAND} size={size} />
 
 const FAMILY: Record<string, Map> = {
   call: CALL,
