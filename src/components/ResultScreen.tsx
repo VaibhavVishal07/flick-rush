@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AirtelSafeLogo } from '../assets/AirtelSafeLogo'
 import { ShareCard } from './ShareCard'
-import { GAME_CONFIG, safetyReport } from '../game/gameConfig'
+import { safetyReport } from '../game/gameConfig'
 import type { GameResult } from '../game/types'
 
 interface Props {
@@ -14,16 +14,10 @@ export const ResultScreen = ({ result, onReplay, onReport }: Props) => {
   const [sharing, setSharing] = useState(false)
 
   /**
-   * Correct-out-of-total compresses the difference and rate charts turn it
-   * into homework. The point lands on two numbers: what got past you, and
-   * the zero that got past Airtel Safe. Everything else is a footnote.
+   * Two numbers and one sentence. A rate multiple, a supporting paragraph and
+   * a pair of footnotes were all making the same point again in smaller type —
+   * the screen was busy, not persuasive.
    */
-  const autoTotal =
-    result.auto.calls + result.auto.messages + result.auto.links + result.auto.allowed
-  const youRate = Math.round(result.correct / (GAME_CONFIG.GAME_DURATION / 60_000))
-  const safeRate = Math.round(autoTotal / (GAME_CONFIG.TAKEOVER_DURATION / 60_000))
-  const multiple = Math.max(2, Math.round(safeRate / Math.max(youRate, 1)))
-
   return (
     <section className="result" aria-label="Your result">
       {/* Same mark, same treatment as the takeover screen it follows:
@@ -56,10 +50,6 @@ export const ResultScreen = ({ result, onReplay, onReport }: Props) => {
           </div>
         </div>
 
-        <p className="versus__foot">
-          <b>{multiple}× faster</b> than you managed — and it never stops.
-        </p>
-
         <div className="result__say">
           {/* Says what just happened in plain words. "Better automation" was a
               comparative with no subject — it read as a slogan, not a fact. */}
@@ -78,11 +68,6 @@ export const ResultScreen = ({ result, onReplay, onReport }: Props) => {
               </>
             )}
           </h2>
-          {/* One line. The takeover screen already named what it blocks; the
-              only thing left to say is that it never asks you to. */}
-          <p className="result__body">
-            Every hour of every day, without you tapping anything.
-          </p>
         </div>
       </div>
 

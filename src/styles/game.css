@@ -473,25 +473,27 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 9px;
-  padding: 7px 10px 7px 7px;
-  border: var(--line-w) solid var(--outline);
-  border-radius: 6px;
+  gap: 7px;
+  padding: 6px 8px 6px 6px;
+  border: var(--line-w) solid var(--chip-line, var(--outline));
+  border-radius: 5px;
   background: var(--chip-bg);
   box-shadow: var(--drop);
   transform: scale(var(--heft, 1));
   transform-origin: center;
 }
 
-/* The icon gets its own plate, keyed the same way — a tile on a board. */
+/* The icon gets its own plate, keyed the same way — a tile on a board. The
+   keyline stays 3px while the metrics come down, so a smaller tag reads as
+   chunkier rather than thinner. */
 .obj__plate {
   position: relative;
   display: grid;
   place-items: center;
   flex: none;
-  width: 36px;
-  height: 36px;
-  border: 2.5px solid var(--outline);
+  width: 29px;
+  height: 29px;
+  border: 2.5px solid var(--chip-line, var(--outline));
   border-radius: 4px;
   color: var(--chip-glyph);
   background: var(--chip-plate);
@@ -502,7 +504,7 @@
    pill belongs to the game or to a phone. */
 .obj__label {
   font-family: var(--display);
-  font-size: 19px;
+  font-size: 15px;
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: 0.01em;
@@ -515,10 +517,10 @@
   display: grid;
   place-items: center;
   flex: none;
-  width: 26px;
-  height: 26px;
+  width: 21px;
+  height: 21px;
   margin-left: 1px;
-  border: 2.5px solid var(--outline);
+  border: 2.5px solid var(--chip-line, var(--outline));
   border-radius: 4px;
   color: var(--chip-stamp-ink);
   background: var(--chip-stamp);
@@ -526,8 +528,11 @@
 
 /* ------------------------------------------------------------- threats -- */
 
-/* Spam is machinery: black plate, hazard yellow, warning stripes. */
+/* Spam is machinery: a black plate, keyed in white. A black keyline on a
+   black fill is no keyline at all — the white one is what cuts the card out
+   of the red and off the phone behind it. */
 .obj[data-trust='threat'] {
+  --chip-line: #fff;
   --chip-bg: #14121c;
   --chip-ink: #ffffff;
   --chip-plate: #241f33;
@@ -547,25 +552,6 @@
 
 .obj[data-trust='threat'][data-family='alert'] {
   --chip-accent: #ffd23f;
-}
-
-/* A hazard bar along the foot, in the family's own colour — the tell you can
-   read at speed without stopping to parse an icon. */
-.obj[data-trust='threat'] .obj__body::before {
-  content: '';
-  position: absolute;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  height: 8px;
-  border: var(--line-w) solid var(--outline);
-  border-top: none;
-  border-radius: 0 0 6px 6px;
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--chip-accent) 0 5px,
-    var(--outline) 5px 10px
-  );
 }
 
 /* Threats never sit still. */
@@ -1340,8 +1326,8 @@
   position: absolute;
   right: -2px;
   top: -2px;
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border: 2.5px solid var(--outline);
   background: #ff3b5c;
   animation: unread-blink 0.9s steps(2, end) infinite;

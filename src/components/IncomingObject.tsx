@@ -26,12 +26,12 @@ const IncomingObjectBase = ({ object: o, cue, register, onDown, onMove, onUp }: 
   const body: ReactNode = (
     <div className="obj__body">
       <span className="obj__plate">
-        {pixelFamilyIcon(o.def.family, o.def.trust, 22)}
+        {pixelFamilyIcon(o.def.family, o.def.trust, 18)}
         {threat ? <span className="obj__tell" aria-hidden="true" /> : null}
       </span>
       <span className="obj__label">{o.def.label}</span>
       <span className="obj__stamp" aria-hidden="true">
-        {threat ? <PixelCross size={14} /> : <PixelTick size={14} />}
+        {threat ? <PixelCross size={11} /> : <PixelTick size={11} />}
       </span>
     </div>
   )

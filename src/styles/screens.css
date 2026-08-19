@@ -141,7 +141,7 @@
   align-items: center;
   gap: 7px;
   padding: 5px 8px 5px 5px;
-  border: var(--line-w) solid var(--outline);
+  border: var(--line-w) solid var(--chip-line, var(--outline));
   border-radius: 6px;
   background: var(--chip-bg);
   box-shadow: var(--drop-sm);
@@ -155,6 +155,7 @@
 }
 
 .intro__chip[data-trust='threat'] {
+  --chip-line: #fff;
   --chip-bg: #14121c;
   --chip-ink: #ffffff;
   --chip-plate: #241f33;
@@ -190,30 +191,13 @@
   --chip-stamp: #38bdf8;
 }
 
-/* The hazard foot, at intro scale. */
-.intro__chip[data-trust='threat']::before {
-  content: '';
-  position: absolute;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  height: 6px;
-  border: var(--line-w) solid var(--outline);
-  border-radius: 0 0 6px 6px;
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--chip-accent) 0 4px,
-    var(--outline) 4px 8px
-  );
-}
-
 .intro__chip-icon {
   display: grid;
   place-items: center;
   flex: none;
   width: 28px;
   height: 28px;
-  border: 2.5px solid var(--outline);
+  border: 2.5px solid var(--chip-line, var(--outline));
   border-radius: 4px;
   color: var(--chip-glyph);
   background: var(--chip-plate);
@@ -226,7 +210,7 @@
   flex: none;
   width: 21px;
   height: 21px;
-  border: 2.5px solid var(--outline);
+  border: 2.5px solid var(--chip-line, var(--outline));
   border-radius: 4px;
   color: var(--chip-stamp-ink);
   background: var(--chip-stamp);
@@ -630,22 +614,6 @@
   color: #9df5bb;
 }
 
-/* The one supporting fact, on its own line under the numbers. */
-.versus__foot {
-  margin: 0;
-  text-align: center;
-  font-size: 13px;
-  font-weight: 800;
-  line-height: 1.4;
-  color: #fff;
-  text-shadow: 1px 2px 0 rgba(13, 13, 18, 0.75);
-}
-
-.versus__foot b {
-  font-weight: 900;
-  color: var(--gold-hi);
-}
-
 /* ----------------------------------------------------------- the close -- */
 
 .result__say {
@@ -673,15 +641,6 @@
      rather than colour. */
   font-size: calc(1em + 4px);
   color: #fff;
-}
-
-.result__body {
-  margin: 0;
-  font-size: 13px;
-  line-height: 1.45;
-  font-weight: 700;
-  color: #fff;
-  text-shadow: 1px 2px 0 rgba(13, 13, 18, 0.75);
 }
 
 .result__cta {
@@ -901,23 +860,15 @@
   }
 
   .result__mid {
-    gap: 12px;
+    gap: 26px;
   }
 
   .versus__num {
-    font-size: 72px;
-  }
-
-  .versus__foot {
-    font-size: 12px;
+    font-size: 84px;
   }
 
   .result__headline {
     font-size: 20px;
-  }
-
-  .result__body {
-    font-size: 12px;
   }
 
   .result__cta {
@@ -947,11 +898,11 @@
 
 @media (max-height: 640px) {
   .result__mid {
-    gap: 12px;
+    gap: 20px;
   }
 
   .versus__num {
-    font-size: 58px;
+    font-size: 68px;
   }
 
   .versus__cap {
@@ -965,10 +916,6 @@
 
   .result__headline {
     font-size: 18px;
-  }
-
-  .result__body {
-    font-size: 11.5px;
   }
 
   .result__cta .btn--lg {
@@ -986,18 +933,10 @@
   }
 
   .result__mid {
-    gap: 6px;
-  }
-
-  .result__body {
-    display: none;
+    gap: 14px;
   }
 
   .versus__num {
-    font-size: 50px;
-  }
-
-  .versus__foot {
-    font-size: 11px;
+    font-size: 58px;
   }
 }
