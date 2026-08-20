@@ -19,7 +19,7 @@ export const GAME_CONFIG = {
   TAKEOVER_HOLD: 1_200,
   /** Beat structure of the takeover reveal. */
   FREEZE_HOLD: 400,
-  REVEAL_LINE_B: 1_000,
+  REVEAL_LINE_B: 1_500,
   /**
    * The pair sits together for this long before the answer replaces it. Long
    * enough to read both, since they leave when the answer arrives.

@@ -1171,7 +1171,7 @@
 .takeover__line {
   margin: 0;
   font-family: var(--font);
-  font-size: 30px;
+  font-size: 36px;
   font-weight: 900;
   line-height: 1.1;
   letter-spacing: -0.03em;
@@ -1187,7 +1187,7 @@
 /* White on the storm, with a navy cast. Red-on-violet turned to mud. */
 .takeover__line--b {
   color: #fff;
-  font-size: 34px;
+  font-size: 41px;
   text-shadow: 3px 3px 0 var(--outline);
 }
 
