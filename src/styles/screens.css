@@ -520,19 +520,21 @@
 /* Stacked, because a two-word name reads as a logo when it is stacked and as
    a sentence when it is not. */
 .intro__name {
+  display: flex;
+  justify-content: center;
+  gap: 0.28em;
   margin: 0;
   font-family: var(--display);
-  font-size: clamp(36px, 11.5vw, 50px);
+  /* One line. Sized off the viewport so the pair always clears the 22px
+     gutters — the vw term is what fits it, the ceiling is what stops it
+     outgrowing the logo above it. */
+  font-size: clamp(30px, 11vw, 46px);
   font-weight: 700;
-  line-height: 0.92;
+  line-height: 1;
   letter-spacing: 0.015em;
   text-transform: uppercase;
   color: #fff;
   text-shadow: 4px 4px 0 var(--outline), 8px 8px 0 rgba(13, 13, 18, 0.3);
-}
-
-.intro__name span {
-  display: block;
 }
 
 .intro__name span:last-child {
@@ -968,14 +970,25 @@
   display: grid;
   justify-items: center;
   gap: 4px;
-  /* The hand rests in this gap. Closing it entirely put the fingers on top of
-     the word they are meant to be demonstrating. */
+  /* The hand rests in the top gap. Closing it entirely put the fingers on top
+     of the word they are meant to be demonstrating. */
   margin: 30px 0 0;
   /* "Tap the bad ones" is one line, "Don't tap the good ones" is two. The box
      holds the taller of the pair so it never resizes mid-loop. */
   min-height: 94px;
   align-content: start;
   text-align: center;
+}
+
+/* Lifts the whole instruction cluster — label, card, copy — clear of the
+   middle of the screen. Height below the caption shrinks the pool the two
+   `auto` margins share, so the cluster rises by half of it and the button
+   stays put. Only where there is a pool to shrink: on a short screen the
+   autos are already zero and this would simply push the button off. */
+@media (min-height: 621px) {
+  .intro__caption {
+    margin-bottom: 48px;
+  }
 }
 
 .intro__caption-lead b {
