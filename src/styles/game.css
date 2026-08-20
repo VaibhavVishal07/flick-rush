@@ -1196,7 +1196,6 @@
    entrance as the copy under it. */
 .takeover__mark {
   display: block;
-  margin-top: 20px;
   line-height: 0;
   filter: drop-shadow(3px 4px 0 rgba(13, 13, 18, 0.5));
   animation: line-in 0.5s var(--ease-back) both;

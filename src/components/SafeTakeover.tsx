@@ -38,16 +38,20 @@ export const SafeTakeover = ({ phase, revealStep }: Props) => {
         </div>
       ) : null}
 
-      {/* All three beats in one centred stack, in the order they are read. */}
+      {/* Two beats, then the screen clears and the answer has it to itself.
+          The question and the answer to it do not share a frame. */}
       {!auto ? (
         <div className="takeover__copy">
-          {revealStep >= 1 ? (
-            <p className="takeover__line takeover__line--a">Couldn&rsquo;t keep up?</p>
-          ) : null}
-          {revealStep >= 2 ? (
-            <p className="takeover__line takeover__line--b">No worries.</p>
-          ) : null}
-          {revealStep >= 3 ? (
+          {revealStep < 3 ? (
+            <>
+              {revealStep >= 1 ? (
+                <p className="takeover__line takeover__line--a">Couldn&rsquo;t keep up?</p>
+              ) : null}
+              {revealStep >= 2 ? (
+                <p className="takeover__line takeover__line--b">No worries.</p>
+              ) : null}
+            </>
+          ) : (
             <>
               <span className="takeover__mark">
                 <AirtelSafeLogo width={214} mono />
@@ -56,7 +60,7 @@ export const SafeTakeover = ({ phase, revealStep }: Props) => {
                 Airtel Safe does all this automatically.
               </p>
             </>
-          ) : null}
+          )}
         </div>
       ) : null}
     </div>
