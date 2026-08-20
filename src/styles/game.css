@@ -1198,6 +1198,18 @@
   }
 }
 
+/* Nothing behind the phone once the takeover starts. The target zones and the
+   field's rings are gameplay furniture — through the freeze, the reveal and
+   the automation the phone carries the screen on its own, and concentric
+   circles behind it were reading as clutter around the one object that
+   matters. */
+.is-storm .phone-target__zone,
+.is-auto .phone-target__zone,
+.is-storm .safe-field,
+.is-auto .safe-field {
+  display: none;
+}
+
 /* ----------------------------------------------------------- auto hero -- */
 
 /* No card. On the takeover the screen carries the mark and the promise, and
@@ -1249,7 +1261,7 @@
 .auto-hero__line {
   position: relative;
   margin: 0;
-  font-size: 19px;
+  font-size: 23px;
   font-weight: 800;
   line-height: 1.34;
   letter-spacing: -0.015em;
