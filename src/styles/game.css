@@ -1165,12 +1165,16 @@
   max-width: 100%;
 }
 
+/* Inter, like the line that answers these two. In Pixelify the question and
+   its answer were in different voices, which made them read as two unrelated
+   pieces of copy rather than as one exchange. */
 .takeover__line {
   margin: 0;
-  font-family: var(--display);
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 1.12;
+  font-family: var(--font);
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
   text-wrap: balance;
   animation: line-in 0.5s var(--ease-back) both;
 }
@@ -1183,7 +1187,7 @@
 /* White on the storm, with a navy cast. Red-on-violet turned to mud. */
 .takeover__line--b {
   color: #fff;
-  font-size: 31px;
+  font-size: 34px;
   text-shadow: 3px 3px 0 var(--outline);
 }
 
