@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AirtelSafeLogo } from '../assets/AirtelSafeLogo'
 import { ShareCard } from './ShareCard'
-import { GAME_CONFIG, safetyReport } from '../game/gameConfig'
+import { safetyReport } from '../game/gameConfig'
 import type { GameResult } from '../game/types'
 
 interface Props {
@@ -34,9 +34,7 @@ export const ResultScreen = ({ result, onReplay, onReport }: Props) => {
           <div className="versus__side">
             <p className="versus__cap">Got past you</p>
             <p className="versus__num versus__num--you">{result.slipped}</p>
-            <p className="versus__note">
-              {GAME_CONFIG.GAME_DURATION / 1000} seconds of tapping
-            </p>
+            <p className="versus__note">in 17 seconds</p>
           </div>
 
           <span className="versus__vs" aria-hidden="true">
@@ -48,21 +46,27 @@ export const ResultScreen = ({ result, onReplay, onReport }: Props) => {
             <p className="versus__num versus__num--safe">
               0<span className="versus__slam" aria-hidden="true" />
             </p>
-            <p className="versus__note">zero taps</p>
+            <p className="versus__note">ever</p>
           </div>
         </div>
 
         <div className="result__say">
-          {/* The effort, not the interception. "None get past Airtel Safe"
-              answered "does it work?" and never answered "what do I have to
-              do?" — which is the half that was not landing. */}
+          {/* Says what just happened in plain words. "Better automation" was a
+              comparative with no subject — it read as a slogan, not a fact. */}
           <h2 className="result__headline">
-            {result.slipped > 0 ? 'You had to tap.' : 'A perfect run.'}
-            <br />
-            {/* The same second line either way. The takeaway cannot depend on
-                how well the player did — it is the point of the whole piece,
-                not a consolation for losing. */}
-            <em>Airtel Safe doesn&rsquo;t need you.</em>
+            {result.slipped > 0 ? (
+              <>
+                Some got past you.
+                <br />
+                <em>None get past Airtel Safe.</em>
+              </>
+            ) : (
+              <>
+                A perfect run.
+                <br />
+                <em>Airtel Safe does that every time.</em>
+              </>
+            )}
           </h2>
         </div>
       </div>
@@ -72,9 +76,7 @@ export const ResultScreen = ({ result, onReplay, onReport }: Props) => {
           See My Safety Report
         </button>
         {safetyReport ? (
-          <p className="btn-sub">
-            Already on — {safetyReport.totalHandled} handled for you this week
-          </p>
+          <p className="btn-sub">{safetyReport.totalHandled} handled for you this week</p>
         ) : null}
         <button type="button" className="btn btn--ghost" onClick={onReplay}>
           Play Again

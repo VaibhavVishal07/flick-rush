@@ -86,10 +86,10 @@ export const ShareCard = ({ correct, total, bestStreak, onClose }: Props) => {
     ctx.font = `700 42px ${DISPLAY}`
     setTracking(ctx, '14px')
     ctx.globalAlpha = 0.4
-    ctx.fillText('SPAM SMASH', CARD_W / 2, 176)
+    ctx.fillText('SHIELD RUSH', CARD_W / 2, 176)
     ctx.globalAlpha = 1
     ctx.fillStyle = '#FFFFFF'
-    ctx.fillText('SPAM SMASH', CARD_W / 2, 170)
+    ctx.fillText('SHIELD RUSH', CARD_W / 2, 170)
     setTracking(ctx, '0px')
 
     // White plate with the game's hard bottom edge
@@ -162,7 +162,7 @@ export const ShareCard = ({ correct, total, bestStreak, onClose }: Props) => {
     try {
       const blob = await toBlob()
       if (blob && typeof navigator.canShare === 'function') {
-        const file = new File([blob], 'spam-smash.png', { type: 'image/png' })
+        const file = new File([blob], 'shield-rush.png', { type: 'image/png' })
         if (navigator.canShare({ files: [file] })) {
           await navigator.share({ files: [file], text, title: 'Spam Smash' })
           return
@@ -194,7 +194,7 @@ export const ShareCard = ({ correct, total, bestStreak, onClose }: Props) => {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = 'spam-smash.png'
+    a.download = 'shield-rush.png'
     a.click()
     window.setTimeout(() => URL.revokeObjectURL(url), 1000)
   }, [toBlob])
@@ -205,7 +205,7 @@ export const ShareCard = ({ correct, total, bestStreak, onClose }: Props) => {
       <div className="sheet__panel">
         <div className="share-card">
           <span className="share-card__glow" aria-hidden="true" />
-          <p className="share-card__wordmark">SPAM SMASH</p>
+          <p className="share-card__wordmark">SHIELD RUSH</p>
 
           <div className="share-card__plate">
             <p className="share-card__cap">My score</p>

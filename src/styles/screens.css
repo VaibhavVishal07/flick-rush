@@ -1364,14 +1364,6 @@
   color: #fff;
 }
 
-/* Narrow screens: the bump is what pushes the line into a second row, and a
-   second row here costs more than the extra four pixels buy. */
-@media (max-width: 359px) {
-  .result__headline em {
-    font-size: calc(1em + 1px);
-  }
-}
-
 .result__cta {
   display: grid;
   gap: 6px;
