@@ -129,32 +129,23 @@
    those under the card. It takes the slack that used to sit on the stage, so
    the cluster below it holds the position it always had. */
 .intro__howto {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   margin: auto 0 0;
   /* The `auto` above collapses to nothing on a short screen, which put this
      line hard against the wordmark's drop shadow. This is the floor. */
-  padding-top: 9px;
-  font-family: var(--display);
-  font-size: 12px;
-  font-weight: 700;
+  padding-top: 14px;
+  text-align: center;
+  /* Inter, like the two lines of instruction it introduces. In Pixelify it
+     read as a third piece of the logo rather than as the start of the copy. */
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 800;
   line-height: 1;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.92);
   /* The drifting cards pass right behind this line; without a shadow it sits
      in whatever happens to be underneath it. */
   text-shadow: 2px 3px 0 rgba(13, 13, 18, 0.5);
-}
-
-.intro__howto::before,
-.intro__howto::after {
-  content: '';
-  flex: 1;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.34);
-  box-shadow: 2px 3px 0 rgba(13, 13, 18, 0.4);
 }
 
 /* A clear field with one thing on it. Sized to its contents so the caption
@@ -163,7 +154,11 @@
 .intro__stage {
   position: relative;
   flex: none;
-  height: clamp(140px, 25vh, 206px);
+  /* Sized to hug the card. It used to be a third of the screen with a 65px
+     card floating in the middle of it, which left fifty-odd pixels of nothing
+     between the label and the card and again between the card and the two
+     lines under it — three pieces of one instruction, reading as three. */
+  height: clamp(88px, 15vh, 118px);
   display: grid;
   place-items: center;
   margin: 6px -22px 0;
@@ -174,7 +169,7 @@
    fixed size and were sitting in more room than they needed. */
 @media (max-height: 620px) {
   .intro__stage {
-    height: clamp(124px, 24vh, 206px);
+    height: clamp(84px, 15vh, 118px);
   }
 }
 
@@ -792,7 +787,7 @@
   position: absolute;
   z-index: 6;
   left: calc(50% + 58px);
-  top: calc(50% + 22px);
+  top: calc(50% + 8px);
   line-height: 0;
   color: #fff;
   --px-accent: #fff;
@@ -834,7 +829,7 @@
   position: absolute;
   z-index: 6;
   left: calc(50% + 58px);
-  top: calc(50% + 22px);
+  top: calc(50% + 8px);
   line-height: 0;
   color: #fff;
   --px-accent: #fff;
@@ -973,7 +968,9 @@
   display: grid;
   justify-items: center;
   gap: 4px;
-  margin: 0;
+  /* The hand rests in this gap. Closing it entirely put the fingers on top of
+     the word they are meant to be demonstrating. */
+  margin: 30px 0 0;
   /* "Tap the bad ones" is one line, "Don't tap the good ones" is two. The box
      holds the taller of the pair so it never resizes mid-loop. */
   min-height: 94px;
