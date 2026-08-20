@@ -48,9 +48,14 @@ export const SafeTakeover = ({ phase, revealStep }: Props) => {
             <p className="takeover__line takeover__line--b">No worries.</p>
           ) : null}
           {revealStep >= 3 ? (
-            <p className="takeover__line takeover__line--c">
-              Airtel Safe does all this automatically.
-            </p>
+            <>
+              <span className="takeover__mark">
+                <AirtelSafeLogo width={214} mono />
+              </span>
+              <p className="takeover__line takeover__line--c">
+                Airtel Safe does all this automatically.
+              </p>
+            </>
           ) : null}
         </div>
       ) : null}

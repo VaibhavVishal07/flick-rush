@@ -1191,11 +1191,22 @@
   text-shadow: 3px 3px 0 var(--outline);
 }
 
+/* The mark, in the stack with the line it belongs to rather than pinned at
+   the top of the screen. It arrives on the same beat and with the same
+   entrance as the copy under it. */
+.takeover__mark {
+  display: block;
+  margin-top: 20px;
+  line-height: 0;
+  filter: drop-shadow(3px 4px 0 rgba(13, 13, 18, 0.5));
+  animation: line-in 0.5s var(--ease-back) both;
+}
+
 /* The payoff. Smaller than the two beats above it because it is a sentence
    rather than a punch, and stroked like its twin under the mark so it holds
    against whatever is frozen behind it. */
 .takeover__line--c {
-  margin-top: 12px;
+  margin-top: 10px;
   font-size: 23px;
   font-weight: 800;
   line-height: 1.34;
