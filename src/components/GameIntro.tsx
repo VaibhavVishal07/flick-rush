@@ -38,20 +38,6 @@ const RULE: Record<Beat, [string, string]> = {
 /** Pixel glints scattered over the ground, so it is a place and not a fill. */
 const SPARKS = ['a', 'b', 'c', 'd', 'e', 'f', 'g'] as const
 
-/** Drifting behind everything, at 20%: the world the game is set in. */
-const FIELD: Array<{ label: string; trust: 'threat' | 'genuine'; lane: string }> = [
-  { label: 'Unknown Caller', trust: 'threat', lane: 'a' },
-  { label: 'Delivery Update', trust: 'genuine', lane: 'b' },
-  { label: 'Fake Reward', trust: 'threat', lane: 'c' },
-  { label: 'Genuine OTP', trust: 'genuine', lane: 'd' },
-  { label: 'Suspicious Link', trust: 'threat', lane: 'e' },
-  { label: 'Spam SMS', trust: 'threat', lane: 'f' },
-  { label: 'Risky Message', trust: 'threat', lane: 'g' },
-  { label: 'Friend’s Message', trust: 'genuine', lane: 'h' },
-  { label: 'Fake Reward', trust: 'threat', lane: 'i' },
-  { label: 'Calendar Reminder', trust: 'genuine', lane: 'j' },
-]
-
 const OUTCOME: Record<Beat, string> = {
   bad: '',
   badDone: 'Gone.',
@@ -174,13 +160,7 @@ export const GameIntro = ({ onPlay, returning, soundOn, onToggleSound }: Props) 
         {SPARKS.map((sp) => (
           <span key={sp} className={`intro__spark intro__spark--${sp}`} />
         ))}
-        {FIELD.map((c) => (
-          <span key={c.lane} className={`intro__ghost intro__ghost--${c.lane}`} data-trust={c.trust}>
-            {c.label}
-          </span>
-        ))}
       </div>
-
 
       <div className="intro__ident">
         {/* Whose game this is, before what it is called. Inside the ident so

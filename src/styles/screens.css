@@ -176,9 +176,8 @@
 
 /* ---------------------------------------------------- the field behind -- */
 
-/* Cards drifting at 20% behind everything. The ground was a flat gradient
-   with one object on it; this puts the game's own world back there without
-   competing with the thing being taught. */
+/* The ground. Texture and a few glints — the drifting cards that used to sit
+   back here were competing with the one card being taught. */
 .intro__field {
   position: absolute;
   inset: 0;
@@ -267,131 +266,6 @@
   }
 }
 
-.intro__ghost {
-  position: absolute;
-  padding: 9px 15px 10px;
-  border-radius: 14px;
-  background: var(--ghost-bg);
-  font-family: var(--display);
-  font-size: 17px;
-  font-weight: 700;
-  line-height: 1;
-  white-space: nowrap;
-  color: var(--ghost-ink);
-  opacity: 0.2;
-}
-
-.intro__ghost[data-trust='threat'] {
-  --ghost-bg: #17131f;
-  --ghost-ink: #ffffff;
-}
-
-.intro__ghost[data-trust='genuine'] {
-  --ghost-bg: #eafaef;
-  --ghost-ink: #0f5c2e;
-}
-
-/* Clear of the whole name block, premise line included. */
-.intro__ghost--a {
-  left: -6%;
-  top: 37%;
-  animation: ghost-a 13s var(--ease-in-out) infinite;
-}
-
-.intro__ghost--b {
-  right: -10%;
-  top: 34%;
-  animation: ghost-b 16s var(--ease-in-out) infinite;
-}
-
-.intro__ghost--c {
-  left: -12%;
-  top: 46%;
-  animation: ghost-c 15s var(--ease-in-out) infinite;
-}
-
-.intro__ghost--d {
-  right: -8%;
-  top: 58%;
-  animation: ghost-d 18s var(--ease-in-out) infinite;
-}
-
-.intro__ghost--e {
-  left: -4%;
-  bottom: 16%;
-  animation: ghost-b 14s var(--ease-in-out) infinite;
-}
-
-.intro__ghost--f {
-  right: -6%;
-  bottom: 5%;
-  animation: ghost-c 17s var(--ease-in-out) infinite;
-}
-
-.intro__ghost--g {
-  left: 20%;
-  top: 62%;
-  animation: ghost-a 15s var(--ease-in-out) infinite;
-}
-
-.intro__ghost--h {
-  right: 18%;
-  top: 76%;
-  animation: ghost-d 19s var(--ease-in-out) infinite;
-}
-
-.intro__ghost--i {
-  left: -10%;
-  top: 88%;
-  animation: ghost-c 16s var(--ease-in-out) infinite;
-}
-
-.intro__ghost--j {
-  right: -14%;
-  top: 6%;
-  animation: ghost-b 20s var(--ease-in-out) infinite;
-}
-
-@keyframes ghost-a {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(-6deg);
-  }
-  50% {
-    transform: translate(22px, -16px) rotate(-2deg);
-  }
-}
-
-@keyframes ghost-b {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(5deg);
-  }
-  50% {
-    transform: translate(-26px, 14px) rotate(1deg);
-  }
-}
-
-@keyframes ghost-c {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(-3deg);
-  }
-  50% {
-    transform: translate(18px, 20px) rotate(4deg);
-  }
-}
-
-@keyframes ghost-d {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(7deg);
-  }
-  50% {
-    transform: translate(-20px, -18px) rotate(2deg);
-  }
-}
-
 /* ------------------------------------------------------ name and premise -- */
 
 .intro__ident {
@@ -418,7 +292,7 @@
      runs on into the bottom padding. Starting it higher is where the room for
      the taller mark comes from. */
   .intro__ident {
-    margin-top: 76px;
+    margin-top: 58px;
   }
 }
 
@@ -990,9 +864,9 @@
   /* The hand rests in the top gap. Closing it entirely put the fingers on top
      of the word they are meant to be demonstrating. */
   margin: 30px 0 0;
-  /* "Tap the bad ones" is one line, "Don't tap the good ones" is two. The box
-     holds the taller of the pair so it never resizes mid-loop. */
-  min-height: 94px;
+  /* Both rules run to two lines. The box holds them plus the outcome line, so
+     it never resizes between beats. */
+  min-height: 120px;
   align-content: start;
   text-align: center;
 }
@@ -1015,10 +889,10 @@
 
 .intro__caption-lead {
   font-family: var(--font);
-  font-size: 29px;
+  font-size: 35px;
   letter-spacing: -0.035em;
   font-weight: 900;
-  line-height: 1.08;
+  line-height: 1.3;
   color: #fff;
   text-shadow: 4px 4px 0 var(--outline);
   animation: caption-in 0.36s var(--ease-back) both;
@@ -1055,7 +929,6 @@
   .intro__nohand,
   .intro__caption-lead,
   .intro__caption-sub,
-  .intro__ghost,
   .intro__spark,
   .intro__stamp,
   .intro__card[data-trust='threat'] .intro__face,
