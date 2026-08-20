@@ -1191,6 +1191,21 @@
   text-shadow: 3px 3px 0 var(--outline);
 }
 
+/* The payoff. Smaller than the two beats above it because it is a sentence
+   rather than a punch, and stroked like its twin under the mark so it holds
+   against whatever is frozen behind it. */
+.takeover__line--c {
+  margin-top: 12px;
+  font-size: 23px;
+  font-weight: 800;
+  line-height: 1.34;
+  letter-spacing: -0.015em;
+  color: #fff;
+  -webkit-text-stroke: 4px var(--outline);
+  paint-order: stroke fill;
+  text-shadow: 2px 3px 0 rgba(13, 13, 18, 0.5);
+}
+
 @keyframes line-in {
   from {
     transform: translateY(18px) scale(0.9);
