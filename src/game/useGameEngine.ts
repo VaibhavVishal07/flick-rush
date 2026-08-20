@@ -380,11 +380,16 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
         if (gateAt.current !== null && now >= gateAt.current) {
           if (revealRef.current === 1) {
             goReveal(2)
+            gateAt.current = now + GAME_CONFIG.REVEAL_LINE_C
+          } else if (revealRef.current === 2) {
+            // The brand moment: the mark and the answer land together, so the
+            // sound and the buzz land with them rather than a line earlier.
+            goReveal(3)
             audio.play('takeover')
             haptics.takeover()
             gateAt.current = now + GAME_CONFIG.TAKEOVER_ARM
           } else {
-            goReveal(3)
+            goReveal(4)
             goPhase('auto')
             gateAt.current = null
             spawnClock.current = 0

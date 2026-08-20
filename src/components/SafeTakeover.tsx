@@ -24,7 +24,7 @@ export const SafeTakeover = ({ phase, revealStep }: Props) => {
    * underneath it. The result screen puts its mark on the same line at the
    * same size, so the mark holds still across all three screens.
    */
-  const marked = auto || revealStep >= 2
+  const marked = auto || revealStep >= 3
 
   return (
     <div
@@ -32,26 +32,23 @@ export const SafeTakeover = ({ phase, revealStep }: Props) => {
       data-step={revealStep}
       aria-live="polite"
     >
+      {/* The answer arrives with the mark and then stays put — the same node
+          through the automation, so the two questions above it fall away and
+          the line that answers them does not move. */}
       {marked ? (
         <div className="auto-hero">
           <AirtelSafeLogo width={214} mono />
-          {auto ? (
-            <p className="auto-hero__line">
-              Saves you from all spam calls
-              <br />
-              and suspicious links.
-            </p>
-          ) : null}
+          <p className="auto-hero__line">Airtel Safe does all this automatically.</p>
         </div>
       ) : null}
 
-      {!auto ? (
+      {!auto && revealStep < 3 ? (
         <div className="takeover__copy">
           {revealStep >= 1 ? (
-            <p className="takeover__line takeover__line--a">Tough keeping up?</p>
+            <p className="takeover__line takeover__line--a">Couldn&rsquo;t keep up?</p>
           ) : null}
           {revealStep >= 2 ? (
-            <p className="takeover__line takeover__line--b">You shouldn&rsquo;t have to.</p>
+            <p className="takeover__line takeover__line--b">No worries.</p>
           ) : null}
         </div>
       ) : null}

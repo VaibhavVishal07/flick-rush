@@ -21,6 +21,11 @@ export const GAME_CONFIG = {
   FREEZE_HOLD: 400,
   REVEAL_LINE_B: 700,
   /**
+   * The pair sits together for this long before the answer replaces it. Long
+   * enough to read both, since they leave when the answer arrives.
+   */
+  REVEAL_LINE_C: 1_200,
+  /**
    * Beat between the second line and Airtel Safe actually taking over. Two
    * full seconds: this is the turn of the whole piece, and it was gone before
    * anyone had finished reading it.
