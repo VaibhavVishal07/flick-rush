@@ -203,6 +203,10 @@ export const GameIntro = ({ onPlay, returning, soundOn, onToggleSound }: Props) 
         </button>
       ) : null}
 
+      {/* Says what the moving thing below is. Without it the demo is just an
+          animation on a title screen; with it, it is the how-to. */}
+      <p className="intro__howto">Instructions to play</p>
+
       <div className="intro__stage" ref={stage} aria-hidden="true">
         <span className="intro__spot" />
 

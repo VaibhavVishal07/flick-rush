@@ -124,16 +124,58 @@
   gap: 8px;
 }
 
+/* The label over the demo. Flanked by two rules so it reads as a heading for
+   what follows rather than as one more line of copy — there are already two of
+   those under the card. It takes the slack that used to sit on the stage, so
+   the cluster below it holds the position it always had. */
+.intro__howto {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: auto 0 0;
+  /* The `auto` above collapses to nothing on a short screen, which put this
+     line hard against the wordmark's drop shadow. This is the floor. */
+  padding-top: 9px;
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+  /* The drifting cards pass right behind this line; without a shadow it sits
+     in whatever happens to be underneath it. */
+  text-shadow: 2px 3px 0 rgba(13, 13, 18, 0.5);
+}
+
+.intro__howto::before,
+.intro__howto::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.34);
+  box-shadow: 2px 3px 0 rgba(13, 13, 18, 0.4);
+}
+
 /* A clear field with one thing on it. Sized to its contents so the caption
    stays under the object rather than half a screen below it, with `auto`
-   margins here and on the CTA splitting the slack evenly above and below. */
+   margins on the label above and on the CTA splitting the slack evenly. */
 .intro__stage {
   position: relative;
   flex: none;
   height: clamp(140px, 25vh, 206px);
   display: grid;
   place-items: center;
-  margin: auto -22px 0;
+  margin: 6px -22px 0;
+}
+
+/* On a short screen the label above has to come from somewhere, and the stage
+   is the one band with slack in it — the card and the hand are drawn at a
+   fixed size and were sitting in more room than they needed. */
+@media (max-height: 620px) {
+  .intro__stage {
+    height: clamp(124px, 24vh, 206px);
+  }
 }
 
 
@@ -420,6 +462,7 @@
    handover free of reflow. */
 .intro__mute,
 .intro__top,
+.intro__howto,
 .intro__stage,
 .intro__caption,
 .intro__cta {
@@ -428,6 +471,7 @@
 
 .intro.is-loading .intro__mute,
 .intro.is-loading .intro__top,
+.intro.is-loading .intro__howto,
 .intro.is-loading .intro__stage,
 .intro.is-loading .intro__caption,
 .intro.is-loading .intro__cta {
@@ -447,6 +491,10 @@
   transition-delay: 0.02s;
 }
 
+.intro__howto {
+  transition-delay: 0.12s;
+}
+
 .intro__stage {
   transition-delay: 0.18s;
 }
@@ -461,6 +509,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .intro__top,
+  .intro__howto,
   .intro__stage,
   .intro__caption,
   .intro__cta {
@@ -1003,24 +1052,6 @@
 
 .intro__note b {
   color: var(--gold-hi);
-  font-weight: 900;
-}
-
-.intro__eyebrow {
-  justify-self: center;
-  margin: 0;
-  padding: 5px 12px;
-  border: var(--line-w) solid var(--outline);
-  border-radius: var(--r);
-  background: #fff;
-  font-size: 12.5px;
-  font-weight: 700;
-  color: var(--ink-2);
-  box-shadow: var(--drop-sm);
-}
-
-.intro__eyebrow b {
-  color: var(--airtel);
   font-weight: 900;
 }
 
