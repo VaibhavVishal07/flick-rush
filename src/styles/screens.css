@@ -398,11 +398,28 @@
   position: relative;
   display: grid;
   justify-items: center;
-  gap: 5px;
+  gap: 12px;
   /* 24px lower than it sat before, plus the room the header gave back. */
   margin: 99px 0 0;
   text-align: center;
   transition: transform 0.62s var(--ease-out);
+}
+
+/* The mark is 154px wide. On a short screen the extra height it and the 12px
+   gap cost is the difference between the button sitting inside the frame and
+   hanging off the bottom of it, so it gives that back below 620px tall. */
+@media (max-height: 620px) {
+  .intro__ident > svg {
+    width: 128px;
+    height: auto;
+  }
+
+  /* Short screens have no slack for the auto margins to trade, so the block
+     runs on into the bottom padding. Starting it higher is where the room for
+     the taller mark comes from. */
+  .intro__ident {
+    margin-top: 76px;
+  }
 }
 
 /* Centred while loading, then it glides up to its landing line. A transform,

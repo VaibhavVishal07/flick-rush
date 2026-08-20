@@ -186,7 +186,7 @@ export const GameIntro = ({ onPlay, returning, soundOn, onToggleSound }: Props) 
         {/* Whose game this is, before what it is called. Inside the ident so
             it is one of the elements that survives the loader handover
             untouched, rather than something that appears afterwards. */}
-        <AirtelSafeLogo width={128} mono />
+        <AirtelSafeLogo width={154} mono />
         <h1 className="intro__name">
           <span>Spam</span>
           <span>Smash</span>
