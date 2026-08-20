@@ -294,7 +294,8 @@ export const useGameEngine = ({ onFinish, reducedMotion, skipTutorial }: Options
       slipped: t.missed + t.oops,
       total,
       bestStreak: t.bestStreak,
-      autoHandled: total,
+      autoHandled:
+        autoRef.current.calls + autoRef.current.messages + autoRef.current.links,
       auto: autoRef.current,
     })
   }, [goPhase, onFinish])
